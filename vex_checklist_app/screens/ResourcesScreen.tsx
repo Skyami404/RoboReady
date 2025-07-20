@@ -59,9 +59,31 @@ export default function ResourcesScreen() {
   const [customReminderValue, setCustomReminderValue] = useState('');
   const [customReminderUnit, setCustomReminderUnit] = useState<'minutes' | 'hours' | 'days'>('hours');
 
+  // Add state for date picker
+  const [datePickerMode, setDatePickerMode] = useState<'date' | 'time'>('date');
+  const [tempDate, setTempDate] = useState(new Date());
+
+  // Add state for editing
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
   useEffect(() => {
     requestPermissions();
+    setupNotifications();
   }, []);
+
+  const setupNotifications = async () => {
+    // Configure notification behavior
+    await Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+  };
 
   const requestPermissions = async () => {
     const notificationStatus = await Notifications.requestPermissionsAsync();
@@ -77,8 +99,8 @@ export default function ResourcesScreen() {
   };
 
   const addTournament = async () => {
-    if (!formData.name.trim() || !formData.location.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
+    if (!formData.name.trim()) {
+      Alert.alert('Error', 'Please enter a tournament name');
       return;
     }
 
@@ -86,7 +108,7 @@ export default function ResourcesScreen() {
       id: Date.now().toString(),
       name: formData.name.trim(),
       date: formData.date,
-      location: formData.location.trim(),
+      location: formData.location.trim() || 'TBD', // Make location optional
       reminders: formData.reminders,
     };
 
@@ -101,6 +123,8 @@ export default function ResourcesScreen() {
       setTournaments(prev => [...prev, newTournament]);
       resetForm();
       setModalVisible(false);
+      setIsEditing(false);
+      setEditingId(null);
       Alert.alert('Success', 'Tournament added to calendar with reminders!');
     } catch (error) {
       Alert.alert('Error', 'Failed to add tournament. Please check your permissions.');
@@ -132,15 +156,24 @@ export default function ResourcesScreen() {
       const triggerDate = new Date(tournament.date.getTime() - hours * 60 * 60 * 1000);
       
       if (triggerDate > new Date()) {
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: `Tournament Reminder: ${tournament.name}`,
-            body: `Tournament starts in ${hours === 0 ? 'now' : hours >= 24 ? hours / 24 + ' day' + (hours / 24 > 1 ? 's' : '') : hours < 1 ? Math.round(hours * 60) + ' min' : hours + ' hour' + (hours > 1 ? 's' : '')}!
+        try {
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: `Tournament Reminder: ${tournament.name}`,
+              body: `Tournament starts in ${hours === 0 ? 'now' : hours >= 24 ? hours / 24 + ' day' + (hours / 24 > 1 ? 's' : '') : hours < 1 ? Math.round(hours * 60) + ' min' : hours + ' hour' + (hours > 1 ? 's' : '')}!
 Location: ${tournament.location}`,
-            data: { tournamentId: tournament.id },
-          },
-          trigger: { date: triggerDate },
-        } as any);
+              data: { tournamentId: tournament.id },
+              sound: 'default',
+              priority: 'high',
+            },
+            trigger: { date: triggerDate },
+          } as any);
+          console.log(`Scheduled notification for ${tournament.name} at ${triggerDate.toLocaleString()}`);
+        } catch (error) {
+          console.error('Failed to schedule notification:', error);
+        }
+      } else {
+        console.log(`Skipping notification for ${tournament.name} - trigger date ${triggerDate.toLocaleString()} is in the past`);
       }
     }
   };
@@ -226,6 +259,34 @@ Location: ${tournament.location}`,
     setCustomReminderUnit('hours');
   };
 
+  const testNotification = async () => {
+    try {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'Please enable notifications to test them!');
+        return;
+      }
+
+      // Schedule a test notification for 5 seconds from now
+      const triggerDate = new Date(Date.now() + 5000);
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Test Notification 🧪',
+          body: 'This is a test notification to verify everything is working!',
+          data: { type: 'test' },
+          sound: 'default',
+          priority: 'high',
+        },
+        trigger: { date: triggerDate },
+      } as any);
+
+      Alert.alert('Test Scheduled', 'A test notification will appear in 5 seconds. Make sure your device is not in silent mode.');
+    } catch (error) {
+      console.error('Test notification error:', error);
+      Alert.alert('Error', 'Failed to schedule test notification. Check console for details.');
+    }
+  };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -247,6 +308,94 @@ Location: ${tournament.location}`,
   const modalWidth = Math.min(width - 32, 400);
 
   const mergedStyles = { ...styles, ...extraStyles };
+
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    if (Platform.OS === 'android') {
+      setShowDatePicker(false);
+    }
+    
+    if (selectedDate) {
+      if (datePickerMode === 'date') {
+        // Keep the current time, update the date
+        const newDate = new Date(selectedDate);
+        newDate.setHours(tempDate.getHours(), tempDate.getMinutes());
+        setTempDate(newDate);
+        setDatePickerMode('time');
+        if (Platform.OS === 'ios') {
+          // On iOS, show time picker next
+          setShowDatePicker(true);
+        }
+      } else {
+        // Update the time
+        const newDate = new Date(tempDate);
+        newDate.setHours(selectedDate.getHours(), selectedDate.getMinutes());
+        setTempDate(newDate);
+        setFormData(prev => ({ ...prev, date: newDate }));
+        setShowDatePicker(false);
+        setDatePickerMode('date');
+      }
+    }
+  };
+
+  const openDatePicker = () => {
+    setTempDate(formData.date);
+    setDatePickerMode('date');
+    setShowDatePicker(true);
+  };
+
+  // Open modal for editing
+  const openEditModal = (tournament: Tournament) => {
+    setFormData({
+      name: tournament.name,
+      date: tournament.date,
+      location: tournament.location === 'TBD' ? '' : tournament.location,
+      reminders: tournament.reminders,
+    });
+    setIsEditing(true);
+    setEditingId(tournament.id);
+    setModalVisible(true);
+  };
+
+  // Save changes to tournament
+  const saveTournament = async () => {
+    if (!formData.name.trim()) {
+      Alert.alert('Error', 'Please enter a tournament name');
+      return;
+    }
+    const updatedTournament: Tournament = {
+      id: editingId!,
+      name: formData.name.trim(),
+      date: formData.date,
+      location: formData.location.trim() || 'TBD',
+      reminders: formData.reminders,
+      calendarEventId: tournaments.find(t => t.id === editingId)?.calendarEventId,
+    };
+    try {
+      // Update calendar event
+      if (updatedTournament.calendarEventId) {
+        await Calendar.updateEventAsync(updatedTournament.calendarEventId, {
+          title: `VEX Tournament: ${updatedTournament.name}`,
+          startDate: updatedTournament.date,
+          endDate: new Date(updatedTournament.date.getTime() + 8 * 60 * 60 * 1000),
+          location: updatedTournament.location,
+          notes: `VEX Tournament Checklist:\n- Robot and controller\n- Engineering notebook\n- Spare parts and tools\n- Team information\n- Batteries and chargers`,
+          alarms: updatedTournament.reminders.map(hours => ({ relativeOffset: -hours * 60 })),
+        });
+      }
+      // Update notifications
+      await Notifications.cancelAllScheduledNotificationsAsync();
+      await scheduleNotifications(updatedTournament);
+      // Update state
+      setTournaments(prev => prev.map(t => t.id === editingId ? updatedTournament : t));
+      resetForm();
+      setModalVisible(false);
+      setIsEditing(false);
+      setEditingId(null);
+      Alert.alert('Success', 'Tournament updated!');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update tournament. Please check your permissions.');
+    }
+  };
 
   return (
     <SafeAreaView style={mergedStyles.safeArea}>
@@ -284,6 +433,13 @@ Location: ${tournament.location}`,
                         onPress={() => deleteTournament(tournament)}
                         iconColor={paperTheme.colors.error}
                       />
+                      <IconButton
+                        icon="pencil"
+                        size={20}
+                        onPress={() => openEditModal(tournament)}
+                        iconColor={paperTheme.colors.primary}
+                        style={{ marginLeft: 0, marginRight: 0 }}
+                      />
                     </View>
                     <View style={mergedStyles.remindersContainer}>
                       <Text style={[mergedStyles.remindersLabel, { color: paperTheme.colors.onSurfaceVariant }]}> 
@@ -315,6 +471,15 @@ Location: ${tournament.location}`,
           Add Tournament
         </Button>
 
+        <Button
+          mode="outlined"
+          onPress={testNotification}
+          style={[mergedStyles.addButton, { marginTop: 10 }]}
+          icon="bell"
+        >
+          Test Notifications
+        </Button>
+
         <Portal>
           <Modal
             visible={modalVisible}
@@ -341,7 +506,7 @@ Location: ${tournament.location}`,
               />
               
               <TextInput
-                label="Location"
+                label="Location (optional)"
                 value={formData.location}
                 onChangeText={(text) => setFormData(prev => ({ ...prev, location: text }))}
                 style={mergedStyles.input}
@@ -349,27 +514,25 @@ Location: ${tournament.location}`,
                 autoCapitalize="words"
                 autoCorrect={false}
                 maxLength={50}
+                placeholder="Enter tournament location or leave blank"
               />
               
               <Button
                 mode="outlined"
                 icon="calendar"
-                onPress={() => setShowDatePicker(true)}
+                onPress={openDatePicker}
                 style={{ marginBottom: 10 }}
               >
                 {`Set Date: ${formatDate(formData.date)} at ${formatTime(formData.date)}`}
               </Button>
               {showDatePicker && (
                 <DateTimePicker
-                  value={formData.date}
-                  mode="datetime"
+                  value={tempDate}
+                  mode={datePickerMode}
                   display={Platform.OS === 'ios' ? 'inline' : 'default'}
-                  onChange={(event, selectedDate) => {
-                    setShowDatePicker(false);
-                    if (selectedDate) {
-                      setFormData(prev => ({ ...prev, date: selectedDate }));
-                    }
-                  }}
+                  onChange={handleDateChange}
+                  // On iOS, textColor works. On Android, this is ignored by the native picker.
+                  {...(Platform.OS === 'ios' ? { textColor: isDarkMode ? '#fff' : '#000' } : {})}
                 />
               )}
               
@@ -471,10 +634,10 @@ Location: ${tournament.location}`,
                 </Button>
                 <Button
                   mode="contained"
-                  onPress={addTournament}
+                  onPress={isEditing ? saveTournament : addTournament}
                   style={mergedStyles.modalButton}
                 >
-                  Add Tournament
+                  {isEditing ? 'Save Changes' : 'Add Tournament'}
                 </Button>
               </View>
             </ScrollView>

@@ -95,6 +95,7 @@ export default function App() {
               id={undefined}
               screenOptions={({ route }) => ({
                 headerShown: true,
+                headerTitle: route.name === 'Tournaments' ? 'RoboReady' : route.name,
                 headerStyle: {
                   backgroundColor: paperTheme.colors.surface,
                 },

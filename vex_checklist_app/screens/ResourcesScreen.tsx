@@ -532,7 +532,7 @@ Location: ${tournament.location}`,
                   display={Platform.OS === 'ios' ? 'inline' : 'default'}
                   onChange={handleDateChange}
                   // On iOS, textColor works. On Android, this is ignored by the native picker.
-                  {...(Platform.OS === 'ios' ? { textColor: isDarkMode ? '#fff' : '#000' } : {})}
+                  {...(Platform.OS === 'ios' ? { textColor: isDarkMode ? '#000' : '#fff' } : {})}
                 />
               )}
               

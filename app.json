@@ -7,7 +7,7 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1D4ED8"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -31,24 +31,14 @@
         "android.permission.WAKE_LOCK"
       ]
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": [
-      [
-        "expo-notifications"
-      ],
+      "expo-notifications",
       [
         "expo-calendar",
         {
           "calendarPermission": "Allow RoboReady to access your calendar to add tournament events."
         }
       ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "your-project-id-here"
-      }
-    }
+    ]
   }
 } 

@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import TournamentDayScreen from './screens/TournamentDayScreen';
 import WeekBeforeScreen from './screens/WeekBeforeScreen';
 import ResourcesScreen from './screens/ResourcesScreen';
+import RoboticsCoachScreen from './screens/RoboticsCoachScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -124,6 +125,7 @@ export default function App() {
               <Tab.Screen name="Tournament Day" component={TournamentDayScreen} />
               <Tab.Screen name="Week Before" component={WeekBeforeScreen} />
               <Tab.Screen name="Tournaments" component={ResourcesScreen} />
+              <Tab.Screen name="Coach" component={RoboticsCoachScreen} />
             </Tab.Navigator>
           </NavigationContainer>
         </PaperProvider>

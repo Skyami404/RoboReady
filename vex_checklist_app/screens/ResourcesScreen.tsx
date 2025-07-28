@@ -452,8 +452,8 @@ Location: ${tournament.location}`,
                               {hours === 0 ? 'At time of event' : hours >= 24 ? `${hours / 24} day${hours / 24 > 1 ? 's' : ''} before` : hours < 1 ? `${Math.round(hours * 60)} min before` : `${hours} hour${hours > 1 ? 's' : ''} before`}
                             </Text>
                           </View>
-                        ))}
-                      </View>
+          ))}
+        </View>
                     </View>
                   </Card.Content>
                 </Card>
@@ -517,7 +517,7 @@ Location: ${tournament.location}`,
                 placeholder="Enter tournament location or leave blank"
               />
               
-              <Button
+          <Button
                 mode="outlined"
                 icon="calendar"
                 onPress={openDatePicker}
@@ -599,12 +599,12 @@ Location: ${tournament.location}`,
                     >
                       day
                     </Button>
-                  </View>
+        </View>
                   {/* Quick pick for common day values */}
                   {customReminderUnit === 'days' && (
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 }}>
                       {[1, 2, 3, 5, 7].map((d) => (
-                        <Button
+          <Button
                           key={d}
                           mode={customReminderValue === d.toString() ? 'contained' : 'outlined'}
                           onPress={() => setCustomReminderValue(d.toString())}
@@ -613,7 +613,7 @@ Location: ${tournament.location}`,
                           {d} day{d > 1 ? 's' : ''}
                         </Button>
                       ))}
-                    </View>
+        </View>
                   )}
                   <Button mode="contained" onPress={handleAddCustomReminder}>
                     Set Reminder
@@ -639,7 +639,7 @@ Location: ${tournament.location}`,
                 >
                   {isEditing ? 'Save Changes' : 'Add Tournament'}
                 </Button>
-              </View>
+      </View>
             </ScrollView>
           </Modal>
         </Portal>

@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Text } from 'react-native';
+import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
 import WeekBeforeScreen from './screens/WeekBeforeScreen';
 import ResourcesScreen from './screens/ResourcesScreen';
@@ -96,7 +98,7 @@ export default function App() {
               id={undefined}
               screenOptions={({ route }) => ({
                 headerShown: true,
-                headerTitle: route.name === 'Tournaments' ? 'RoboReady' : route.name,
+                headerTitle: 'RoboReady',
                 headerStyle: {
                   backgroundColor: paperTheme.colors.surface,
                 },
@@ -120,11 +122,41 @@ export default function App() {
                   paddingBottom: 18,
                   paddingTop: 8,
                 },
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName = '';
+                  if (route.name === 'Home') {
+                    iconName = '🏠';
+                  } else if (route.name === 'Tournament Day') {
+                    iconName = '🏆';
+                  } else if (route.name === 'Week Before') {
+                    iconName = '📋';
+                  } else if (route.name === 'Tournaments') {
+                    iconName = '📅';
+                  }
+                  return <Text style={{ fontSize: size, color }}>{iconName}</Text>;
+                },
               })}
             >
-              <Tab.Screen name="Tournament Day" component={TournamentDayScreen} />
-              <Tab.Screen name="Week Before" component={WeekBeforeScreen} />
-              <Tab.Screen name="Tournaments" component={ResourcesScreen} />
+              <Tab.Screen 
+                name="Home" 
+                component={HomeScreen}
+                options={{ headerTitle: 'RoboReady' }}
+              />
+              <Tab.Screen 
+                name="Tournament Day" 
+                component={TournamentDayScreen}
+                options={{ headerTitle: 'RoboReady' }}
+              />
+              <Tab.Screen 
+                name="Week Before" 
+                component={WeekBeforeScreen}
+                options={{ headerTitle: 'RoboReady' }}
+              />
+              <Tab.Screen 
+                name="Tournaments" 
+                component={ResourcesScreen}
+                options={{ headerTitle: 'RoboReady' }}
+              />
             </Tab.Navigator>
           </NavigationContainer>
         </PaperProvider>

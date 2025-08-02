@@ -1,35 +1,25 @@
 import { StyleSheet } from 'react-native';
+import { globalStyles, SPACING } from './globalStyles';
 
 export const checklistStyles = StyleSheet.create({
-  safeArea: { 
-    flex: 1, 
-    backgroundColor: '#fff' 
-  },
-  container: { 
-    padding: 20, 
-    backgroundColor: '#fff', 
-    flex: 1 
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: 'bold', 
-    marginBottom: 20, 
-    textAlign: 'center' 
-  },
+  safeArea: globalStyles.safeArea,
+  container: globalStyles.scrollContainer,
+  scrollContent: globalStyles.scrollContent,
+  title: globalStyles.screenTitle,
   progress: { 
     fontSize: 24, 
     fontWeight: '700', 
-    marginBottom: 16, 
+    marginBottom: SPACING.lg, 
     color: '#90be6d', 
     textAlign: 'center' 
   },
   itemRow: { 
     flexDirection: 'row', 
     alignItems: 'center', 
-    marginBottom: 12,
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    marginBottom: SPACING.md,
+    paddingVertical: SPACING.xs,
+    paddingHorizontal: SPACING.sm,
+    borderRadius: SPACING.sm,
     backgroundColor: '#f8fafc',
     minHeight: 54,
     height: 54
@@ -37,11 +27,11 @@ export const checklistStyles = StyleSheet.create({
   itemText: { 
     fontSize: 16, 
     flexShrink: 1, 
-    marginLeft: 8, 
+    marginLeft: SPACING.sm, 
     flex: 1 
   },
   checkboxTouchable: {
-    padding: 12,
+    padding: SPACING.md,
     width: 60,
     height: 60,
     justifyContent: 'center',
@@ -49,8 +39,8 @@ export const checklistStyles = StyleSheet.create({
   },
   textTouchable: {
     flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
     height: '100%',
     justifyContent: 'center'
   },
@@ -69,29 +59,29 @@ export const checklistStyles = StyleSheet.create({
     height: 24,
   },
   buttonContainer: {
-    marginBottom: 20,
+    marginBottom: SPACING.xl,
     alignItems: 'center'
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: SPACING.xl
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
-    paddingHorizontal: 8,
+    marginBottom: SPACING.lg,
+    paddingHorizontal: SPACING.sm,
     backgroundColor: '#f8fafc',
-    borderRadius: 8,
+    borderRadius: SPACING.sm,
     borderWidth: 1,
     borderColor: '#e5e7eb'
   },
   input: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.md,
     fontSize: 16,
     color: '#374151'
   },

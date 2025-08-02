@@ -114,7 +114,7 @@ export default function TournamentDayScreen() {
     return (
     <GestureDetector gesture={swipeGesture}>
       <SafeAreaView style={checklistStyles.safeArea}>
-        <ScrollView style={checklistStyles.container}>
+        <ScrollView style={checklistStyles.container} contentContainerStyle={checklistStyles.scrollContent}>
         <Text style={checklistStyles.title}>Tournament Day</Text>
       <Text style={checklistStyles.progress}>
         {completed} of {total} completed ({progress}%)

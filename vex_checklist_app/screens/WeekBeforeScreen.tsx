@@ -113,7 +113,7 @@ export default function WeekBeforeScreen() {
     return (
     <GestureDetector gesture={swipeGesture}>
       <SafeAreaView style={checklistStyles.safeArea}>
-        <ScrollView style={checklistStyles.container}>
+        <ScrollView style={checklistStyles.container} contentContainerStyle={checklistStyles.scrollContent}>
         <Text style={checklistStyles.title}>Week Before Tournament</Text>
       <Text style={checklistStyles.progress}>
         {completed} of {total} completed ({progress}%)

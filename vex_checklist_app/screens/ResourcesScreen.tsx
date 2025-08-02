@@ -5,6 +5,7 @@ import * as Notifications from 'expo-notifications';
 import { scheduleReminderNotification, scheduleTournamentDayReminder } from '../utils/scheduleNotification';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { globalStyles, SPACING } from '../styles/globalStyles';
 
 const resources = [
   {
@@ -37,9 +38,9 @@ export default function ResourcesScreen() {
 
   return (
     <GestureDetector gesture={swipeGesture}>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-        <Text style={styles.title}>Official VEX Resources</Text>
+      <SafeAreaView style={globalStyles.safeArea}>
+        <View style={globalStyles.screenContainer}>
+        <Text style={globalStyles.screenTitle}>Official VEX Resources</Text>
         <View style={styles.linksContainer}>
           {resources.map((resource) => (
             <TouchableOpacity 
@@ -58,13 +59,13 @@ export default function ResourcesScreen() {
           title="Add Tournament to Calendar"
           onPress={scheduleReminderNotification}
         />
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: SPACING.md }}>
           <Button
             title="Test Tournament Day Reminder"
             onPress={scheduleTournamentDayReminder}
           />
         </View>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: SPACING.md }}>
           <Button
             title="Cancel All Reminders"
             color="#EF4444"
@@ -79,18 +80,6 @@ export default function ResourcesScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: '#fff' },
-  container: {
-    padding: 20,
-    backgroundColor: '#fff',
-    flex: 1
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 46,
-    textAlign: 'center'
-  },
   link: {
     color: '#2563EB',
     fontSize: 16,
@@ -99,14 +88,14 @@ const styles = StyleSheet.create({
   },
   linksContainer: {
     alignItems: 'center',
-    marginBottom: 30
+    marginBottom: SPACING.xxxl
   },
   linkButton: {
     backgroundColor: '#f8fafc',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginBottom: 12,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.xl,
+    borderRadius: SPACING.sm,
+    marginBottom: SPACING.md,
     minWidth: 200,
     alignItems: 'center',
     borderWidth: 1,
@@ -114,6 +103,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 30
+    marginTop: SPACING.xxxl
   }
 });

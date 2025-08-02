@@ -287,7 +287,6 @@ export default function TournamentsScreen() {
                 style={formStyles.overlayBackground}
                 activeOpacity={1}
                 onPress={() => {
-                  console.log('Overlay tapped - closing date picker');
                   setShowDatePicker(false);
                 }}
               />

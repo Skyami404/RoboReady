@@ -44,7 +44,7 @@ export async function scheduleReminderNotification() {
       alert('Tournament calendar event created! Check your calendar app for the event with reminders.');
     }
   } catch (error) {
-    console.log('Could not create calendar event:', error);
+    console.error('Could not create calendar event:', error);
     alert('Could not create calendar event. Please check your calendar permissions.');
   }
 }

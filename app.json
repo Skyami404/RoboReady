@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "RoboReady",
+    "slug": "roboready",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1D4ED8"
+    },
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#1D4ED8"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.roboready.app",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "This app needs access to your calendar to add tournament events and reminders.",
+        "NSRemindersUsageDescription": "This app needs access to reminders to schedule tournament notifications."
+      }
+    },
+    "android": {
+      "package": "com.roboready.app",
+      "permissions": [
+        "android.permission.CALENDAR",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK"
+      ]
+    },
+    "plugins": [
+      "expo-notifications",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow RoboReady to access your calendar to add tournament events."
+        }
+      ]
+    ]
+  }
+} 

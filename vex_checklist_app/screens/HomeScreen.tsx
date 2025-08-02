@@ -75,12 +75,13 @@ export default function HomeScreen() {
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       
       const futureTournaments = tournaments.filter(t => {
-        const tournamentDate = new Date(t.date.getFullYear(), t.date.getMonth(), t.date.getDate());
+        const dateObj = new Date(t.date);
+        const tournamentDate = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
         return tournamentDate >= today;
       });
       
       const upcoming = futureTournaments
-        .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
       
       if (upcoming) {
         setUpcomingEvent({

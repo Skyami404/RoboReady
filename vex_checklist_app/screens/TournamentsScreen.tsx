@@ -113,9 +113,14 @@ export default function TournamentsScreen() {
   };
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
+    // For spinner mode, update the date but don't close the picker
     if (selectedDate) {
       setSelectedDate(selectedDate);
+    }
+    
+    // Only close on 'dismissed' event or when user taps outside
+    if (event.type === 'dismissed') {
+      setShowDatePicker(false);
     }
   };
 
@@ -291,11 +296,44 @@ export default function TournamentsScreen() {
                 }}
               />
           <View style={formStyles.datePickerContainer}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+              <Text style={{ fontSize: 18, fontWeight: '600', color: isDarkMode ? '#ffffff' : '#000000' }}>
+                Select Date & Time
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(false)}
+                  style={{ 
+                    backgroundColor: isDarkMode ? '#374151' : '#e5e7eb',
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    marginRight: 8
+                  }}
+                >
+                  <Text style={{ color: isDarkMode ? '#ffffff' : '#000000', fontWeight: '500' }}>
+                    Done
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(false)}
+                  style={{ padding: 8 }}
+                >
+                  <Ionicons 
+                    name="close" 
+                    size={24} 
+                    color={isDarkMode ? '#ffffff' : '#000000'} 
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
             <DateTimePicker
               value={selectedDate}
               mode="datetime"
-              display={Platform.OS === 'ios' ? 'inline' : 'default'}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
               onChange={handleDateChange}
+              textColor={isDarkMode ? '#ffffff' : '#000000'}
+              accentColor={isDarkMode ? '#3b82f6' : '#1d4ed8'}
             />
           </View>
         </View>

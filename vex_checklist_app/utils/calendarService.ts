@@ -44,14 +44,7 @@ export class CalendarService {
       if (!hasPermission) {
         const granted = await this.requestCalendarPermissions();
         if (!granted) {
-          Alert.alert(
-            'Calendar Permission Required',
-            'This app needs access to your calendar to add tournament events. Please enable calendar access in Settings.',
-            [
-              { text: 'Cancel', style: 'cancel' },
-              { text: 'Open Settings', onPress: () => Linking.openSettings() }
-            ]
-          );
+          // Don't show popup - user can use the calendar access message at the top of the screen
           return null;
         }
       }

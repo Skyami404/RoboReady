@@ -78,8 +78,16 @@ export const createTournamentStyles = (isDarkMode: boolean) => {
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       padding: 20,
-      borderTopWidth: isDarkMode ? 1 : 0,
-      borderTopColor: isDarkMode ? '#374151' : 'transparent',
+      borderTopWidth: 2,
+      borderTopColor: isDarkMode ? '#374151' : '#d1d5db',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: -2,
+      },
+      shadowOpacity: isDarkMode ? 0.3 : 0.15,
+      shadowRadius: 8,
+      elevation: 8,
     },
   });
   }; 

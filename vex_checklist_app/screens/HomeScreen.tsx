@@ -249,7 +249,7 @@ export default function HomeScreen() {
               </View>
               {upcomingEvent && (
                 <View style={homeStyles.statItem}>
-                  <Text style={[homeStyles.statNumber, { fontSize: 14, maxWidth: 120 }]} numberOfLines={1}>
+                  <Text style={[homeStyles.statNumber, homeStyles.statNumberSmall]} numberOfLines={1}>
                     {upcomingEvent.name.length > 15 ? upcomingEvent.name.substring(0, 15) + '...' : upcomingEvent.name}
                   </Text>
                   <Text style={homeStyles.statLabel}>Upcoming: {formatEventDate(upcomingEvent.date)}</Text>

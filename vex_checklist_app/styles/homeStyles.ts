@@ -66,6 +66,10 @@ export const createHomeStyles = (isDarkMode: boolean) => {
       fontWeight: '600',
       color: colors.text,
     },
+    statNumberSmall: {
+      fontSize: 14,
+      maxWidth: 120,
+    },
     statLabel: {
       fontSize: 12,
       color: colors.textSecondary,

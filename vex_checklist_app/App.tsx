@@ -3,11 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { SFSymbols, getIconColor } from './utils/sfSymbols';
 import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
 import WeekBeforeScreen from './screens/WeekBeforeScreen';
-import ResourcesScreen from './screens/ResourcesScreen';
+import TournamentsScreen from './screens/TournamentsScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -122,19 +123,19 @@ export default function App() {
                   paddingBottom: 18,
                   paddingTop: 8,
                 },
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName = '';
-                  if (route.name === 'Home') {
-                    iconName = '🏠';
-                  } else if (route.name === 'Tournament Day') {
-                    iconName = '🏆';
-                  } else if (route.name === 'Week Before') {
-                    iconName = '📋';
-                  } else if (route.name === 'Tournaments') {
-                    iconName = '📅';
-                  }
-                  return <Text style={{ fontSize: size, color }}>{iconName}</Text>;
-                },
+                                       tabBarIcon: ({ focused, color, size }) => {
+                         let iconName: keyof typeof Ionicons.glyphMap = 'home';
+                         if (route.name === 'Home') {
+                           iconName = SFSymbols.home;
+                         } else if (route.name === 'Tournament Day') {
+                           iconName = SFSymbols.trophy;
+                         } else if (route.name === 'Week Before') {
+                           iconName = SFSymbols.clipboard;
+                         } else if (route.name === 'Tournaments') {
+                           iconName = SFSymbols.calendar;
+                         }
+                         return <Ionicons name={iconName} size={size} color={color} />;
+                       },
               })}
             >
               <Tab.Screen 
@@ -154,7 +155,7 @@ export default function App() {
               />
               <Tab.Screen 
                 name="Tournaments" 
-                component={ResourcesScreen}
+                component={TournamentsScreen}
                 options={{ headerTitle: 'RoboReady' }}
               />
             </Tab.Navigator>

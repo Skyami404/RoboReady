@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../App';
 import { createChecklistStyles } from '../styles/checklistStyles';
+import { createHomeStyles } from '../styles/homeStyles';
+import { createCommonStyles } from '../styles/commonStyles';
+import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { TournamentStorage } from '../utils/tournamentStorage';
 
 const TOURNAMENT_DAY_KEY = 'checklist-tournament-day';
 const WEEK_BEFORE_KEY = 'checklist-week-before';
@@ -14,10 +19,13 @@ const TOURNAMENTS_KEY = 'tournaments';
 export default function HomeScreen() {
   const { isDarkMode } = useTheme();
   const styles = createChecklistStyles(isDarkMode);
+  const homeStyles = createHomeStyles(isDarkMode);
+  const commonStyles = createCommonStyles(isDarkMode);
   const navigation = useNavigation<BottomTabNavigationProp<any>>();
   const [tournamentDayProgress, setTournamentDayProgress] = useState(0);
   const [weekBeforeProgress, setWeekBeforeProgress] = useState(0);
   const [tournamentCount, setTournamentCount] = useState(0);
+  const [upcomingEvent, setUpcomingEvent] = useState<{ name: string; date: Date } | null>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -45,117 +53,31 @@ export default function HomeScreen() {
         setWeekBeforeProgress(total > 0 ? Math.round((completed / total) * 100) : 0);
       }
 
-      // Load tournament count
-      const tournamentsData = await AsyncStorage.getItem(TOURNAMENTS_KEY);
-      if (tournamentsData) {
-        const tournaments = JSON.parse(tournamentsData);
-        setTournamentCount(tournaments.length || 0);
+      // Load tournament count and upcoming event using the service
+      const count = await TournamentStorage.getTournamentCount();
+      setTournamentCount(count);
+      
+      // Get upcoming event
+      const tournaments = await TournamentStorage.getTournaments();
+      const now = new Date();
+      const upcoming = tournaments
+        .filter(t => new Date(t.date) > now)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+      
+      if (upcoming) {
+        setUpcomingEvent({
+          name: upcoming.name,
+          date: new Date(upcoming.date)
+        });
+      } else {
+        setUpcomingEvent(null);
       }
     } catch (error) {
       console.error('Error loading data:', error);
     }
   };
 
-  const homeStyles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-    },
-    header: {
-      marginBottom: 30,
-    },
-    title: {
-      fontSize: 32,
-      fontWeight: '700',
-      marginBottom: 8,
-      color: isDarkMode ? '#ffffff' : '#000000',
-    },
-    subtitle: {
-      fontSize: 16,
-      color: isDarkMode ? '#9CA3AF' : '#6B7280',
-      lineHeight: 22,
-    },
-    widgetContainer: {
-      marginBottom: 20,
-    },
-    widget: {
-      borderRadius: 16,
-      padding: 24,
-      shadowColor: isDarkMode ? '#000000' : '#000000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: isDarkMode ? 0.3 : 0.1,
-      shadowRadius: 8,
-      elevation: 4,
-    },
-    widgetLight: {
-      backgroundColor: '#ffffff',
-      borderWidth: 1,
-      borderColor: '#E5E7EB',
-    },
-    widgetDark: {
-      backgroundColor: '#1F2937',
-      borderWidth: 1,
-      borderColor: '#374151',
-    },
-    widgetTitle: {
-      fontSize: 20,
-      fontWeight: '600',
-      marginBottom: 8,
-      color: isDarkMode ? '#ffffff' : '#000000',
-    },
-    widgetDescription: {
-      fontSize: 14,
-      lineHeight: 20,
-      marginBottom: 16,
-      color: isDarkMode ? '#9CA3AF' : '#6B7280',
-    },
-    widgetIcon: {
-      fontSize: 24,
-      marginBottom: 12,
-    },
-    widgetStats: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    statItem: {
-      alignItems: 'center',
-    },
-    statNumber: {
-      fontSize: 18,
-      fontWeight: '600',
-      color: isDarkMode ? '#60A5FA' : '#1D4ED8',
-    },
-    statLabel: {
-      fontSize: 12,
-      color: isDarkMode ? '#9CA3AF' : '#6B7280',
-      marginTop: 2,
-    },
-    progressBar: {
-      height: 4,
-      borderRadius: 2,
-      backgroundColor: isDarkMode ? '#374151' : '#E5E7EB',
-      marginTop: 8,
-      overflow: 'hidden',
-    },
-    progressFill: {
-      height: '100%',
-      borderRadius: 2,
-      backgroundColor: isDarkMode ? '#60A5FA' : '#1D4ED8',
-    },
-    footer: {
-      marginTop: 20,
-      alignItems: 'center',
-    },
-    footerText: {
-      fontSize: 12,
-      color: isDarkMode ? '#6B7280' : '#9CA3AF',
-      textAlign: 'center',
-    },
-  });
+
 
   const navigateToScreen = (screenName: string) => {
     navigation.navigate(screenName as never);
@@ -177,14 +99,29 @@ export default function HomeScreen() {
     return 'Ready to start';
   };
 
+  const formatEventDate = (date: Date) => {
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Tomorrow';
+    if (diffDays <= 7) return `In ${diffDays} days`;
+    
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={homeStyles.container} showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View style={homeStyles.header}>
+        <View style={[homeStyles.header, commonStyles.titleContainer]}>
           <Text style={homeStyles.title}>RoboReady</Text>
           <Text style={homeStyles.subtitle}>
-            Your complete VEX Robotics tournament companion
+            Your VEX Robotics tournament companion
           </Text>
         </View>
 
@@ -198,8 +135,15 @@ export default function HomeScreen() {
             onPress={() => navigateToScreen('Tournament Day')}
             activeOpacity={0.8}
           >
-            <Text style={homeStyles.widgetIcon}>🏆</Text>
-            <Text style={homeStyles.widgetTitle}>Tournament Day</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+              <Ionicons 
+                name={SFSymbols.trophy} 
+                size={getIconSize('medium')} 
+                color={getIconColor(isDarkMode, 'primary')} 
+                style={{ marginRight: 12 }}
+              />
+              <Text style={homeStyles.widgetTitle}>Tournament Day</Text>
+            </View>
             <Text style={homeStyles.widgetDescription}>
               Essential checklist for tournament day. Make sure your robot is ready to compete.
             </Text>
@@ -229,8 +173,15 @@ export default function HomeScreen() {
             onPress={() => navigateToScreen('Week Before')}
             activeOpacity={0.8}
           >
-            <Text style={homeStyles.widgetIcon}>📋</Text>
-            <Text style={homeStyles.widgetTitle}>Week Before</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+              <Ionicons 
+                name={SFSymbols.clipboard} 
+                size={getIconSize('medium')} 
+                color={getIconColor(isDarkMode, 'primary')} 
+                style={{ marginRight: 12 }}
+              />
+              <Text style={homeStyles.widgetTitle}>Week Before</Text>
+            </View>
             <Text style={homeStyles.widgetDescription}>
               Preparation checklist for the week leading up to your tournament.
             </Text>
@@ -260,20 +211,31 @@ export default function HomeScreen() {
             onPress={() => navigateToScreen('Tournaments')}
             activeOpacity={0.8}
           >
-            <Text style={homeStyles.widgetIcon}>📅</Text>
-            <Text style={homeStyles.widgetTitle}>Tournaments</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+              <Ionicons 
+                name={SFSymbols.calendar} 
+                size={getIconSize('medium')} 
+                color={getIconColor(isDarkMode, 'primary')} 
+                style={{ marginRight: 12 }}
+              />
+              <Text style={homeStyles.widgetTitle}>Tournaments</Text>
+            </View>
             <Text style={homeStyles.widgetDescription}>
               Manage your tournament schedule, set reminders, and track events.
             </Text>
             <View style={homeStyles.widgetStats}>
               <View style={homeStyles.statItem}>
                 <Text style={homeStyles.statNumber}>{tournamentCount}</Text>
-                <Text style={homeStyles.statLabel}>Events</Text>
+                <Text style={homeStyles.statLabel}>Total events</Text>
               </View>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>🔔</Text>
-                <Text style={homeStyles.statLabel}>Alerts</Text>
-              </View>
+              {upcomingEvent && (
+                <View style={homeStyles.statItem}>
+                  <Text style={homeStyles.statNumber} numberOfLines={1}>
+                    {upcomingEvent.name.length > 12 ? upcomingEvent.name.substring(0, 12) + '...' : upcomingEvent.name}
+                  </Text>
+                  <Text style={homeStyles.statLabel}>Upcoming: {formatEventDate(upcomingEvent.date)}</Text>
+                </View>
+              )}
             </View>
           </TouchableOpacity>
         </View>

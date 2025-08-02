@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, Button, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Checkbox, useTheme as usePaperTheme, IconButton } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { exportChecklistToPDF } from '../utils/exportChecklist';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { createChecklistStyles } from '../styles/checklistStyles';
+import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
 import { useTheme } from '../App';
 
 const STORAGE_KEY = 'checklist-tournament-day';
@@ -118,7 +120,9 @@ export default function TournamentDayScreen() {
     <GestureDetector gesture={swipeGesture}>
       <SafeAreaView style={checklistStyles.safeArea}>
         <ScrollView style={checklistStyles.container}>
-        <Text style={checklistStyles.title}>Tournament Day</Text>
+        <View style={checklistStyles.titleContainer}>
+          <Text style={checklistStyles.title}>Tournament Day</Text>
+        </View>
       <Text style={checklistStyles.progress}>
         {completed} of {total} completed ({progress}%)
       </Text>
@@ -139,7 +143,13 @@ export default function TournamentDayScreen() {
           onSubmitEditing={addItem}
         />
         <IconButton
-          icon="plus"
+          icon={() => (
+            <Ionicons 
+              name={SFSymbols.plus} 
+              size={getIconSize('medium')} 
+              color={getIconColor(isDarkMode, 'primary')} 
+            />
+          )}
           size={24}
           onPress={addItem}
           disabled={!newItem.trim()}
@@ -169,7 +179,13 @@ export default function TournamentDayScreen() {
             <Text style={checklistStyles.itemText}>{item}</Text>
           </TouchableOpacity>
           <IconButton
-            icon="delete"
+            icon={() => (
+              <Ionicons 
+                name={SFSymbols.delete} 
+                size={getIconSize('small')} 
+                color={getIconColor(isDarkMode, 'error')} 
+              />
+            )}
             size={20}
             onPress={() => removeItem(index)}
             style={checklistStyles.deleteButton}

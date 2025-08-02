@@ -1,22 +1,23 @@
 import { StyleSheet } from 'react-native';
+import { createCommonStyles, getCommonColors, spacing, borderRadius } from './commonStyles';
 
-export const createChecklistStyles = (isDarkMode: boolean) => StyleSheet.create({
-  safeArea: { 
-    flex: 1, 
-    backgroundColor: isDarkMode ? '#121212' : '#fff' 
-  },
-  container: { 
-    padding: 20, 
-    backgroundColor: isDarkMode ? '#121212' : '#fff', 
-    flex: 1 
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: 'bold', 
-    marginBottom: 20, 
-    textAlign: 'center',
-    color: isDarkMode ? '#ffffff' : '#000000'
-  },
+export const createChecklistStyles = (isDarkMode: boolean) => {
+  const commonStyles = createCommonStyles(isDarkMode);
+  const colors = getCommonColors(isDarkMode);
+  
+  return StyleSheet.create({
+    safeArea: { 
+      ...commonStyles.safeArea
+    },
+    container: { 
+      ...commonStyles.container
+    },
+    title: { 
+      ...commonStyles.title
+    },
+    titleContainer: {
+      ...commonStyles.titleContainer,
+    },
   progress: { 
     fontSize: 24, 
     fontWeight: '700', 
@@ -78,13 +79,11 @@ export const createChecklistStyles = (isDarkMode: boolean) => StyleSheet.create(
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    paddingHorizontal: 20
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    paddingHorizontal: 8,
     backgroundColor: isDarkMode ? '#2D2D2D' : '#f8fafc',
     borderRadius: 8,
     borderWidth: 1,
@@ -101,7 +100,8 @@ export const createChecklistStyles = (isDarkMode: boolean) => StyleSheet.create(
     margin: 0,
     padding: 0
   }
-});
+  });
+  };
 
 // Legacy export for backward compatibility
 export const checklistStyles = createChecklistStyles(false); 

@@ -56,6 +56,12 @@ export const createTournamentStyles = (isDarkMode: boolean) => {
     ...commonStyles.title,
     marginBottom: 5,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   datePickerOverlay: {
     position: 'absolute',
     top: 0,

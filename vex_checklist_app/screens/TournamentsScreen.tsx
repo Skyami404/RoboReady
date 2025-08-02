@@ -118,7 +118,9 @@ export default function TournamentsScreen() {
       setSelectedDate(selectedDate);
     }
     
-    // Only close on 'dismissed' event or when user taps outside
+    // TODO: Add Android compatibility - handle 'set' event type for Android
+    // Currently only handles iOS 'dismissed' event
+    // Android may fire 'set' event when user confirms selection
     if (event.type === 'dismissed') {
       setShowDatePicker(false);
     }
@@ -296,7 +298,7 @@ export default function TournamentsScreen() {
                 }}
               />
           <View style={formStyles.datePickerContainer}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+            <View style={formStyles.headerContainer}>
               <Text style={{ fontSize: 18, fontWeight: '600', color: isDarkMode ? '#ffffff' : '#000000' }}>
                 Select Date & Time
               </Text>

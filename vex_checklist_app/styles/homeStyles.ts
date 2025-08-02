@@ -68,7 +68,7 @@ export const createHomeStyles = (isDarkMode: boolean) => {
     },
     statNumberSmall: {
       fontSize: 14,
-      maxWidth: 120,
+      maxWidth: 120, // Matches UPCOMING_EVENT_NAME_MAX_LENGTH * 8 (approximate character width)
     },
     statLabel: {
       fontSize: 12,

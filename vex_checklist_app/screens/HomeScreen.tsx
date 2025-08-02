@@ -15,6 +15,7 @@ import { TournamentStorage } from '../utils/tournamentStorage';
 const TOURNAMENT_DAY_KEY = 'checklist-tournament-day';
 const WEEK_BEFORE_KEY = 'checklist-week-before';
 const TOURNAMENTS_KEY = 'tournaments';
+const UPCOMING_EVENT_NAME_MAX_LENGTH = 15;
 
 export default function HomeScreen() {
   const { isDarkMode } = useTheme();
@@ -250,7 +251,7 @@ export default function HomeScreen() {
               {upcomingEvent && (
                 <View style={homeStyles.statItem}>
                   <Text style={[homeStyles.statNumber, homeStyles.statNumberSmall]} numberOfLines={1}>
-                    {upcomingEvent.name.length > 15 ? upcomingEvent.name.substring(0, 15) + '...' : upcomingEvent.name}
+                    {upcomingEvent.name.length > UPCOMING_EVENT_NAME_MAX_LENGTH ? upcomingEvent.name.substring(0, UPCOMING_EVENT_NAME_MAX_LENGTH) + '...' : upcomingEvent.name}
                   </Text>
                   <Text style={homeStyles.statLabel}>Upcoming: {formatEventDate(upcomingEvent.date)}</Text>
                 </View>

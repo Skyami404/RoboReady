@@ -27,9 +27,18 @@ export default function HomeScreen() {
   const [tournamentCount, setTournamentCount] = useState(0);
   const [upcomingEvent, setUpcomingEvent] = useState<{ name: string; date: Date } | null>(null);
 
+  // Load data when component mounts
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // Force refresh when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
-      loadData();
+      // Add a small delay to ensure data is saved
+      setTimeout(() => {
+        loadData();
+      }, 100);
     }, [])
   );
 
@@ -57,12 +66,21 @@ export default function HomeScreen() {
       const count = await TournamentStorage.getTournamentCount();
       setTournamentCount(count);
       
-      // Get upcoming event
+      // Get next upcoming tournament (earliest future date)
       const tournaments = await TournamentStorage.getTournaments();
+      
       const now = new Date();
-      const upcoming = tournaments
-        .filter(t => new Date(t.date) > now)
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+      
+      // More robust date comparison - compare only the date part (ignore time)
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      const futureTournaments = tournaments.filter(t => {
+        const tournamentDate = new Date(t.date.getFullYear(), t.date.getMonth(), t.date.getDate());
+        return tournamentDate >= today;
+      });
+      
+      const upcoming = futureTournaments
+        .sort((a, b) => a.date.getTime() - b.date.getTime())[0];
       
       if (upcoming) {
         setUpcomingEvent({
@@ -221,7 +239,7 @@ export default function HomeScreen() {
               <Text style={homeStyles.widgetTitle}>Tournaments</Text>
             </View>
             <Text style={homeStyles.widgetDescription}>
-              Manage your tournament schedule, set reminders, and track events.
+              Manage your tournament schedule.
             </Text>
             <View style={homeStyles.widgetStats}>
               <View style={homeStyles.statItem}>
@@ -230,8 +248,8 @@ export default function HomeScreen() {
               </View>
               {upcomingEvent && (
                 <View style={homeStyles.statItem}>
-                  <Text style={homeStyles.statNumber} numberOfLines={1}>
-                    {upcomingEvent.name.length > 12 ? upcomingEvent.name.substring(0, 12) + '...' : upcomingEvent.name}
+                  <Text style={[homeStyles.statNumber, { fontSize: 14, maxWidth: 120 }]} numberOfLines={1}>
+                    {upcomingEvent.name.length > 15 ? upcomingEvent.name.substring(0, 15) + '...' : upcomingEvent.name}
                   </Text>
                   <Text style={homeStyles.statLabel}>Upcoming: {formatEventDate(upcomingEvent.date)}</Text>
                 </View>

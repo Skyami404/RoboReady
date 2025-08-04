@@ -102,8 +102,14 @@ export default function App() {
                 headerTitle: 'RoboReady',
                 headerStyle: {
                   backgroundColor: paperTheme.colors.surface,
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
                 },
                 headerTintColor: paperTheme.colors.onSurface,
+                headerTitleStyle: {
+                  fontWeight: '600',
+                },
                 headerRight: () => (
                   <IconButton
                     icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
@@ -141,22 +147,18 @@ export default function App() {
               <Tab.Screen 
                 name="Home" 
                 component={HomeScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Tournament Day" 
                 component={TournamentDayScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Week Before" 
                 component={WeekBeforeScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Tournaments" 
                 component={TournamentsScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
             </Tab.Navigator>
           </NavigationContainer>

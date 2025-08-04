@@ -139,7 +139,6 @@ export default function HomeScreen() {
       <ScrollView style={homeStyles.container} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={[homeStyles.header, commonStyles.titleContainer]}>
-          <Text style={homeStyles.title}>RoboReady</Text>
           <Text style={homeStyles.subtitle}>
             Your VEX Robotics tournament companion
           </Text>

@@ -39,8 +39,8 @@ A comprehensive tournament management app for VEX Robotics teams, helping you st
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/VEX_Checklist.git
-   cd VEX_Checklist
+   git clone https://github.com/yourusername/RoboReady.git
+cd RoboReady
    ```
 
 2. **Install dependencies**

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../App';
+import { useTheme } from '../contexts/ThemeContext';
 import { createChecklistStyles } from '../styles/checklistStyles';
 import { createHomeStyles } from '../styles/homeStyles';
 import { createCommonStyles } from '../styles/commonStyles';
@@ -27,6 +28,13 @@ export default function HomeScreen() {
   const [weekBeforeProgress, setWeekBeforeProgress] = useState(0);
   const [tournamentCount, setTournamentCount] = useState(0);
   const [upcomingEvent, setUpcomingEvent] = useState<{ name: string; date: Date } | null>(null);
+
+  // Update header title based on scroll state
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '',
+    });
+  }, [navigation]);
 
   // Load data when component mounts
   useEffect(() => {
@@ -135,10 +143,22 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={homeStyles.container} showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+      <ScrollView 
+        style={homeStyles.container} 
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="automatic"
+        onScrollBeginDrag={() => navigation.setOptions({ headerTitle: 'RoboReady' })}
+        onMomentumScrollEnd={(event) => {
+          if (event.nativeEvent.contentOffset.y === 0) {
+            navigation.setOptions({ headerTitle: '' });
+          }
+        }}
+        scrollEventThrottle={16}
+      >
         {/* Header */}
         <View style={[homeStyles.header, commonStyles.titleContainer]}>
+          <Text style={homeStyles.title}>RoboReady</Text>
           <Text style={homeStyles.subtitle}>
             Your VEX Robotics tournament companion
           </Text>
@@ -265,7 +285,7 @@ export default function HomeScreen() {
             Built for VEX Robotics teams
           </Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+              </ScrollView>
+      </SafeAreaView>
+    );
 } 

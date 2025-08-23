@@ -5,6 +5,12 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
+    "statusBar": {
+      "style": "auto",
+      "backgroundColor": "#1D4ED8",
+      "translucent": true,
+      "hidden": false
+    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",

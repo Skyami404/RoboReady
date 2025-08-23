@@ -21,9 +21,10 @@ export const createCommonStyles = (isDarkMode: boolean) => StyleSheet.create({
     color: isDarkMode ? '#ffffff' : '#000000'
   },
   titleContainer: {
-    marginTop: 0,
+    marginTop: 20,
     marginBottom: 20,
     paddingTop: 0,
+    paddingBottom: 0,
   },
   subtitle: {
     fontSize: 18,

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const createCommonStyles = (isDarkMode: boolean) => StyleSheet.create({
   // Common layout styles
@@ -21,9 +21,10 @@ export const createCommonStyles = (isDarkMode: boolean) => StyleSheet.create({
     color: isDarkMode ? '#ffffff' : '#000000'
   },
   titleContainer: {
-    marginTop: 0,
+    marginTop: 20,
     marginBottom: 20,
     paddingTop: 0,
+    paddingBottom: 0,
   },
   subtitle: {
     fontSize: 18,
@@ -44,9 +45,13 @@ export const createCommonStyles = (isDarkMode: boolean) => StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: isDarkMode ? 0.3 : 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    ...(Platform.OS === 'ios' ? {
+      shadowOpacity: isDarkMode ? 0.3 : 0.1,
+      shadowRadius: 8,
+    } : {}),
+    ...(Platform.OS === 'android' ? {
+      elevation: 4,
+    } : {}),
   },
   
   // Common button styles

@@ -1,10 +1,13 @@
-import React, { useState, createContext, useContext } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SFSymbols, getIconColor } from './utils/sfSymbols';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
 import WeekBeforeScreen from './screens/WeekBeforeScreen';
@@ -12,22 +15,6 @@ import TournamentsScreen from './screens/TournamentsScreen';
 
 
 const Tab = createBottomTabNavigator();
-
-// Theme context
-interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-};
 
 const lightTheme = {
   ...MD3LightTheme,
@@ -65,8 +52,8 @@ const darkTheme = {
   },
 };
 
-export default function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+function AppContent() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const paperTheme = isDarkMode ? darkTheme : lightTheme;
   const navigationTheme = {
     dark: isDarkMode,
@@ -86,39 +73,42 @@ export default function App() {
     },
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <PaperProvider theme={paperTheme}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+              <PaperProvider theme={paperTheme}>
           <NavigationContainer theme={navigationTheme}>
+            <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} />
             <Tab.Navigator
-              id={undefined}
-              screenOptions={({ route }) => ({
-                headerShown: true,
-                headerTitle: 'RoboReady',
-                headerStyle: {
+                id={undefined}
+                screenOptions={({ route }) => ({
+                  headerShown: true,
+                  headerTitle: '',
+                                  headerStyle: {
                   backgroundColor: paperTheme.colors.surface,
+                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                  borderBottomWidth: 0,
                 },
-                headerTintColor: paperTheme.colors.onSurface,
-                headerRight: () => (
-                  <IconButton
-                    icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
-                    iconColor={paperTheme.colors.onSurface}
-                    size={24}
-                    onPress={toggleDarkMode}
-                  />
-                ),
-                tabBarActiveTintColor: paperTheme.colors.primary,
-                tabBarInactiveTintColor: paperTheme.colors.outline,
-                tabBarStyle: {
+                  headerSafeAreaInsets: { top: 0 },
+                  headerTintColor: paperTheme.colors.onSurface,
+                  headerTitleStyle: {
+                    fontWeight: '600',
+                  },
+                  headerRight: () => (
+                    <IconButton
+                      icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
+                      iconColor={paperTheme.colors.onSurface}
+                      size={24}
+                      onPress={toggleDarkMode}
+                    />
+                  ),
+                  tabBarActiveTintColor: paperTheme.colors.primary,
+                  tabBarInactiveTintColor: paperTheme.colors.outline,
+                                                  tabBarStyle: {
                   backgroundColor: paperTheme.colors.surface,
                   borderTopWidth: 0,
-                  elevation: 0,
-                  shadowOpacity: 0,
+                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
                   height: 80,
                   paddingBottom: 18,
                   paddingTop: 8,
@@ -141,27 +131,30 @@ export default function App() {
               <Tab.Screen 
                 name="Home" 
                 component={HomeScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Tournament Day" 
                 component={TournamentDayScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Week Before" 
                 component={WeekBeforeScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
               <Tab.Screen 
                 name="Tournaments" 
                 component={TournamentsScreen}
-                options={{ headerTitle: 'RoboReady' }}
               />
             </Tab.Navigator>
-          </NavigationContainer>
+        </NavigationContainer>
         </PaperProvider>
       </GestureHandlerRootView>
-    </ThemeContext.Provider>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, ScrollView, Platform, TouchableOpacity, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, TextInput, Card, IconButton } from 'react-native-paper';
@@ -7,14 +7,23 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { CalendarService, Tournament } from '../utils/calendarService';
 import { TournamentStorage } from '../utils/tournamentStorage';
 import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
-import { useTheme } from '../App';
+import { useTheme } from '../contexts/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
 import { createChecklistStyles } from '../styles/checklistStyles';
 import { createTournamentStyles } from '../styles/tournamentStyles';
 
 export default function TournamentsScreen() {
   const { isDarkMode } = useTheme();
+  const navigation = useNavigation();
   const styles = createChecklistStyles(isDarkMode);
   const formStyles = createTournamentStyles(isDarkMode);
+
+  // Update header title based on scroll state
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '',
+    });
+  }, [navigation]);
   
   const [tournamentName, setTournamentName] = useState('');
   const [location, setLocation] = useState('');
@@ -144,9 +153,19 @@ export default function TournamentsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
+      <ScrollView 
+        style={styles.container} 
+        contentContainerStyle={{ paddingBottom: 32 }}
+        onScrollBeginDrag={() => navigation.setOptions({ headerTitle: 'Tournaments' })}
+        onMomentumScrollEnd={(event) => {
+          if (event.nativeEvent.contentOffset.y === 0) {
+            navigation.setOptions({ headerTitle: '' });
+          }
+        }}
+        scrollEventThrottle={16}
+      >
         <View style={formStyles.titleContainer}>
-          <Text style={styles.title}>Tournament List</Text>
+          <Text style={styles.title}>Tournaments</Text>
         </View>
         
         {/* Calendar Permission Message */}

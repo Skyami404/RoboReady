@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, ScrollView, Text, Button, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Checkbox, useTheme as usePaperTheme, IconButton } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,7 +10,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { createChecklistStyles } from '../styles/checklistStyles';
 import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
-import { useTheme } from '../App';
+import { useTheme } from '../contexts/ThemeContext';
 
 const STORAGE_KEY = 'checklist-week-before';
 const ITEMS_STORAGE_KEY = 'checklist-items-week-before';
@@ -34,6 +35,13 @@ export default function WeekBeforeScreen() {
   const paperTheme = usePaperTheme();
   const checklistStyles = createChecklistStyles(isDarkMode);
   const navigation = useNavigation();
+
+  // Update header title based on scroll state
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '',
+    });
+  }, [navigation]);
 
   const swipeGesture = Gesture.Pan()
     .onBegin(() => {
@@ -117,8 +125,17 @@ export default function WeekBeforeScreen() {
 
     return (
     <GestureDetector gesture={swipeGesture}>
-      <SafeAreaView style={checklistStyles.safeArea}>
-        <ScrollView style={checklistStyles.container}>
+      <SafeAreaView style={checklistStyles.safeArea} edges={['left', 'right', 'bottom']}>
+        <ScrollView 
+          style={checklistStyles.container}
+          onScrollBeginDrag={() => navigation.setOptions({ headerTitle: 'Week Before' })}
+          onMomentumScrollEnd={(event) => {
+            if (event.nativeEvent.contentOffset.y === 0) {
+              navigation.setOptions({ headerTitle: '' });
+            }
+          }}
+          scrollEventThrottle={16}
+        >
         <View style={checklistStyles.titleContainer}>
           <Text style={checklistStyles.title}>Week Before Tournament</Text>
         </View>

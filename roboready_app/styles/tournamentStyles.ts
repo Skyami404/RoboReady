@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { createCommonStyles, getCommonColors, spacing, borderRadius } from './commonStyles';
 
 export const createTournamentStyles = (isDarkMode: boolean) => {
@@ -69,7 +69,7 @@ export const createTournamentStyles = (isDarkMode: boolean) => {
     right: 0,
     bottom: 0,
     zIndex: 9999,
-    elevation: 9999,
+    ...(Platform.OS === 'android' ? { elevation: 9999 } : {}),
   },
   overlayBackground: {
     flex: 1,
@@ -91,9 +91,13 @@ export const createTournamentStyles = (isDarkMode: boolean) => {
         width: 0,
         height: -2,
       },
-      shadowOpacity: isDarkMode ? 0.3 : 0.15,
-      shadowRadius: 8,
-      elevation: 8,
+      ...(Platform.OS === 'ios' ? {
+        shadowOpacity: isDarkMode ? 0.3 : 0.15,
+        shadowRadius: 8,
+      } : {}),
+      ...(Platform.OS === 'android' ? {
+        elevation: 8,
+      } : {}),
     },
   });
   }; 

@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SFSymbols, getIconColor } from './utils/sfSymbols';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
@@ -82,12 +83,12 @@ function AppContent() {
                 screenOptions={({ route }) => ({
                   headerShown: true,
                   headerTitle: '',
-                  headerStyle: {
-                    backgroundColor: paperTheme.colors.surface,
-                    elevation: 0,
-                    shadowOpacity: 0,
-                    borderBottomWidth: 0,
-                  },
+                                  headerStyle: {
+                  backgroundColor: paperTheme.colors.surface,
+                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                  borderBottomWidth: 0,
+                },
                   headerSafeAreaInsets: { top: 0 },
                   headerTintColor: paperTheme.colors.onSurface,
                   headerTitleStyle: {
@@ -103,15 +104,15 @@ function AppContent() {
                   ),
                   tabBarActiveTintColor: paperTheme.colors.primary,
                   tabBarInactiveTintColor: paperTheme.colors.outline,
-                                  tabBarStyle: {
-                    backgroundColor: paperTheme.colors.surface,
-                    borderTopWidth: 0,
-                    elevation: 0,
-                    shadowOpacity: 0,
-                    height: 80,
-                    paddingBottom: 18,
-                    paddingTop: 8,
-                  },
+                                                  tabBarStyle: {
+                  backgroundColor: paperTheme.colors.surface,
+                  borderTopWidth: 0,
+                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                  height: 80,
+                  paddingBottom: 18,
+                  paddingTop: 8,
+                },
                                        tabBarIcon: ({ focused, color, size }) => {
                          let iconName: keyof typeof Ionicons.glyphMap = 'home';
                          if (route.name === 'Home') {

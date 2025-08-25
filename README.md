@@ -1,4 +1,4 @@
-# RoboReady - VEX Tournament Checklist App
+# RoboReady - VEX Tournament App
 
 A comprehensive tournament management app for VEX Robotics teams, helping you stay organized and prepared for competitions.
 
@@ -21,14 +21,11 @@ A comprehensive tournament management app for VEX Robotics teams, helping you st
 - **Intuitive interface** - easy-to-use calendar-style date picker
 - **Export functionality** - save checklists as PDF
 
-
-
 ## Getting Started
 
 ### Prerequisites
 - iOS 13.0+ or Android 8.0+
 - Calendar app enabled
-- Notifications enabled
 
 ### Installation
 

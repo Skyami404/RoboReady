@@ -1,6 +1,6 @@
 # Privacy Policy for RoboReady
 
-**Last Updated:** August 24, 2024
+**Last Updated:** August 24, 2025
 
 ## Overview
 RoboReady is a VEX Robotics tournament management app that helps teams stay organized and prepared for competitions.

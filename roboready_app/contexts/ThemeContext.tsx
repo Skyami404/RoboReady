@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext } from 'react';
+import { useColorScheme } from 'react-native';
 
 // Theme context
 interface ThemeContextType {
@@ -17,10 +18,14 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const systemScheme = useColorScheme();
+  const [userPrefDark, setUserPrefDark] = useState<boolean | null>(null);
+
+  const isDarkMode = userPrefDark ?? (systemScheme === 'dark');
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    const next = !(userPrefDark ?? (systemScheme === 'dark'));
+    setUserPrefDark(next);
   };
 
   return (
@@ -28,4 +33,4 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
     </ThemeContext.Provider>
   );
-}; 
+};

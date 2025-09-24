@@ -2,11 +2,11 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, ScrollView, Platform, TouchableOpacity, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, TextInput, Card, IconButton } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../utils/AppIcon';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { CalendarService, Tournament } from '../utils/calendarService';
 import { TournamentStorage } from '../utils/tournamentStorage';
-import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
+import { getIconColor, getIconSize } from '../utils/sfSymbols';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { createChecklistStyles } from '../styles/checklistStyles';
@@ -171,12 +171,12 @@ export default function TournamentsScreen() {
         {/* Calendar Permission Message */}
         <View style={formStyles.permissionContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-            <Ionicons 
-              name={SFSymbols.calendar} 
+            <AppIcon 
+              name={'calendar'} 
               size={getIconSize('small')} 
               color={getIconColor(isDarkMode, 'primary')} 
-              style={{ marginRight: 8 }}
             />
+            <View style={{ width: 8 }} />
             <Text style={formStyles.permissionText}>
               Enable calendar access for notifications and to view tournaments in your personal calendar
             </Text>
@@ -218,8 +218,8 @@ export default function TournamentsScreen() {
           <Button
             mode="outlined"
             icon={() => (
-              <Ionicons 
-                name={SFSymbols.calendar} 
+              <AppIcon 
+                name={'calendar'} 
                 size={getIconSize('small')} 
                 color={getIconColor(isDarkMode, 'primary')} 
               />
@@ -237,8 +237,8 @@ export default function TournamentsScreen() {
             onPress={handleAddTournament}
             style={formStyles.addButton}
             icon={() => (
-              <Ionicons 
-                name={SFSymbols.plus} 
+              <AppIcon 
+                name={'plus'} 
                 size={getIconSize('small')} 
                 color={getIconColor(isDarkMode, 'primary')} 
               />
@@ -290,8 +290,8 @@ export default function TournamentsScreen() {
                     </View>
                     <IconButton
                       icon={() => (
-                        <Ionicons 
-                          name={SFSymbols.delete} 
+                        <AppIcon 
+                          name={'delete'} 
                           size={getIconSize('small')} 
                           color={getIconColor(isDarkMode, 'error')} 
                         />
@@ -340,8 +340,8 @@ export default function TournamentsScreen() {
                   onPress={() => setShowDatePicker(false)}
                   style={{ padding: 8 }}
                 >
-                  <Ionicons 
-                    name="close" 
+                  <AppIcon 
+                    name={'close'} 
                     size={24} 
                     color={isDarkMode ? '#ffffff' : '#000000'} 
                   />

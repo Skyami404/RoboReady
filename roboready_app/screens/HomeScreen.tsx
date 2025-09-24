@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../utils/AppIcon';
 import { useTheme } from '../contexts/ThemeContext';
 import { createChecklistStyles } from '../styles/checklistStyles';
 import { createHomeStyles } from '../styles/homeStyles';
 import { createCommonStyles } from '../styles/commonStyles';
-import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
+import { getIconColor, getIconSize } from '../utils/sfSymbols';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { TournamentStorage } from '../utils/tournamentStorage';
@@ -175,12 +175,12 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.trophy} 
+              <AppIcon 
+                name={'trophy'} 
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
               />
+              <View style={{ width: 12 }} />
               <Text style={homeStyles.widgetTitle}>Tournament Day</Text>
             </View>
             <Text style={homeStyles.widgetDescription}>
@@ -213,12 +213,12 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.clipboard} 
+              <AppIcon 
+                name={'clipboard'} 
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
               />
+              <View style={{ width: 12 }} />
               <Text style={homeStyles.widgetTitle}>Week Before</Text>
             </View>
             <Text style={homeStyles.widgetDescription}>
@@ -251,12 +251,12 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.calendar} 
+              <AppIcon 
+                name={'calendar'} 
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
               />
+              <View style={{ width: 12 }} />
               <Text style={homeStyles.widgetTitle}>Tournaments</Text>
             </View>
             <Text style={homeStyles.widgetDescription}>

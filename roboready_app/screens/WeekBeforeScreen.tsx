@@ -3,13 +3,13 @@ import { View, ScrollView, Text, Button, TouchableOpacity, TextInput } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Checkbox, useTheme as usePaperTheme, IconButton } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../utils/AppIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { exportChecklistToPDF } from '../utils/exportChecklist';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { createChecklistStyles } from '../styles/checklistStyles';
-import { SFSymbols, getIconColor, getIconSize } from '../utils/sfSymbols';
+import { getIconColor, getIconSize } from '../utils/sfSymbols';
 import { useTheme } from '../contexts/ThemeContext';
 
 const STORAGE_KEY = 'checklist-week-before';
@@ -160,8 +160,8 @@ export default function WeekBeforeScreen() {
         />
         <IconButton
           icon={() => (
-            <Ionicons 
-              name={SFSymbols.plus} 
+            <AppIcon 
+              name={'plus'} 
               size={getIconSize('medium')} 
               color={getIconColor(isDarkMode, 'primary')} 
             />
@@ -196,8 +196,8 @@ export default function WeekBeforeScreen() {
           </TouchableOpacity>
           <IconButton
             icon={() => (
-              <Ionicons 
-                name={SFSymbols.delete} 
+              <AppIcon 
+                name={'delete'} 
                 size={getIconSize('small')} 
                 color={getIconColor(isDarkMode, 'error')} 
               />

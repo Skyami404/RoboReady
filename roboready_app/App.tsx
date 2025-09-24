@@ -4,9 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { SFSymbols, getIconColor } from './utils/sfSymbols';
+import { Platform, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
+import AppIcon from './utils/AppIcon';
+import type { AppIconName } from './utils/AppIcon';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
@@ -83,12 +84,22 @@ function AppContent() {
                 screenOptions={({ route }) => ({
                   headerShown: true,
                   headerTitle: '',
-                                  headerStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  borderBottomWidth: 0,
-                },
+                  headerTransparent: Platform.OS === 'ios',
+                  headerStyle: Platform.OS === 'ios' ? {
+                    // Transparent on iOS to show the blur background
+                    backgroundColor: 'transparent',
+                  } : {
+                    backgroundColor: paperTheme.colors.surface,
+                    ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                    borderBottomWidth: 0,
+                  },
+                  headerBackground: Platform.OS === 'ios' ? () => (
+                    <BlurView
+                      tint={isDarkMode ? 'dark' : 'light'}
+                      intensity={70}
+                      style={StyleSheet.absoluteFill}
+                    />
+                  ) : undefined,
                   headerSafeAreaInsets: { top: 0 },
                   headerTintColor: paperTheme.colors.onSurface,
                   headerTitleStyle: {
@@ -96,36 +107,54 @@ function AppContent() {
                   },
                   headerRight: () => (
                     <IconButton
-                      icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
-                      iconColor={paperTheme.colors.onSurface}
+                      icon={() => (
+                        <AppIcon
+                          name={isDarkMode ? 'sun' : 'moon'}
+                          size={24}
+                          color={paperTheme.colors.onSurface}
+                        />
+                      )}
                       size={24}
                       onPress={toggleDarkMode}
                     />
                   ),
                   tabBarActiveTintColor: paperTheme.colors.primary,
                   tabBarInactiveTintColor: paperTheme.colors.outline,
-                                                  tabBarStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  borderTopWidth: 0,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  height: 80,
-                  paddingBottom: 18,
-                  paddingTop: 8,
-                },
-                                       tabBarIcon: ({ focused, color, size }) => {
-                         let iconName: keyof typeof Ionicons.glyphMap = 'home';
-                         if (route.name === 'Home') {
-                           iconName = SFSymbols.home;
-                         } else if (route.name === 'Tournament Day') {
-                           iconName = SFSymbols.trophy;
-                         } else if (route.name === 'Week Before') {
-                           iconName = SFSymbols.clipboard;
-                         } else if (route.name === 'Tournaments') {
-                           iconName = SFSymbols.calendar;
-                         }
-                         return <Ionicons name={iconName} size={size} color={color} />;
-                       },
+                  tabBarStyle: Platform.OS === 'ios' ? {
+                    backgroundColor: 'transparent',
+                    position: 'absolute',
+                    borderTopWidth: 0,
+                    height: 80,
+                    paddingBottom: 18,
+                    paddingTop: 8,
+                  } : {
+                    backgroundColor: paperTheme.colors.surface,
+                    borderTopWidth: 0,
+                    ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                    height: 80,
+                    paddingBottom: 18,
+                    paddingTop: 8,
+                  },
+                  tabBarBackground: Platform.OS === 'ios' ? () => (
+                    <BlurView
+                      tint={isDarkMode ? 'dark' : 'light'}
+                      intensity={70}
+                      style={StyleSheet.absoluteFill}
+                    />
+                  ) : undefined,
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName: AppIconName = 'home';
+                    if (route.name === 'Home') {
+                      iconName = 'home';
+                    } else if (route.name === 'Tournament Day') {
+                      iconName = 'trophy';
+                    } else if (route.name === 'Week Before') {
+                      iconName = 'clipboard';
+                    } else if (route.name === 'Tournaments') {
+                      iconName = 'calendar';
+                    }
+                    return <AppIcon name={iconName} size={size} color={color} focused={focused} />;
+                  },
               })}
             >
               <Tab.Screen 

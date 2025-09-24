@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import { useTheme } from '../contexts/ThemeContext';
 import { createChecklistStyles } from '../styles/checklistStyles';
 import { createHomeStyles } from '../styles/homeStyles';
@@ -175,8 +175,8 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.trophy} 
+              <AppIcon 
+                name={SFSymbols.trophy as any}
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
                 style={{ marginRight: 12 }}
@@ -213,8 +213,8 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.clipboard} 
+              <AppIcon 
+                name={SFSymbols.clipboard as any}
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
                 style={{ marginRight: 12 }}
@@ -251,8 +251,8 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.calendar} 
+              <AppIcon 
+                name={SFSymbols.calendar as any}
                 size={getIconSize('medium')} 
                 color={getIconColor(isDarkMode, 'primary')} 
                 style={{ marginRight: 12 }}

@@ -1,21 +1,30 @@
-import { Ionicons } from '@expo/vector-icons';
+export type SymbolName =
+  | 'home'
+  | 'trophy'
+  | 'clipboard'
+  | 'calendar'
+  | 'plus'
+  | 'delete'
+  | 'checkmark'
+  | 'warning'
+  | 'info'
+  | 'sun'
+  | 'moon'
+  | 'close';
 
-export const SFSymbols = {
-  // Navigation icons
-  home: 'home' as keyof typeof Ionicons.glyphMap,
-  trophy: 'trophy' as keyof typeof Ionicons.glyphMap,
-  clipboard: 'clipboard' as keyof typeof Ionicons.glyphMap,
-  calendar: 'calendar' as keyof typeof Ionicons.glyphMap,
-  
-  // Action icons
-  plus: 'add' as keyof typeof Ionicons.glyphMap,
-  delete: 'trash' as keyof typeof Ionicons.glyphMap,
-  calendarPlus: 'calendar' as keyof typeof Ionicons.glyphMap,
-  
-  // Status icons
-  checkmark: 'checkmark' as keyof typeof Ionicons.glyphMap,
-  warning: 'warning' as keyof typeof Ionicons.glyphMap,
-  info: 'information-circle' as keyof typeof Ionicons.glyphMap,
+export const SFSymbols: Record<SymbolName, SymbolName> = {
+  home: 'home',
+  trophy: 'trophy',
+  clipboard: 'clipboard',
+  calendar: 'calendar',
+  plus: 'plus',
+  delete: 'delete',
+  checkmark: 'checkmark',
+  warning: 'warning',
+  info: 'info',
+  sun: 'sun',
+  moon: 'moon',
+  close: 'close',
 };
 
 export const getIconColor = (isDarkMode: boolean, type: 'primary' | 'secondary' | 'success' | 'error' = 'primary') => {

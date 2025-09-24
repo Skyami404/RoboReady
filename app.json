@@ -7,7 +7,7 @@
     "userInterfaceStyle": "automatic",
     "statusBar": {
       "style": "auto",
-      "backgroundColor": "#1D4ED8",
+      "backgroundColor": "transparent",
       "translucent": true,
       "hidden": false
     },
@@ -15,11 +15,11 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1D4ED8"
+      "backgroundColor": "#007AFF"
     },
     "adaptiveIcon": {
       "foregroundImage": "./assets/adaptive-icon.png",
-      "backgroundColor": "#1D4ED8"
+      "backgroundColor": "#007AFF"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,9 +27,18 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.roboready.app",
+      "userInterfaceStyle": "automatic",
+      "requireFullScreen": false,
+      "supportedInterfaceOrientations": ["portrait", "portrait-upside-down"],
       "infoPlist": {
         "NSCalendarsUsageDescription": "This app needs access to your calendar to add tournament events and reminders.",
-        "NSRemindersUsageDescription": "This app needs access to reminders to schedule tournament notifications."
+        "NSRemindersUsageDescription": "This app needs access to reminders to schedule tournament notifications.",
+        "UIBackgroundModes": ["background-app-refresh"],
+        "UIUserInterfaceStyle": "Automatic",
+        "UIStatusBarStyle": "UIStatusBarStyleDefault"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {

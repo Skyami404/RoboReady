@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +19,7 @@ const TOURNAMENTS_KEY = 'tournaments';
 const UPCOMING_EVENT_NAME_MAX_LENGTH = 15;
 
 export default function HomeScreen() {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, liquidGlassColors, setLiquidGlassMaterial } = useTheme();
   const styles = createChecklistStyles(isDarkMode);
   const homeStyles = createHomeStyles(isDarkMode);
   const commonStyles = createCommonStyles(isDarkMode);
@@ -143,9 +143,9 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
+    <SafeAreaView style={commonStyles.safeArea} edges={['left', 'right', 'bottom']}>
       <ScrollView 
-        style={homeStyles.container} 
+        style={commonStyles.container} 
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic"
         onScrollBeginDrag={() => navigation.setOptions({ headerTitle: 'RoboReady' })}
@@ -157,135 +157,186 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
       >
         {/* Header */}
-        <View style={[homeStyles.header, commonStyles.titleContainer]}>
-          <Text style={homeStyles.title}>RoboReady</Text>
-          <Text style={homeStyles.subtitle}>
+        <View style={commonStyles.titleContainer}>
+          <Text style={commonStyles.title}>RoboReady</Text>
+          <Text style={[commonStyles.description, { 
+            textAlign: 'center', 
+            fontSize: 18,
+            color: liquidGlassColors.secondaryLabel,
+            marginBottom: 32
+          }]}>
             Your VEX Robotics tournament companion
           </Text>
         </View>
 
         {/* Tournament Day Widget */}
-        <View style={homeStyles.widgetContainer}>
-          <TouchableOpacity
-            style={[
-              homeStyles.widget,
-              isDarkMode ? homeStyles.widgetDark : homeStyles.widgetLight,
-            ]}
-            onPress={() => navigateToScreen('Tournament Day')}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.trophy} 
-                size={getIconSize('medium')} 
-                color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
-              />
-              <Text style={homeStyles.widgetTitle}>Tournament Day</Text>
+        <TouchableOpacity
+          style={[
+            commonStyles.glassCard,
+            commonStyles.glassElevation,
+          ]}
+          onPress={() => navigateToScreen('Tournament Day')}
+          activeOpacity={0.8}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+            <Ionicons 
+              name={SFSymbols.trophyActive} 
+              size={getIconSize('large')} 
+              color={getIconColor(isDarkMode, 'primary')} 
+              style={{ marginRight: 16 }}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={[commonStyles.subtitle, { marginBottom: 4 }]}>Tournament Day</Text>
+              <Text style={[commonStyles.description, { fontSize: 14 }]}>
+                Essential checklist for tournament day
+              </Text>
             </View>
-            <Text style={homeStyles.widgetDescription}>
-              Essential checklist for tournament day. Make sure your robot is ready to compete.
-            </Text>
-            <View style={homeStyles.widgetStats}>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>{getProgressEmoji(tournamentDayProgress)}</Text>
-                <Text style={homeStyles.statLabel}>{getProgressText(tournamentDayProgress)}</Text>
-              </View>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>{tournamentDayProgress}%</Text>
-                <Text style={homeStyles.statLabel}>Complete</Text>
-              </View>
+          </View>
+          
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ fontSize: 32, marginBottom: 4 }}>{getProgressEmoji(tournamentDayProgress)}</Text>
+              <Text style={[commonStyles.description, { fontSize: 13 }]}>{getProgressText(tournamentDayProgress)}</Text>
             </View>
-            <View style={homeStyles.progressBar}>
-              <View style={[homeStyles.progressFill, { width: `${tournamentDayProgress}%` }]} />
+            <View style={{ alignItems: 'center' }}>
+              <Text style={[commonStyles.subtitle, { fontSize: 28, color: getIconColor(isDarkMode, 'primary') }]}>
+                {tournamentDayProgress}%
+              </Text>
+              <Text style={[commonStyles.description, { fontSize: 13 }]}>Complete</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+          
+          {/* iOS 26 style progress bar */}
+          <View style={{
+            height: 6,
+            backgroundColor: liquidGlassColors.tertiarySystemBackground,
+            borderRadius: 3,
+            overflow: 'hidden'
+          }}>
+            <View style={{
+              height: '100%',
+              width: `${tournamentDayProgress}%`,
+              backgroundColor: getIconColor(isDarkMode, 'primary'),
+              borderRadius: 3,
+            }} />
+          </View>
+        </TouchableOpacity>
 
         {/* Week Before Widget */}
-        <View style={homeStyles.widgetContainer}>
-          <TouchableOpacity
-            style={[
-              homeStyles.widget,
-              isDarkMode ? homeStyles.widgetDark : homeStyles.widgetLight,
-            ]}
-            onPress={() => navigateToScreen('Week Before')}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.clipboard} 
-                size={getIconSize('medium')} 
-                color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
-              />
-              <Text style={homeStyles.widgetTitle}>Week Before</Text>
+        <TouchableOpacity
+          style={[
+            commonStyles.glassCard,
+            commonStyles.glassElevation,
+          ]}
+          onPress={() => navigateToScreen('Week Before')}
+          activeOpacity={0.8}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+            <Ionicons 
+              name={SFSymbols.clipboardActive} 
+              size={getIconSize('large')} 
+              color={getIconColor(isDarkMode, 'accent')} 
+              style={{ marginRight: 16 }}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={[commonStyles.subtitle, { marginBottom: 4 }]}>Week Before</Text>
+              <Text style={[commonStyles.description, { fontSize: 14 }]}>
+                Preparation checklist for the week ahead
+              </Text>
             </View>
-            <Text style={homeStyles.widgetDescription}>
-              Preparation checklist for the week leading up to your tournament.
-            </Text>
-            <View style={homeStyles.widgetStats}>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>{getProgressEmoji(weekBeforeProgress)}</Text>
-                <Text style={homeStyles.statLabel}>{getProgressText(weekBeforeProgress)}</Text>
-              </View>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>{weekBeforeProgress}%</Text>
-                <Text style={homeStyles.statLabel}>Complete</Text>
-              </View>
+          </View>
+          
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ fontSize: 32, marginBottom: 4 }}>{getProgressEmoji(weekBeforeProgress)}</Text>
+              <Text style={[commonStyles.description, { fontSize: 13 }]}>{getProgressText(weekBeforeProgress)}</Text>
             </View>
-            <View style={homeStyles.progressBar}>
-              <View style={[homeStyles.progressFill, { width: `${weekBeforeProgress}%` }]} />
+            <View style={{ alignItems: 'center' }}>
+              <Text style={[commonStyles.subtitle, { fontSize: 28, color: getIconColor(isDarkMode, 'accent') }]}>
+                {weekBeforeProgress}%
+              </Text>
+              <Text style={[commonStyles.description, { fontSize: 13 }]}>Complete</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+          
+          {/* iOS 26 style progress bar */}
+          <View style={{
+            height: 6,
+            backgroundColor: liquidGlassColors.tertiarySystemBackground,
+            borderRadius: 3,
+            overflow: 'hidden'
+          }}>
+            <View style={{
+              height: '100%',
+              width: `${weekBeforeProgress}%`,
+              backgroundColor: getIconColor(isDarkMode, 'accent'),
+              borderRadius: 3,
+            }} />
+          </View>
+        </TouchableOpacity>
 
         {/* Tournaments Widget */}
-        <View style={homeStyles.widgetContainer}>
-          <TouchableOpacity
-            style={[
-              homeStyles.widget,
-              isDarkMode ? homeStyles.widgetDark : homeStyles.widgetLight,
-            ]}
-            onPress={() => navigateToScreen('Tournaments')}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Ionicons 
-                name={SFSymbols.calendar} 
-                size={getIconSize('medium')} 
-                color={getIconColor(isDarkMode, 'primary')} 
-                style={{ marginRight: 12 }}
-              />
-              <Text style={homeStyles.widgetTitle}>Tournaments</Text>
+        <TouchableOpacity
+          style={[
+            commonStyles.glassCard,
+            commonStyles.glassElevation,
+          ]}
+          onPress={() => navigateToScreen('Tournaments')}
+          activeOpacity={0.8}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+            <Ionicons 
+              name={SFSymbols.calendarActive} 
+              size={getIconSize('large')} 
+              color={getIconColor(isDarkMode, 'success')} 
+              style={{ marginRight: 16 }}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={[commonStyles.subtitle, { marginBottom: 4 }]}>Tournaments</Text>
+              <Text style={[commonStyles.description, { fontSize: 14 }]}>
+                Manage your tournament schedule
+              </Text>
             </View>
-            <Text style={homeStyles.widgetDescription}>
-              Manage your tournament schedule.
-            </Text>
-            <View style={homeStyles.widgetStats}>
-              <View style={homeStyles.statItem}>
-                <Text style={homeStyles.statNumber}>{tournamentCount}</Text>
-                <Text style={homeStyles.statLabel}>Total events</Text>
+          </View>
+          
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={[commonStyles.subtitle, { fontSize: 28, color: getIconColor(isDarkMode, 'success') }]}>
+                {tournamentCount}
+              </Text>
+              <Text style={[commonStyles.description, { fontSize: 13 }]}>Total events</Text>
+            </View>
+            {upcomingEvent && (
+              <View style={{ alignItems: 'flex-end', flex: 1, marginLeft: 16 }}>
+                <Text style={[commonStyles.subtitle, { fontSize: 16, textAlign: 'right' }]} numberOfLines={1}>
+                  {upcomingEvent.name.length > UPCOMING_EVENT_NAME_MAX_LENGTH ? 
+                    upcomingEvent.name.substring(0, UPCOMING_EVENT_NAME_MAX_LENGTH) + '...' : 
+                    upcomingEvent.name}
+                </Text>
+                <Text style={[commonStyles.description, { fontSize: 13, textAlign: 'right' }]}>
+                  {formatEventDate(upcomingEvent.date)}
+                </Text>
               </View>
-              {upcomingEvent && (
-                <View style={homeStyles.statItem}>
-                  <Text style={[homeStyles.statNumber, homeStyles.statNumberSmall]} numberOfLines={1}>
-                    {upcomingEvent.name.length > UPCOMING_EVENT_NAME_MAX_LENGTH ? upcomingEvent.name.substring(0, UPCOMING_EVENT_NAME_MAX_LENGTH) + '...' : upcomingEvent.name}
-                  </Text>
-                  <Text style={homeStyles.statLabel}>Upcoming: {formatEventDate(upcomingEvent.date)}</Text>
-                </View>
-              )}
-            </View>
-          </TouchableOpacity>
-        </View>
+            )}
+          </View>
+        </TouchableOpacity>
 
         {/* Footer */}
-        <View style={homeStyles.footer}>
-          <Text style={homeStyles.footerText}>
+        <View style={{ 
+          paddingVertical: 32,
+          paddingHorizontal: 20,
+          alignItems: 'center',
+          marginBottom: Platform.OS === 'ios' ? 20 : 0,
+        }}>
+          <Text style={[commonStyles.description, { 
+            fontSize: 14,
+            textAlign: 'center',
+            color: liquidGlassColors.tertiaryLabel
+          }]}>
             Built for VEX Robotics teams
           </Text>
         </View>
-              </ScrollView>
-      </SafeAreaView>
-    );
+      </ScrollView>
+    </SafeAreaView>
+  );
 } 

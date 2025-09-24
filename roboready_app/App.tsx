@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-native-paper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
+import { Platform, BlurView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SFSymbols, getIconColor } from './utils/sfSymbols';
+import { SFSymbols, getIconColor, getLiquidGlassColors } from './utils/sfSymbols';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
@@ -16,51 +16,46 @@ import TournamentsScreen from './screens/TournamentsScreen';
 
 const Tab = createBottomTabNavigator();
 
-const lightTheme = {
-  ...MD3LightTheme,
-  colors: {
-    ...MD3LightTheme.colors,
-    primary: '#1D4ED8',
-    outline: '#374151',
-    onSurface: '#000000',
-    background: '#ffffff',
-    surface: '#ffffff',
-    surfaceVariant: '#f8fafc',
-    onSurfaceVariant: '#374151',
-    card: '#ffffff',
-    text: '#000000',
-    border: '#e5e7eb',
-    notification: '#EF4444',
-  },
-};
-
-const darkTheme = {
-  ...MD3DarkTheme,
-  colors: {
-    ...MD3DarkTheme.colors,
-    primary: '#60A5FA',
-    outline: '#9CA3AF',
-    onSurface: '#ffffff',
-    background: '#121212',
-    surface: '#1E1E1E',
-    surfaceVariant: '#2D2D2D',
-    onSurfaceVariant: '#D1D5DB',
-    card: '#1E1E1E',
-    text: '#ffffff',
-    border: '#374151',
-    notification: '#F87171',
-  },
+const createLiquidGlassTheme = (isDarkMode: boolean) => {
+  const glassColors = getLiquidGlassColors(isDarkMode);
+  const baseTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
+  
+  return {
+    ...baseTheme,
+    colors: {
+      ...baseTheme.colors,
+      primary: '#007AFF',
+      outline: glassColors.separator,
+      onSurface: glassColors.label,
+      background: glassColors.systemBackground,
+      surface: glassColors.regularMaterial,
+      surfaceVariant: glassColors.secondarySystemBackground,
+      onSurfaceVariant: glassColors.secondaryLabel,
+      card: glassColors.tertiarySystemBackground,
+      text: glassColors.label,
+      border: glassColors.separator,
+      notification: '#FF453A',
+      // Additional iOS 26 colors
+      secondaryBackground: glassColors.secondarySystemBackground,
+      tertiaryBackground: glassColors.tertiarySystemBackground,
+      ultraThinMaterial: glassColors.ultraThinMaterial,
+      thinMaterial: glassColors.thinMaterial,
+      regularMaterial: glassColors.regularMaterial,
+      thickMaterial: glassColors.thickMaterial,
+    },
+  };
 };
 
 function AppContent() {
-  const { isDarkMode, toggleDarkMode } = useTheme();
-  const paperTheme = isDarkMode ? darkTheme : lightTheme;
+  const { isDarkMode, toggleDarkMode, liquidGlassColors, setLiquidGlassMaterial } = useTheme();
+  const paperTheme = createLiquidGlassTheme(isDarkMode);
+  
   const navigationTheme = {
     dark: isDarkMode,
     colors: {
       primary: paperTheme.colors.primary,
       background: paperTheme.colors.background,
-      card: paperTheme.colors.surface,
+      card: paperTheme.colors.regularMaterial,
       text: paperTheme.colors.onSurface,
       border: paperTheme.colors.outline,
       notification: paperTheme.colors.notification,
@@ -68,66 +63,102 @@ function AppContent() {
     fonts: {
       regular: { fontFamily: 'System', fontWeight: '400' as const },
       medium: { fontFamily: 'System', fontWeight: '500' as const },
-      bold: { fontFamily: 'System', fontWeight: '700' as const },
-      heavy: { fontFamily: 'System', fontWeight: '900' as const },
+      bold: { fontFamily: 'System', fontWeight: '600' as const },
+      heavy: { fontFamily: 'System', fontWeight: '700' as const },
     },
   };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-              <PaperProvider theme={paperTheme}>
-          <NavigationContainer theme={navigationTheme}>
-            <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} />
-            <Tab.Navigator
-                id={undefined}
-                screenOptions={({ route }) => ({
-                  headerShown: true,
-                  headerTitle: '',
-                                  headerStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  borderBottomWidth: 0,
-                },
-                  headerSafeAreaInsets: { top: 0 },
-                  headerTintColor: paperTheme.colors.onSurface,
-                  headerTitleStyle: {
-                    fontWeight: '600',
-                  },
-                  headerRight: () => (
-                    <IconButton
-                      icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
-                      iconColor={paperTheme.colors.onSurface}
-                      size={24}
-                      onPress={toggleDarkMode}
-                    />
-                  ),
-                  tabBarActiveTintColor: paperTheme.colors.primary,
-                  tabBarInactiveTintColor: paperTheme.colors.outline,
-                                                  tabBarStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  borderTopWidth: 0,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  height: 80,
-                  paddingBottom: 18,
-                  paddingTop: 8,
-                },
-                                       tabBarIcon: ({ focused, color, size }) => {
-                         let iconName: keyof typeof Ionicons.glyphMap = 'home';
-                         if (route.name === 'Home') {
-                           iconName = SFSymbols.home;
-                         } else if (route.name === 'Tournament Day') {
-                           iconName = SFSymbols.trophy;
-                         } else if (route.name === 'Week Before') {
-                           iconName = SFSymbols.clipboard;
-                         } else if (route.name === 'Tournaments') {
-                           iconName = SFSymbols.calendar;
-                         }
-                         return <Ionicons name={iconName} size={size} color={color} />;
-                       },
-              })}
-            >
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer theme={navigationTheme}>
+          <StatusBar 
+            style={isDarkMode ? 'light' : 'dark'} 
+            translucent={true} 
+            backgroundColor="transparent"
+          />
+          <Tab.Navigator
+            id={undefined}
+            screenOptions={({ route }) => ({
+              headerShown: true,
+              headerTitle: '',
+              headerTransparent: true,
+              headerBlurEffect: isDarkMode ? 'dark' : 'light',
+              headerStyle: {
+                backgroundColor: setLiquidGlassMaterial('regular'),
+                ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                ...(Platform.OS === 'ios' ? { 
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: liquidGlassColors.separator,
+                } : {}),
+              },
+              headerSafeAreaInsets: { top: 0 },
+              headerTintColor: liquidGlassColors.label,
+              headerTitleStyle: {
+                fontWeight: '600',
+                fontSize: 17,
+              },
+              headerRight: () => (
+                <IconButton
+                  icon={isDarkMode ? SFSymbols.sun : SFSymbols.moon}
+                  iconColor={getIconColor(isDarkMode, 'primary')}
+                  size={22}
+                  onPress={toggleDarkMode}
+                  style={{ marginRight: 8 }}
+                />
+              ),
+              // iOS 26 Liquid Glass Tab Bar
+              tabBarActiveTintColor: '#007AFF',
+              tabBarInactiveTintColor: liquidGlassColors.secondaryLabel,
+              tabBarStyle: {
+                backgroundColor: setLiquidGlassMaterial('thick'),
+                borderTopWidth: 0.5,
+                borderTopColor: liquidGlassColors.separator,
+                ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                ...(Platform.OS === 'ios' ? { 
+                  shadowOpacity: 0,
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                } : {}),
+                height: Platform.OS === 'ios' ? 88 : 80,
+                paddingBottom: Platform.OS === 'ios' ? 24 : 16,
+                paddingTop: 12,
+                paddingHorizontal: 16,
+              },
+              tabBarLabelStyle: {
+                fontSize: 11,
+                fontWeight: '500',
+                marginTop: 4,
+              },
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName: keyof typeof Ionicons.glyphMap = 'home-outline';
+                
+                if (route.name === 'Home') {
+                  iconName = focused ? SFSymbols.homeActive : SFSymbols.home;
+                } else if (route.name === 'Tournament Day') {
+                  iconName = focused ? SFSymbols.trophyActive : SFSymbols.trophy;
+                } else if (route.name === 'Week Before') {
+                  iconName = focused ? SFSymbols.clipboardActive : SFSymbols.clipboard;
+                } else if (route.name === 'Tournaments') {
+                  iconName = focused ? SFSymbols.calendarActive : SFSymbols.calendar;
+                }
+                
+                return (
+                  <Ionicons 
+                    name={iconName} 
+                    size={focused ? 26 : 24} 
+                    color={color}
+                    style={{ 
+                      marginBottom: Platform.OS === 'ios' ? 2 : 0,
+                    }}
+                  />
+                );
+              },
+            })}
+          >
               <Tab.Screen 
                 name="Home" 
                 component={HomeScreen}

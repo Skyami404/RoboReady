@@ -1,119 +1,276 @@
 import { StyleSheet, Platform } from 'react-native';
+import { getLiquidGlassColors } from '../utils/sfSymbols';
 
-export const createCommonStyles = (isDarkMode: boolean) => StyleSheet.create({
-  // Common layout styles
-  safeArea: { 
-    flex: 1, 
-    backgroundColor: isDarkMode ? '#121212' : '#fff' 
-  },
-  container: { 
-    paddingHorizontal: 20, 
-    backgroundColor: isDarkMode ? '#121212' : '#fff', 
-    flex: 1 
-  },
+export const createCommonStyles = (isDarkMode: boolean) => {
+  const glassColors = getLiquidGlassColors(isDarkMode);
   
-  // Common title styles
-  title: { 
-    fontSize: 28, 
-    fontWeight: 'bold', 
-    marginBottom: 0, 
-    textAlign: 'center',
-    color: isDarkMode ? '#ffffff' : '#000000'
-  },
-  titleContainer: {
-    marginTop: 20,
-    marginBottom: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-    color: isDarkMode ? '#ffffff' : '#000000',
-  },
-  description: {
-    fontSize: 14,
-    marginBottom: 2,
-    color: isDarkMode ? '#9ca3af' : '#6b7280',
-  },
-  
-  // Common shadow styles
-  shadow: {
-    shadowColor: isDarkMode ? '#000000' : '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+  return StyleSheet.create({
+    // Common layout styles with Liquid Glass
+    safeArea: { 
+      flex: 1, 
+      backgroundColor: glassColors.systemBackground
     },
-    ...(Platform.OS === 'ios' ? {
-      shadowOpacity: isDarkMode ? 0.3 : 0.1,
-      shadowRadius: 8,
-    } : {}),
-    ...(Platform.OS === 'android' ? {
-      elevation: 4,
-    } : {}),
-  },
-  
-  // Common button styles
-  button: {
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  
-  // Common input styles
-  input: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: isDarkMode ? '#374151' : '#e5e7eb',
-    backgroundColor: isDarkMode ? '#2d2d2d' : '#f8fafc',
-    color: isDarkMode ? '#d1d5db' : '#374151',
-  },
-  
-  // Common card styles
-  card: {
-    backgroundColor: isDarkMode ? '#1f2937' : '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: isDarkMode ? '#374151' : '#e5e7eb',
-  },
-});
+    container: { 
+      paddingHorizontal: 20, 
+      backgroundColor: glassColors.systemBackground, 
+      flex: 1 
+    },
+    
+    // Liquid Glass background containers
+    glassContainer: {
+      flex: 1,
+      backgroundColor: glassColors.regularMaterial,
+      borderRadius: 20,
+      overflow: 'hidden',
+    },
+    
+    // Common title styles with iOS 26 typography
+    title: { 
+      fontSize: 32, 
+      fontWeight: '700', // iOS 26 bold weight
+      marginBottom: 0, 
+      textAlign: 'center',
+      color: glassColors.label,
+      letterSpacing: -0.5, // iOS 26 tight letter spacing for large text
+    },
+    titleContainer: {
+      marginTop: 24,
+      marginBottom: 24,
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+    subtitle: {
+      fontSize: 20,
+      fontWeight: '600',
+      marginBottom: 8,
+      color: glassColors.label,
+      letterSpacing: -0.2,
+    },
+    description: {
+      fontSize: 16,
+      marginBottom: 4,
+      color: glassColors.secondaryLabel,
+      lineHeight: 22, // iOS 26 improved line height
+    },
+    
+    // iOS 26 Liquid Glass shadow styles
+    glassElevation: {
+      shadowColor: '#000000',
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      ...(Platform.OS === 'ios' ? {
+        shadowOpacity: isDarkMode ? 0.4 : 0.15,
+        shadowRadius: 12,
+      } : {}),
+      ...(Platform.OS === 'android' ? {
+        elevation: 8,
+      } : {}),
+    },
+    
+    lightShadow: {
+      shadowColor: '#000000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      ...(Platform.OS === 'ios' ? {
+        shadowOpacity: isDarkMode ? 0.2 : 0.08,
+        shadowRadius: 6,
+      } : {}),
+      ...(Platform.OS === 'android' ? {
+        elevation: 3,
+      } : {}),
+    },
+    
+    // iOS 26 Liquid Glass button styles
+    glassButton: {
+      borderRadius: 16,
+      paddingVertical: 16,
+      paddingHorizontal: 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: glassColors.regularMaterial,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      minHeight: 50,
+    },
+    
+    primaryButton: {
+      borderRadius: 16,
+      paddingVertical: 16,
+      paddingHorizontal: 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#007AFF',
+      minHeight: 50,
+    },
+    
+    secondaryButton: {
+      borderRadius: 16,
+      paddingVertical: 16,
+      paddingHorizontal: 24,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: glassColors.secondarySystemBackground,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      minHeight: 50,
+    },
+    
+    // iOS 26 Liquid Glass input styles
+    glassInput: {
+      paddingVertical: 16,
+      paddingHorizontal: 20,
+      fontSize: 17, // iOS 26 standard text size
+      borderRadius: 12,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      backgroundColor: glassColors.secondarySystemBackground,
+      color: glassColors.label,
+      minHeight: 50,
+    },
+    
+    // iOS 26 Liquid Glass card styles
+    glassCard: {
+      backgroundColor: glassColors.regularMaterial,
+      borderRadius: 20,
+      padding: 20,
+      marginBottom: 16,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      overflow: 'hidden',
+    },
+    
+    thinGlassCard: {
+      backgroundColor: glassColors.thinMaterial,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      overflow: 'hidden',
+    },
+    
+    ultraThinGlassCard: {
+      backgroundColor: glassColors.ultraThinMaterial,
+      borderRadius: 12,
+      padding: 12,
+      marginBottom: 8,
+      borderWidth: 0.5,
+      borderColor: glassColors.separator,
+      overflow: 'hidden',
+    },
+  });
+};
 
-// Separate color and spacing constants that can be used across components
-export const getCommonColors = (isDarkMode: boolean) => ({
-  primary: isDarkMode ? '#3b82f6' : '#1d4ed8',
-  secondary: isDarkMode ? '#6b7280' : '#374151',
-  background: isDarkMode ? '#121212' : '#ffffff',
-  surface: isDarkMode ? '#1f2937' : '#ffffff',
-  card: isDarkMode ? '#2d2d2d' : '#f8fafc',
-  text: isDarkMode ? '#ffffff' : '#000000',
-  textSecondary: isDarkMode ? '#9ca3af' : '#6b7280',
-  border: isDarkMode ? '#374151' : '#e5e7eb',
-  success: '#10b981',
-  error: isDarkMode ? '#ef4444' : '#f44336',
-  warning: '#f59e0b',
-});
+// iOS 26 Liquid Glass color system
+export const getCommonColors = (isDarkMode: boolean) => {
+  const glassColors = getLiquidGlassColors(isDarkMode);
+  
+  return {
+    // iOS 26 system colors
+    primary: '#007AFF',
+    secondary: '#8E8E93',
+    success: '#32D74B',
+    error: '#FF453A',
+    warning: '#FF9F0A',
+    accent: '#5E5CE6',
+    
+    // Background colors
+    background: glassColors.systemBackground,
+    secondaryBackground: glassColors.secondarySystemBackground,
+    tertiaryBackground: glassColors.tertiarySystemBackground,
+    
+    // Glass materials
+    ultraThinMaterial: glassColors.ultraThinMaterial,
+    thinMaterial: glassColors.thinMaterial,
+    regularMaterial: glassColors.regularMaterial,
+    thickMaterial: glassColors.thickMaterial,
+    
+    // Text colors
+    label: glassColors.label,
+    secondaryLabel: glassColors.secondaryLabel,
+    tertiaryLabel: glassColors.tertiaryLabel,
+    
+    // Separator colors
+    separator: glassColors.separator,
+    opaqueSeparator: glassColors.opaqueSeparator,
+  };
+};
 
+// iOS 26 spacing system
 export const spacing = {
   xs: 4,
   sm: 8,
-  md: 16,
-  lg: 20,
-  xl: 24,
-  xxl: 32,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  xxxl: 32,
+  huge: 40,
 };
 
+// iOS 26 border radius system
 export const borderRadius = {
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  xxl: 20,
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  huge: 32,
+};
+
+// iOS 26 typography system
+export const typography = {
+  largeTitle: {
+    fontSize: 34,
+    fontWeight: '400' as const,
+    letterSpacing: -0.5,
+  },
+  title1: {
+    fontSize: 28,
+    fontWeight: '400' as const,
+    letterSpacing: -0.3,
+  },
+  title2: {
+    fontSize: 22,
+    fontWeight: '400' as const,
+    letterSpacing: -0.2,
+  },
+  title3: {
+    fontSize: 20,
+    fontWeight: '400' as const,
+    letterSpacing: -0.1,
+  },
+  headline: {
+    fontSize: 17,
+    fontWeight: '600' as const,
+  },
+  body: {
+    fontSize: 17,
+    fontWeight: '400' as const,
+  },
+  callout: {
+    fontSize: 16,
+    fontWeight: '400' as const,
+  },
+  subheadline: {
+    fontSize: 15,
+    fontWeight: '400' as const,
+  },
+  footnote: {
+    fontSize: 13,
+    fontWeight: '400' as const,
+  },
+  caption1: {
+    fontSize: 12,
+    fontWeight: '400' as const,
+  },
+  caption2: {
+    fontSize: 11,
+    fontWeight: '400' as const,
+  },
 }; 

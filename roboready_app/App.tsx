@@ -5,8 +5,9 @@ import { PaperProvider, MD3LightTheme, MD3DarkTheme, IconButton } from 'react-na
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { SFSymbols, getIconColor } from './utils/sfSymbols';
+import { SFSymbols } from './utils/sfSymbols';
+import AppIcon from './components/AppIcon';
+import { BlurView } from 'expo-blur';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
@@ -77,7 +78,7 @@ function AppContent() {
     <GestureHandlerRootView style={{ flex: 1 }}>
               <PaperProvider theme={paperTheme}>
           <NavigationContainer theme={navigationTheme}>
-            <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} />
+            <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} backgroundColor="transparent" />
             <Tab.Navigator
                 id={undefined}
                 screenOptions={({ route }) => ({
@@ -96,35 +97,50 @@ function AppContent() {
                   },
                   headerRight: () => (
                     <IconButton
-                      icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
-                      iconColor={paperTheme.colors.onSurface}
+                      icon={() => (
+                        <AppIcon
+                          name={isDarkMode ? SFSymbols.sun : SFSymbols.moon}
+                          size={24}
+                          color={paperTheme.colors.onSurface}
+                          variant={Platform.OS === 'ios' ? 'auto' : 'filled'}
+                        />
+                      )}
                       size={24}
                       onPress={toggleDarkMode}
                     />
                   ),
                   tabBarActiveTintColor: paperTheme.colors.primary,
                   tabBarInactiveTintColor: paperTheme.colors.outline,
-                                                  tabBarStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  borderTopWidth: 0,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  height: 80,
-                  paddingBottom: 18,
-                  paddingTop: 8,
-                },
+                  tabBarStyle: {
+                    backgroundColor: Platform.OS === 'ios' ? 'transparent' : paperTheme.colors.surface,
+                    position: 'absolute',
+                    borderTopWidth: 0,
+                    ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                    ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                    height: 80,
+                    paddingBottom: 18,
+                    paddingTop: 8,
+                  },
+                  tabBarBackground: () => (
+                    Platform.OS === 'ios' ? (
+                      <BlurView tint={isDarkMode ? 'dark' : 'light'} intensity={40} style={{ flex: 1 }} />
+                    ) : null
+                  ),
                                        tabBarIcon: ({ focused, color, size }) => {
-                         let iconName: keyof typeof Ionicons.glyphMap = 'home';
-                         if (route.name === 'Home') {
-                           iconName = SFSymbols.home;
-                         } else if (route.name === 'Tournament Day') {
-                           iconName = SFSymbols.trophy;
-                         } else if (route.name === 'Week Before') {
-                           iconName = SFSymbols.clipboard;
-                         } else if (route.name === 'Tournaments') {
-                           iconName = SFSymbols.calendar;
-                         }
-                         return <Ionicons name={iconName} size={size} color={color} />;
+                       const iconName =
+                         route.name === 'Home' ? SFSymbols.home :
+                         route.name === 'Tournament Day' ? SFSymbols.trophy :
+                         route.name === 'Week Before' ? SFSymbols.clipboard :
+                         SFSymbols.calendar;
+                         return (
+                           <AppIcon
+                             name={iconName as any}
+                             size={size}
+                             color={color}
+                             focused={focused}
+                             variant="auto"
+                           />
+                         );
                        },
               })}
             >

@@ -3,7 +3,7 @@ import { View, ScrollView, Text, Button, TouchableOpacity, TextInput } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Checkbox, useTheme as usePaperTheme, IconButton } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import AppIcon from '../components/AppIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { exportChecklistToPDF } from '../utils/exportChecklist';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -161,8 +161,8 @@ export default function TournamentDayScreen() {
         />
         <IconButton
           icon={() => (
-            <Ionicons 
-              name={SFSymbols.plus} 
+            <AppIcon 
+              name={SFSymbols.plus as any} 
               size={getIconSize('medium')} 
               color={getIconColor(isDarkMode, 'primary')} 
             />
@@ -197,8 +197,8 @@ export default function TournamentDayScreen() {
           </TouchableOpacity>
           <IconButton
             icon={() => (
-              <Ionicons 
-                name={SFSymbols.delete} 
+              <AppIcon 
+                name={SFSymbols.delete as any} 
                 size={getIconSize('small')} 
                 color={getIconColor(isDarkMode, 'error')} 
               />

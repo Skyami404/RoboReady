@@ -5,21 +5,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "statusBar": {
-      "style": "auto",
-      "backgroundColor": "#1D4ED8",
-      "translucent": true,
-      "hidden": false
-    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1D4ED8"
-    },
-    "adaptiveIcon": {
-      "foregroundImage": "./assets/adaptive-icon.png",
-      "backgroundColor": "#1D4ED8"
+      "backgroundColor": "#FFFFFF"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,6 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.roboready.app",
+      "icon": "./assets/icon.png",
       "infoPlist": {
         "NSCalendarsUsageDescription": "This app needs access to your calendar to add tournament events and reminders.",
         "NSRemindersUsageDescription": "This app needs access to reminders to schedule tournament notifications."
@@ -41,7 +32,11 @@
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE",
         "android.permission.WAKE_LOCK"
-      ]
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "plugins": [
       "expo-notifications",

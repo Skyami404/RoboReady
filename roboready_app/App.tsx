@@ -12,6 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import TournamentDayScreen from './screens/TournamentDayScreen';
 import WeekBeforeScreen from './screens/WeekBeforeScreen';
 import TournamentsScreen from './screens/TournamentsScreen';
+import VexAssistantScreen from './screens/VexAssistantScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -75,79 +76,88 @@ function AppContent() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-              <PaperProvider theme={paperTheme}>
-          <NavigationContainer theme={navigationTheme}>
-            <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} />
-            <Tab.Navigator
-                id={undefined}
-                screenOptions={({ route }) => ({
-                  headerShown: true,
-                  headerTitle: '',
-                                  headerStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  borderBottomWidth: 0,
-                },
-                  headerSafeAreaInsets: { top: 0 },
-                  headerTintColor: paperTheme.colors.onSurface,
-                  headerTitleStyle: {
-                    fontWeight: '600',
-                  },
-                  headerRight: () => (
-                    <IconButton
-                      icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
-                      iconColor={paperTheme.colors.onSurface}
-                      size={24}
-                      onPress={toggleDarkMode}
-                    />
-                  ),
-                  tabBarActiveTintColor: paperTheme.colors.primary,
-                  tabBarInactiveTintColor: paperTheme.colors.outline,
-                                                  tabBarStyle: {
-                  backgroundColor: paperTheme.colors.surface,
-                  borderTopWidth: 0,
-                  ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
-                  ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
-                  height: 80,
-                  paddingBottom: 18,
-                  paddingTop: 8,
-                },
-                                       tabBarIcon: ({ focused, color, size }) => {
-                         let iconName: keyof typeof Ionicons.glyphMap = 'home';
-                         if (route.name === 'Home') {
-                           iconName = SFSymbols.home;
-                         } else if (route.name === 'Tournament Day') {
-                           iconName = SFSymbols.trophy;
-                         } else if (route.name === 'Week Before') {
-                           iconName = SFSymbols.clipboard;
-                         } else if (route.name === 'Tournaments') {
-                           iconName = SFSymbols.calendar;
-                         }
-                         return <Ionicons name={iconName} size={size} color={color} />;
-                       },
-              })}
-            >
-              <Tab.Screen 
-                name="Home" 
-                component={HomeScreen}
-              />
-              <Tab.Screen 
-                name="Tournament Day" 
-                component={TournamentDayScreen}
-              />
-              <Tab.Screen 
-                name="Week Before" 
-                component={WeekBeforeScreen}
-              />
-              <Tab.Screen 
-                name="Tournaments" 
-                component={TournamentsScreen}
-              />
-            </Tab.Navigator>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer theme={navigationTheme}>
+          <StatusBar style={isDarkMode ? 'light' : 'dark'} translucent={true} />
+          <Tab.Navigator
+            id={undefined}
+            screenOptions={({ route }) => ({
+              headerShown: true,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: paperTheme.colors.surface,
+                ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                borderBottomWidth: 0,
+              },
+              headerSafeAreaInsets: { top: 0 },
+              headerTintColor: paperTheme.colors.onSurface,
+              headerTitleStyle: {
+                fontWeight: '600',
+              },
+              headerRight: () => (
+                <IconButton
+                  icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
+                  iconColor={paperTheme.colors.onSurface}
+                  size={24}
+                  onPress={toggleDarkMode}
+                />
+              ),
+              tabBarActiveTintColor: paperTheme.colors.primary,
+              tabBarInactiveTintColor: paperTheme.colors.outline,
+              tabBarStyle: {
+                backgroundColor: paperTheme.colors.surface,
+                borderTopWidth: 0,
+                ...(Platform.OS === 'android' ? { elevation: 0 } : {}),
+                ...(Platform.OS === 'ios' ? { shadowOpacity: 0 } : {}),
+                height: 80,
+                paddingBottom: 18,
+                paddingTop: 8,
+              },
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName: keyof typeof Ionicons.glyphMap = 'home';
+                if (route.name === 'Home') {
+                  iconName = SFSymbols.home;
+                } else if (route.name === 'Tournament Day') {
+                  iconName = SFSymbols.trophy;
+                } else if (route.name === 'Week Before') {
+                  iconName = SFSymbols.clipboard;
+                } else if (route.name === 'Tournaments') {
+                  iconName = SFSymbols.calendar;
+                } else if (route.name === 'Assistant') {
+                  iconName = 'chatbubble-ellipses' as keyof typeof Ionicons.glyphMap;
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+          >
+            <Tab.Screen 
+              name="Home" 
+              component={HomeScreen}
+            />
+            <Tab.Screen 
+              name="Tournament Day" 
+              component={TournamentDayScreen}
+            />
+            <Tab.Screen 
+              name="Week Before" 
+              component={WeekBeforeScreen}
+            />
+            <Tab.Screen 
+              name="Tournaments" 
+              component={TournamentsScreen}
+            />
+            <Tab.Screen 
+              name="Assistant" 
+              component={VexAssistantScreen}
+              options={{
+                tabBarLabel: 'AI Assistant',
+              }}
+            />
+          </Tab.Navigator>
         </NavigationContainer>
-        </PaperProvider>
-      </GestureHandlerRootView>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 

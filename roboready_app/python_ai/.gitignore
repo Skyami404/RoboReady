@@ -1,0 +1,64 @@
+# python_ai/.gitignore
+
+# ==========================================
+# AI MODELS - TOO LARGE FOR GIT!
+# ==========================================
+models/*.gguf
+models/*.bin
+models/*.safetensors
+models/*.pt
+models/*.pth
+
+# Vector database (auto-generated)
+models/embeddings/*.index
+models/embeddings/*.json
+
+# Keep the directory structure
+!models/.gitkeep
+!models/embeddings/.gitkeep
+
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+
+# ==========================================
+# Data (if large)
+# ==========================================
+# Uncomment if your data files are too large
+# data/**/*.pdf
+# data/**/*.zip
+
+# ==========================================
+# Logs
+# ==========================================
+*.log
+logs/
+
+# ==========================================
+# IDE
+# ==========================================
+.vscode/
+.idea/
+*.swp
+
+# ==========================================
+# OS
+# ==========================================
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Testing
+# ==========================================
+.pytest_cache/
+.coverage
+htmlcov/

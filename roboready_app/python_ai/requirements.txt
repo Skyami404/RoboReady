@@ -1,0 +1,26 @@
+# python_ai/requirements.txt
+# Python dependencies for VEX Assistant on-device AI
+# Updated to use latest compatible versions
+
+# Core AI libraries
+sentence-transformers>=2.3.0    # Text embeddings (120MB model)
+faiss-cpu>=1.8.0               # Vector similarity search (use latest)
+llama-cpp-python>=0.2.0        # Efficient LLM inference
+numpy>=1.24.0                  # Numerical operations
+
+# Web server for mobile integration
+flask>=3.0.0                   # Lightweight web framework
+flask-cors>=4.0.0              # CORS support for React Native
+
+# Utilities
+requests>=2.31.0               # HTTP requests (for downloading models)
+tqdm>=4.66.0                   # Progress bars
+
+# Optional: For better performance
+# torch>=2.1.0                 # PyTorch (required for some models, large download)
+
+# Installation instructions:
+# pip install -r requirements.txt
+#
+# Or install individually with latest versions:
+# pip install sentence-transformers faiss-cpu llama-cpp-python numpy flask flask-cors requests tqdm

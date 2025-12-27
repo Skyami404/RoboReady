@@ -1,0 +1,389 @@
+# VEX Tournament Guide
+
+## Before the Tournament
+
+### Registration
+- Register on RobotEvents.com
+- Pay entry fees (if applicable)
+- Note registration deadline
+- Confirm team roster
+
+### Preparation Checklist (1 Week Before)
+- [ ] Robot passes inspection (size, safety)
+- [ ] Autonomous routines tested and working
+- [ ] Driver skills practiced
+- [ ] Engineering notebook complete and organized
+- [ ] Spare parts and tools packed
+- [ ] Batteries fully charged
+- [ ] Team roles assigned (driver, scout, pit crew)
+- [ ] Review game manual one more time
+
+### What to Bring
+
+**Robot Equipment:**
+- Robot (obviously!)
+- Controller(s)
+- Charged batteries (bring ALL of them)
+- Battery charger
+- Spare parts (gears, wheels, screws, motors)
+- Tools (screwdrivers, Allen wrenches, pliers)
+- Laptop with programming software
+- V5 Brain USB cable
+- Field elements for testing (if possible)
+
+**Team Materials:**
+- Engineering notebook
+- Team information sheet
+- Pit display/poster (optional but recommended)
+- Team contact information
+- Pens, paper, clipboard
+
+**Personal Items:**
+- Water bottles and snacks
+- Comfortable shoes (you'll be standing a lot)
+- Team t-shirts/uniforms
+- Phone chargers
+- Money for food/merchandise
+
+## Tournament Day Schedule
+
+### Typical Timeline
+
+**8:00 AM - Arrive and Check In**
+- Team check-in at registration
+- Receive match schedule
+- Get tournament information
+
+**8:30 AM - Setup Pit Area**
+- Find assigned pit space
+- Unpack and organize equipment
+- Set up team display
+- Begin pre-tournament preparations
+
+**9:00 AM - Opening Ceremony**
+- Welcome and announcements
+- Game overview
+- Tournament format explanation
+- Safety briefing
+
+**9:30 AM - Robot Inspection**
+- Wait for inspection slot
+- Bring robot, notebook, team info
+- Inspection checklist verification
+- Get approval sticker
+
+**10:00 AM - Practice Matches** (if available)
+- Test robot on official field
+- Verify autonomous works
+- Check control responsiveness
+- Make last-minute adjustments
+
+**10:30 AM - Qualification Matches Begin**
+- 4-6 matches per team
+- Random alliance partners
+- 5-10 minute breaks between matches
+- Skills challenges throughout
+
+**12:30 PM - Lunch Break**
+- Time varies by tournament
+- Usually 30-60 minutes
+- Matches may continue or pause
+
+**2:00 PM - Qualification Matches Continue**
+- Complete all qualification rounds
+- Rankings calculated and posted
+- Prepare for eliminations
+
+**3:30 PM - Alliance Selection**
+- Top teams choose partners
+- Strategy discussions
+- Alliance practice time
+
+**4:00 PM - Elimination Matches**
+- Single-elimination bracket
+- Best-of-3 matches
+- Quarterfinals → Semifinals → Finals
+
+**5:30 PM - Awards Ceremony**
+- Excellence, Design, and other awards
+- Tournament Champions crowned
+- Closing remarks
+
+**6:00 PM - Tournament Ends**
+- Pack up equipment
+- Clean pit area
+- Head home (tired but happy!)
+
+## Tournament Format Explained
+
+### Qualification Matches
+
+**Purpose:** Rank all teams fairly
+
+**How it works:**
+- Each team plays 4-6 matches
+- Random alliance partners each match
+- Alliances change every match
+- Earn Win Points (WP) and Autonomous Win Points (AWP)
+
+**Scoring:**
+- Win: 2 WP
+- Tie: 1 WP  
+- Loss: 0 WP
+- Autonomous Win: 1 AWP
+
+**Rankings:** Determined by:
+1. Win Points (WP) - highest
+2. Autonomous Win Points (AWP) - highest
+3. Strength of Schedule (SOS) - highest
+4. Total Points Scored - highest
+
+### Alliance Selection
+
+**Eligibility:**
+- Top 8-16 teams (varies by tournament size)
+- Based on qualification ranking
+
+**Process:**
+1. #1 seed chooses first partner
+2. #2 seed chooses first partner
+3. Continue through all alliance captains
+4. Second round (if needed)
+5. Selected teams can accept or decline
+
+**Strategy Tips:**
+- Choose complementary robots (strengths/weaknesses)
+- Consider reliability over pure performance
+- Communication is key
+- Have backup choices ready
+
+### Elimination Matches
+
+**Format:**
+- Single elimination bracket
+- Best-of-3 matches
+- Alliances stay together
+- Win 2 matches to advance
+
+**Bracket Structure:**
+- Quarterfinals (8 alliances → 4)
+- Semifinals (4 alliances → 2)
+- Finals (2 alliances → 1 winner)
+
+**Higher seed advantages:**
+- Choose starting position
+- In case of tie in series, higher seed wins
+
+## Skills Challenge
+
+**Two Types:**
+
+**Driver Skills:**
+- 60 seconds manual control
+- Only your robot on field
+- Maximize score
+- Can attempt multiple times
+
+**Programming Skills (Autonomous):**
+- 60 seconds fully autonomous
+- No driver input allowed
+- Pre-programmed routine
+- Can attempt multiple times
+
+**Importance:**
+- Separate competition within tournament
+- Global rankings (vs just tournament)
+- Can qualify for championships through skills
+- Best score counts (not average)
+
+**Strategy:**
+- Practice dedicated skills routines
+- Different from match autonomous
+- Focus on consistency
+- Attempt early and often
+
+## At the Tournament
+
+### Queuing for Matches
+
+**When to Queue:**
+- 2-3 matches before yours
+- Listen for announcements
+- Check match schedule display
+
+**Queue Area:**
+- Bring robot and controller
+- Have drivers ready
+- Check battery level
+- Last-minute checks
+
+**On the Field:**
+- Follow referee instructions
+- Place robot in starting position
+- Verify controller connection
+- Wait for match start
+
+### Pit Etiquette
+
+**Your Pit Space:**
+- Keep organized and tidy
+- Don't spread into neighboring pits
+- Secure loose parts
+- No loud music/disruptions
+
+**Safety:**
+- No running in pit area
+- Announce when testing robot
+- Clear area for robot tests
+- Follow all facility rules
+
+**Interactions:**
+- Welcome visitors to your pit
+- Share knowledge with other teams
+- Don't reveal strategies if uncomfortable
+- Network and make friends!
+
+### Scouting
+
+**Why Scout:**
+- Identify strong alliance partners
+- Understand opponent strategies
+- Plan match strategies
+- Make informed alliance selections
+
+**What to Track:**
+- Robot capabilities (speed, scoring methods)
+- Autonomous performance
+- Reliability/consistency
+- Driver skill level
+- Team communication
+
+**Scouting Tools:**
+- Paper forms or digital apps
+- Note key strengths/weaknesses
+- Record match outcomes
+- Share data with team
+
+## Interview with Judges
+
+**What to Expect:**
+- 5-10 minute conversation
+- Questions about robot and notebook
+- Opportunity to showcase your work
+- Informal and friendly
+
+**Prepare to Discuss:**
+- Design process and decisions
+- Challenges faced and solutions
+- Team roles and collaboration
+- What makes your robot unique
+- Engineering notebook highlights
+
+**Tips:**
+- Be enthusiastic and confident
+- Speak clearly and honestly
+- Let all team members participate
+- Bring your notebook
+- Practice beforehand
+
+## Common Issues and Solutions
+
+**Robot Won't Connect:**
+- Check battery level
+- Verify V5 Brain is on
+- Re-pair controller
+- Restart both devices
+- Check VEXnet keys
+
+**Last-Minute Breakage:**
+- Use spare parts
+- Simplify design if needed
+- Ask other teams for help
+- Have backup plan
+
+**Autonomous Not Working:**
+- Test on practice field
+- Check battery level (affects speed)
+- Verify sensor calibration
+- Have simplified backup routine
+
+**Forgot Something:**
+- Ask other teams (they usually help!)
+- Tournament organizers may have supplies
+- Improvise if possible
+- Learn for next time
+
+## After Your Match
+
+**Win or Lose:**
+- Shake hands with opponents
+- Thank alliance partner
+- Review match performance
+- Note what to improve
+
+**Between Matches:**
+- Charge batteries
+- Make necessary repairs
+- Review upcoming match schedule
+- Rest and hydrate
+
+**Document:**
+- Take photos/videos
+- Update engineering notebook
+- Record match scores
+- Note lessons learned
+
+## Tournament Survival Tips
+
+1. **Arrive Early:** Avoid stress, have time to prepare
+2. **Stay Hydrated:** Bring water, drink regularly
+3. **Eat Well:** Tournament days are long
+4. **Take Breaks:** Rest when possible
+5. **Stay Positive:** Support teammates through ups and downs
+6. **Ask Questions:** Officials and volunteers are there to help
+7. **Make Friends:** Network with other teams
+8. **Have Fun:** Remember why you joined robotics!
+
+## After the Tournament
+
+**Debrief:**
+- Discuss what went well
+- Identify areas for improvement
+- Celebrate successes
+- Plan for next tournament
+
+**Maintenance:**
+- Inspect robot for damage
+- Recharge all batteries
+- Organize and inventory parts
+- Store safely until next event
+
+**Follow Up:**
+- Thank mentors and volunteers
+- Post on social media (if allowed)
+- Update engineering notebook
+- Start preparing for next competition
+
+## Championship Qualification
+
+**Paths to Championships:**
+- Excellence Award at qualifying event
+- Tournament Champions at qualifying event
+- High skills ranking globally
+- Wildcard invitations (limited)
+
+**Regional/State/Nationals:**
+- Levels vary by location
+- Build on previous successes
+- Increasing competition level
+- Ultimate goal: VEX Worlds
+
+## Resources
+
+- **RobotEvents.com:** Tournament schedules, results, rankings
+- **VEX Forum:** Strategy discussions, team networking
+- **Game Manual:** Official rules (read thoroughly!)
+- **Tournament Organizers:** Contact with questions
+- **Other Teams:** Don't be shy, ask for help!
+
+Remember: Every tournament is a learning experience. Focus on improvement, teamwork, and having fun. Win or lose, you're gaining valuable skills that will serve you well beyond robotics!

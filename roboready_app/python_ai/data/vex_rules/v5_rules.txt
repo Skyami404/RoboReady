@@ -1,0 +1,345 @@
+# VEX V5 Competition Rules Summary
+
+## V5 System Overview
+
+VEX V5 is designed for middle school, high school, and college students. It features a metal building system and more advanced electronics compared to VEX IQ.
+
+## Robot Construction Rules
+
+**Size Constraints:**
+- Maximum starting size: 18" x 18" x 18" (cube)
+- Can expand during match
+- Must fit in size constraint at match start
+- Measured with all mechanisms in starting position
+
+**Legal Parts:**
+- Only official VEX V5 and VEX EDR parts
+- Some non-VEX parts allowed (raw materials, fasteners)
+- Custom 3D printed parts allowed (with restrictions)
+- Non-VEX electronics prohibited except approved sensors
+
+**Motors:**
+- Maximum 8 motors (11W or 5.5W V5 Smart Motors)
+- Maximum 4 motors per motor group without splitters
+- Must connect to V5 Brain smart ports
+
+**Pneumatics:**
+- Allowed with restrictions
+- Maximum 100 PSI
+- Proper safety equipment required
+- Reservoirs must be VEX legal
+
+**Brain, Controller, Battery:**
+- One V5 Brain or V5 Brain Pro
+- One V5 Controller
+- One V5 Battery (secured properly)
+- Wireless communication via VEXnet 3.0
+
+## Match Format
+
+**Match Length:**
+- Total: 2 minutes (120 seconds)
+- Autonomous: 15 seconds (no driver input)
+- Driver Control: 1 minute 45 seconds (manual control)
+
+**Match Types:**
+- Teamwork Challenge: 2v2 alliances
+- Skills Challenge: Solo robot (driver skills + programming skills)
+
+**Field:**
+- 12 feet x 12 feet
+- Foam tiles with perimeter
+- Game-specific elements
+
+## Scoring and Ranking
+
+**Qualification Matches:**
+- **Win Points (WP):** 2 for win, 1 for tie, 0 for loss
+- **Autonomous Win Points (AWP):** 1 if alliance wins autonomous period
+- **Strength of Schedule (SOS):** Sum of opponent and alliance partner WP
+- **Total Points (SP):** Combined match score
+
+**Ranking Order:**
+1. Win Points (WP) - highest
+2. Autonomous Win Points (AWP) - highest
+3. Strength of Schedule (SOS) - highest
+4. Total Points (SP) - highest
+5. Autonomous Points - highest
+
+## Alliance Selection
+
+**Process:**
+- Top 8-16 teams become alliance captains (varies by tournament)
+- Captains ranked by qualification performance
+- Selection serpentine order: 1,2,3...,n,n,...,3,2,1
+- Teams can accept or decline invitations
+- If declined, captain selects again
+- Continues until all alliances complete
+
+**Strategy:**
+- Choose complementary robots
+- Consider reliability and consistency
+- Communication and teamwork matter
+- Have backup choices prepared
+
+## Elimination Matches
+
+**Format:**
+- Best-of-3 series
+- Alliance must win 2 matches to advance
+- Single elimination bracket
+- Quarterfinals → Semifinals → Finals
+
+**Advantages:**
+- Higher seed chooses starting position
+- In case of 1-1 tie in series, higher seed wins
+
+## Skills Challenge
+
+**Two Components:**
+
+**1. Driver Skills (60 seconds):**
+- Manual control only
+- Robot alone on field
+- Maximize score
+- Can attempt multiple times per tournament
+
+**2. Programming Skills (60 seconds):**
+- Fully autonomous
+- No driver input
+- Pre-programmed routine
+- Can attempt multiple times per tournament
+
+**Combined Ranking:**
+- Highest driver skills + highest programming skills
+- Separate global rankings
+- Can qualify for championships via skills
+
+## Safety and Construction
+
+**Safety Requirements:**
+- No sharp edges or points
+- No exposed electrical connections
+- All screws properly installed
+- Battery secured with legal mounting
+- Emergency stop accessible
+
+**Prohibited Items:**
+- Hydraulics
+- Combustion engines
+- Hazardous materials
+- Anything that damages field
+- Entanglement devices (intentional)
+
+**Inspection Checklist:**
+- Size within limits
+- Legal parts only
+- Safe construction
+- Team identification visible
+- Passes all game-specific rules
+
+## Student-Centered Policy
+
+**Students Must:**
+- Design and build majority of robot
+- Write all code
+- Drive during matches
+- Explain design to judges
+
+**Adults Can:**
+- Teach skills and concepts
+- Advise on strategy
+- Ensure safety
+- Provide resources
+
+**Not Allowed:**
+- Adults building robot for students
+- Pre-built robots from kits (beyond basics)
+- Purchased code or designs
+- Adults doing student work
+
+## Conduct and Sportsmanship
+
+**Expected Behavior:**
+- Respect opponents, refs, volunteers
+- Gracious professionalism
+- Help other teams when possible
+- Accept decisions gracefully
+- Learn from every experience
+
+**Violations:**
+- Unsportsmanlike conduct can result in:
+  - Warnings
+  - Match disqualifications
+  - Tournament disqualifications
+  - Ineligibility for awards
+
+## Tournament Structure
+
+**Day of Competition:**
+1. Check-in and pit setup
+2. Robot inspection
+3. Practice matches (if available)
+4. Qualification matches (typically 5-8 per team)
+5. Skills challenge attempts (throughout day)
+6. Alliance selection
+7. Elimination rounds
+8. Awards ceremony
+
+**Typical Duration:** 6-10 hours
+
+## Awards
+
+**Major Awards:**
+- **Excellence Award:** Best overall (robot + notebook + interview)
+- **Tournament Champions:** Winners of eliminations
+- **Design Award:** Outstanding engineering design and process
+- **Judges Award:** Exemplifies VEX program values
+- **Innovate Award:** Creative and unique design solution
+- **Build Award:** High-quality construction
+- **Think Award:** Best engineering notebook
+- **Amaze Award:** Best driver skills performance
+- **Skills Challenge Champion:** Highest combined skills score
+
+**Award Advancement:**
+- Excellence: Typically advances to next level
+- Champions: Often advances to next level
+- Varies by region and event level
+
+## Engineering Notebook
+
+**Purpose:**
+- Document design process
+- Show problem-solving
+- Demonstrate learning
+- Required for design-related awards
+
+**Contents:**
+- Team information
+- Meeting notes and dates
+- Design iterations
+- Testing results
+- Code documentation
+- Photos and sketches
+- Reflections and improvements
+- Competition records
+
+**Best Practices:**
+- Regular, dated entries
+- Written by students
+- Authentic (not templates)
+- Detailed and specific
+- Shows evolution of design
+
+## Game-Specific Rules
+
+**Each Season Features:**
+- Unique game with specific objectives
+- Specific scoring methods
+- Field elements and layout
+- Starting configurations
+- Restricted actions
+- Autonomous bonuses
+
+**Current Season:**
+- Always refer to official game manual
+- Updated Q&A rulings on RobotEvents
+- Addendums and clarifications released
+
+## Common Rules Across Games
+
+**General Restrictions:**
+- No intentional field damage
+- No detached parts
+- No entanglement
+- No interference with opponents' controls
+- Stay in designated zones
+
+**Scoring:**
+- Points counted at end of match
+- Referees have final say
+- Video review available (for finals typically)
+- Gracious professionalism in disputes
+
+## Violations and Penalties
+
+**Minor Violations:**
+- Point deductions
+- Warnings
+- Specific penalties per game manual
+
+**Major Violations:**
+- Match disqualification
+- Safety issues
+- Egregious rule breaking
+- Dangerous behavior
+
+**Repeated Violations:**
+- Can result in tournament disqualification
+- Affect award eligibility
+- Noted in team record
+
+## Programming Requirements
+
+**Autonomous:**
+- Must be fully automatic
+- No driver input allowed
+- Pre-loaded before match
+- Cannot be modified during match
+
+**Driver Control:**
+- Manual control via controller
+- Can have automated functions
+- Driver controls overall robot behavior
+
+**Code Management:**
+- Must be student work
+- Document in engineering notebook
+- Available for review if requested
+
+## V5 vs IQ Differences
+
+| Aspect | V5 | IQ |
+|--------|----|----|
+| Age Group | 11-18+ years | 8-14 years |
+| Field | 12'×12' | 6'×8' |
+| Building | Metal | Plastic |
+| Motors | Max 8 | Max 4 |
+| Match | 2 minutes | 60 seconds |
+| Complexity | Advanced | Beginner |
+
+## Resources
+
+**Official:**
+- Game Manual (current season)
+- RobotEvents.com
+- VEX Robotics Competition App
+- VEX Forum (vexforum.com)
+- VEX Knowledge Base (kb.vex.com)
+
+**Communication:**
+- Official Q&A on RobotEvents
+- Event Partner communications
+- Regional coordinator contacts
+
+## Tips for V5 Success
+
+1. **Master the Manual:** Read thoroughly, multiple times
+2. **Plan Autonomous:** Crucial for rankings
+3. **Reliable > Complex:** Consistency wins
+4. **Practice Driving:** Skilled drivers make big difference
+5. **Document Everything:** Notebook matters for awards
+6. **Test Early, Test Often:** Catch problems before tournament
+7. **Network:** Learn from other teams
+8. **Have Fun:** Remember why you love robotics!
+
+## Key Differences from IQ
+
+- More complex building (metal vs plastic)
+- Longer matches (2 min vs 1 min)
+- More motors and power
+- Higher level of competition
+- More sophisticated strategies
+- College division available (VEX U)
+
+Remember: Rules are designed for fair, safe competition. When in doubt, ask a referee or check the official Q&A. Focus on learning, improving, and having a great time!

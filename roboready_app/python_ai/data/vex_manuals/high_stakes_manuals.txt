@@ -1,0 +1,67 @@
+# VEX High Stakes (2024-2025 Season) - Game Manual Summary
+
+## Game Overview
+High Stakes is the 2024-2025 VEX V5 Robotics Competition game. Teams design, build, and program robots to score rings on mobile goals, wall stakes, and the alliance stake.
+
+## Field Layout
+- 12' x 12' field with foam tiles
+- 4 mobile goals (2 red, 2 blue)
+- 4 wall stakes (2 per alliance)
+- 1 alliance stake (center)
+- 44 rings total (22 red, 22 blue)
+
+## Match Format
+- Total match time: 2 minutes
+- Autonomous period: 15 seconds
+- Driver control period: 1 minute 45 seconds
+- Teams compete in 2v2 alliance matches
+
+## Scoring
+### Ring Scoring:
+- Rings on mobile goals:
+  - Lower stake: 3 points
+  - Middle stake: 4 points
+  - Upper stake: 5 points
+
+- Rings on wall stakes:
+  - Lower stake: 3 points
+  - Middle stake: 4 points
+  - Upper stake: 5 points
+
+- Rings on alliance stake: 6 points each
+
+### Autonomous Bonus:
+- Each preloaded ring scored during autonomous: +3 points bonus
+- Autonomous Win Point (AWP): 1 point if win autonomous
+
+### Elevation Bonus:
+- Robot touching ladder at end of match
+- Level 1: 5 points
+- Level 2: 10 points
+- Level 3: 20 points
+
+## Robot Constraints
+- Maximum starting size: 18" x 18" x 18"
+- Can expand during match
+- Must pass inspection before competing
+- One robot per team
+
+## Strategy Tips
+- Focus on consistent ring placement
+- Alliance stake is high value but limited space
+- Autonomous bonus is crucial for rankings
+- Practice mobile goal control
+- Consider elevation for tie-breakers
+
+## Tournament Structure
+- Qualification matches (4-6 per team)
+- Ranking by Win Points, AWP, Strength of Schedule
+- Alliance selection (top teams choose partners)
+- Elimination rounds (quarterfinals, semifinals, finals)
+- Best-of-3 format for eliminations
+
+## Skills Challenge
+- Driver Skills: 1 minute manual control
+- Programming Skills: 1 minute autonomous
+- Combined score for global rankings
+- Can attempt multiple times per tournament

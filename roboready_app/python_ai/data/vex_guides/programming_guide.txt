@@ -1,0 +1,301 @@
+# VEX Robotics Programming Guide
+
+## Programming Platforms
+
+### VEXcode V5 (Recommended for Beginners)
+- Blocks or Text-based (Python/C++)
+- User-friendly interface
+- Built-in examples and templates
+- Automatic device configuration
+- Download: codevex.com
+
+### PROS (Advanced)
+- Pure C/C++ environment
+- Full control over robot
+- Command-line interface
+- Template-based project structure
+- Download: pros.cs.purdue.edu
+
+### RobotC (Legacy)
+- C-based language
+- Older platform (being phased out)
+- Still used by some teams
+- Limited support for newer features
+
+## VEXcode Basics
+
+### Program Structure
+```
+1. Setup/Initialization
+   - Configure motors, sensors
+   - Set initial values
+   - Pre-autonomous setup
+
+2. Autonomous Period (15 seconds)
+   - Pre-programmed routines
+   - No driver input
+   - Sensor-based decisions
+
+3. Driver Control Period (1:45)
+   - Manual control
+   - Button-triggered functions
+   - Real-time feedback
+```
+
+### Motor Control
+
+**Basic Movement**
+- Forward/Backward: Set motor speed (0-100%)
+- Turning: Different speeds on left/right sides
+- Stopping: Set speed to 0 or use brake modes
+
+**Brake Modes**
+- Coast: Motor spins freely
+- Brake: Motor resists motion
+- Hold: Motor actively maintains position
+
+**Velocity vs Voltage Control**
+- Velocity: Consistent speed regardless of load
+- Voltage: Direct power, faster response
+
+### Sensor Integration
+
+**Inertial Sensor (Gyro)**
+- Measures rotation and heading
+- Essential for autonomous turns
+- Must calibrate before use (2 seconds)
+- Usage: Turn to specific angle, drive straight
+
+**Vision Sensor**
+- Detects colored objects
+- Returns position and size
+- Configure color signatures in VEXcode
+- Usage: Find game objects, align to targets
+
+**Distance Sensor**
+- Ultrasonic range finder
+- Measures distance to objects (20-2000mm)
+- Usage: Wall following, object detection
+
+**Optical Sensor**
+- Detects color and proximity
+- Can sense objects close to sensor
+- Usage: Line following, object detection
+
+**Rotation Sensor**
+- Measures position/rotation precisely
+- High resolution (3600 ticks per rotation)
+- Usage: Elevator positioning, distance tracking
+
+**Limit Switch**
+- Simple on/off button
+- Detects physical contact
+- Usage: End stops, collision detection
+
+### Autonomous Programming
+
+**Basic Autonomous Template**
+```
+1. Drive forward to game element
+2. Intake/grab element
+3. Turn toward goal
+4. Drive to goal
+5. Score element
+6. Return or position for driver control
+```
+
+**Using the Inertial Sensor**
+```
+Key concepts:
+- Calibrate before match starts
+- Get current heading (0-360 degrees)
+- Turn to absolute heading
+- Track turns accurately
+
+Example strategy:
+- Start facing 0 degrees
+- Turn to 90 degrees (turn right)
+- Drive straight using heading feedback
+- Turn to 180 degrees (facing backward)
+```
+
+**PID Control (Advanced)**
+- Proportional: Error × gain
+- Integral: Accumulated error over time
+- Derivative: Rate of error change
+- Usage: Smooth, accurate movements
+
+### Driver Control Programming
+
+**Tank Drive**
+```
+Left joystick controls left side
+Right joystick controls right side
+Simple and intuitive
+```
+
+**Arcade Drive**
+```
+Forward/backward on one joystick
+Turning on other joystick
+More car-like control
+```
+
+**Button Mappings**
+- Map controller buttons to functions
+- Toggle vs hold behaviors
+- Multiple button combinations
+- Deadband to prevent drift
+
+### Best Practices
+
+**Code Organization**
+- Use functions for repeated actions
+- Comment your code clearly
+- Consistent naming conventions
+- Separate autonomous routines
+
+**Testing**
+- Test each subsystem independently
+- Gradually combine systems
+- Test in realistic match conditions
+- Time your autonomous routines
+
+**Debugging**
+- Use controller screen for feedback
+- Print sensor values
+- Test one change at a time
+- Keep backup of working code
+
+**Autonomous Strategy**
+- Start simple, add complexity
+- Have backup routines if primary fails
+- Consider starting position
+- Maximize autonomous bonus points
+
+### Common Programming Patterns
+
+**State Machine**
+```
+Track robot's current state
+Transition between states based on conditions
+Example states: Idle, Intaking, Lifting, Scoring
+```
+
+**Timers**
+```
+Track time elapsed
+Timeout conditions
+Coordinate timed sequences
+```
+
+**Sensor Fusion**
+```
+Combine multiple sensor inputs
+More reliable than single sensor
+Example: Gyro + encoders for position
+```
+
+### Competition Programming Tips
+
+**Pre-Autonomous**
+- Allow sensor calibration
+- Display team number
+- Show autonomous selection
+- Verify all systems ready
+
+**Match Strategy**
+- Priority 1: Consistent autonomous
+- Priority 2: Reliable driver control
+- Priority 3: Advanced features
+- Have a backup plan
+
+**Skills Programming**
+- Fully autonomous (1 minute)
+- Maximize score in controlled environment
+- Can be completely different from match code
+- Practice and refine extensively
+
+### Troubleshooting
+
+**Robot Not Responding**
+- Check battery level
+- Verify motor ports configured correctly
+- Check for code errors (compile/download)
+- Test controller connection
+
+**Inconsistent Autonomous**
+- Battery level affects speed
+- Field conditions vary
+- Sensor calibration crucial
+- Add error checking/recovery
+
+**Slow Performance**
+- Simplify complex calculations
+- Reduce sensor polling frequency
+- Optimize loops
+- Check for infinite loops
+
+### Resources for Learning
+
+**VEX Resources**
+- VEX Knowledge Base: kb.vex.com
+- VEXcode Examples: Built into software
+- VEX Forum: vexforum.com/c/vex-robotics-competition/programming
+
+**Tutorials**
+- YouTube: "VEXcode tutorials"
+- Carnegie Mellon Robotics Academy
+- Local team mentors
+- Online programming courses
+
+**Advanced Topics**
+- PID control
+- Odometry (position tracking)
+- Path planning algorithms
+- Computer vision
+- Machine learning (experimental)
+
+## Sample Code Structure (Python)
+
+```python
+# Setup
+brain = Brain()
+controller = Controller()
+left_motor = Motor(Ports.PORT1)
+right_motor = Motor(Ports.PORT2)
+inertial = Inertial(Ports.PORT10)
+
+# Pre-autonomous
+def pre_autonomous():
+    inertial.calibrate()
+    while inertial.is_calibrating():
+        wait(50, MSEC)
+
+# Autonomous
+def autonomous():
+    # Drive forward 24 inches
+    left_motor.spin_for(FORWARD, 720, DEGREES, wait=False)
+    right_motor.spin_for(FORWARD, 720, DEGREES)
+    
+    # Turn 90 degrees right
+    while inertial.heading() < 85:
+        left_motor.spin(FORWARD)
+        right_motor.spin(REVERSE)
+    left_motor.stop()
+    right_motor.stop()
+
+# Driver control
+def driver_control():
+    while True:
+        # Tank drive
+        left_motor.spin(FORWARD, controller.axis3.position(), PERCENT)
+        right_motor.spin(FORWARD, controller.axis2.position(), PERCENT)
+        wait(20, MSEC)
+
+# Competition setup
+competition = Competition(driver_control, autonomous)
+pre_autonomous()
+```
+
+Remember: Start simple, test often, iterate constantly!

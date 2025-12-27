@@ -1,0 +1,185 @@
+# VEX Robotics Building Guide
+
+## Robot Design Fundamentals
+
+### Drivetrain Options
+
+**Tank Drive**
+- Most common and reliable
+- Two sides of wheels controlled independently
+- Easy to program and maintain
+- Good pushing power
+- Best for: Beginners, pushing games
+
+**X-Drive (Holonomic)**
+- Four wheels at 45-degree angles
+- Can strafe (move sideways)
+- Very maneuverable
+- More complex programming
+- Best for: Experienced teams, positioning games
+
+**H-Drive**
+- Tank drive plus center strafe wheel
+- Good balance of power and maneuverability
+- Can push and strafe
+- Best for: Medium complexity games
+
+**Mecanum Drive**
+- Special rollers on wheels
+- Full omni-directional movement
+- Requires precise alignment
+- Less pushing power
+- Best for: Precision positioning
+
+### Key Design Principles
+
+**1. Center of Gravity**
+- Keep weight low and centered
+- Prevents tipping
+- Improves stability
+- Better control
+
+**2. Gear Ratios**
+- Speed vs Torque tradeoff
+- High speed: Good for racing, moving quickly
+- High torque: Good for pushing, lifting
+- Common ratios: 1:1 (balanced), 3:5 (speed), 5:3 (torque)
+
+**3. Structural Integrity**
+- Use proper bracing (triangles are strongest)
+- Avoid long unsupported spans
+- Secure all connections
+- Check for wobble
+
+**4. Weight Distribution**
+- Balance front and back
+- Don't make robot too heavy
+- Use lightweight materials where possible
+- Strategic weight placement for traction
+
+**5. Modularity**
+- Build in sections (drivetrain, intake, lift, etc.)
+- Easy to modify and repair
+- Test subsystems independently
+- Allows parallel development
+
+### Common Mechanisms
+
+**Intakes**
+- Roller intake: Spinning wheels pull objects in
+- Claw: Grabs and holds objects
+- Conveyor: Belt system moves objects
+- Considerations: Speed, consistency, object compatibility
+
+**Lifts**
+- Four-bar linkage: Smooth arc motion
+- Linear lift: Straight up and down
+- Scissor lift: Compact, extends vertically
+- Considerations: Height, speed, stability
+
+**Launchers**
+- Flywheel: Spinning wheel launches objects
+- Catapult: Stored energy release
+- Puncher: Linear impact
+- Considerations: Consistency, power, reload time
+
+### Building Best Practices
+
+**Spacing**
+- Use proper spacers between structural pieces
+- Prevents friction and binding
+- Allows smooth rotation
+- Standard spacing: 0.5", 1", 2"
+
+**Fasteners**
+- Use lock nuts on critical joints
+- Don't overtighten (strips threads)
+- Use nylock nuts to prevent loosening
+- Threadlocker for vibration-prone areas
+
+**Motor Placement**
+- Mount securely with proper support
+- Consider heat dissipation
+- Easy access for troubleshooting
+- Protect from impacts
+
+**Wire Management**
+- Keep wires organized and secured
+- Use zip ties or wire clips
+- Avoid pinch points and moving parts
+- Leave slack for movement
+
+### Common Mistakes to Avoid
+
+1. **Overbuilding**: Too complex, hard to maintain
+2. **Underbracing**: Weak structure, breaks easily
+3. **Poor wire management**: Wires get caught, disconnected
+4. **Ignoring friction**: Binding, inconsistent performance
+5. **Not testing early**: Problems discovered too late
+6. **Copying without understanding**: Can't troubleshoot
+7. **Neglecting driver practice**: Great robot, poor performance
+
+### Robot Inspection Checklist
+
+**Size Constraints**
+- Starting size: 18" x 18" x 18" (check game manual)
+- Measure with robot in starting configuration
+- Account for tolerances
+
+**Safety**
+- No sharp edges or points
+- All screws properly installed
+- No exposed wiring
+- Battery secure
+
+**Rules Compliance**
+- Legal parts only
+- Proper motor/sensor usage
+- Team identification visible
+- Follows game-specific rules
+
+### Tips for Success
+
+**Iteration**
+- Build, test, improve, repeat
+- Don't expect perfection on first try
+- Document what works and what doesn't
+- Learn from failures
+
+**Simplicity**
+- Simple designs are more reliable
+- Easier to troubleshoot and repair
+- Focus on doing a few things well
+- Add complexity only if needed
+
+**Practice**
+- Build multiple prototypes
+- Test in realistic conditions
+- Practice with drivers
+- Time your operations
+
+**Documentation**
+- Take photos during build process
+- Document design decisions
+- Keep track of gear ratios and specs
+- Update engineering notebook
+
+### Resources
+
+**CAD (Computer-Aided Design)**
+- Autodesk Inventor (free for students)
+- Fusion 360
+- SolidWorks
+- Plan before building, visualize designs
+
+**VEX Parts**
+- Structure: C-channels, angles, plates
+- Motion: Gears, sprockets, chains, wheels
+- Hardware: Screws, nuts, spacers, standoffs
+- Electronics: Motors, sensors, brain, battery
+
+**Community Resources**
+- VEX Forum: vexforum.com
+- YouTube tutorials
+- Team build reveals
+- Local mentors and coaches

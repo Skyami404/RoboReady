@@ -1,0 +1,340 @@
+# VEX V5 Sensors Guide
+
+## Overview of VEX V5 Sensors
+
+VEX V5 sensors provide robots with environmental awareness and feedback. Proper sensor usage is crucial for accurate autonomous routines and advanced driver control features.
+
+## Available Sensors
+
+### 1. Inertial Sensor (IMU - Inertial Measurement Unit)
+
+**What it does:**
+- Measures robot rotation (heading/yaw)
+- Detects acceleration in 3 axes
+- Tracks pitch and roll (tilt)
+
+**Key Features:**
+- 3-axis gyroscope + 3-axis accelerometer
+- High precision: 0.01 degree resolution
+- Must calibrate before use (2-3 seconds)
+- Keep robot still during calibration
+
+**Common Uses:**
+- Autonomous turns (turn to specific angle)
+- Driving straight (maintain heading)
+- Detecting collisions (sudden acceleration)
+- Balancing mechanisms
+
+**Programming Tips:**
+```
+- Always calibrate: inertial.calibrate()
+- Wait for calibration: while(inertial.is_calibrating())
+- Get heading: inertial.heading() (0-360 degrees)
+- Reset heading: inertial.set_heading(0)
+- Get rotation: inertial.rotation() (can exceed 360)
+```
+
+**Mounting:**
+- Mount securely near center of robot
+- Avoid vibration (use foam/rubber dampening)
+- Keep level for accurate pitch/roll
+- Protect from impacts
+
+---
+
+### 2. Vision Sensor
+
+**What it does:**
+- Detects colored objects
+- Returns object position, size, and distance
+- Can track multiple objects simultaneously
+
+**Key Features:**
+- 640x400 pixel camera
+- 7 configurable color signatures
+- Built-in LED for low light
+- Up to 60 FPS
+
+**Common Uses:**
+- Finding game objects (colored rings, balls, cubes)
+- Aligning to goals or targets
+- Detecting alliance color
+- Autonomous object tracking
+
+**Setup Process:**
+1. Mount sensor facing target area
+2. Configure color signatures in VEXcode
+3. Take snapshots of objects in match lighting
+4. Adjust settings (brightness, sensitivity)
+5. Test and refine
+
+**Programming Tips:**
+```
+- Set LED color: vision.set_led_color(100, 0, 0)
+- Get largest object: vision.largest_object()
+- Get object by signature: vision.objects[signature]
+- Object properties: x, y, width, height
+- Check if object exists: vision.object_count() > 0
+```
+
+**Best Practices:**
+- Consistent lighting during calibration and matches
+- Mount at appropriate height for targets
+- Test in different lighting conditions
+- Use LED in dark environments
+- Multiple signatures for robustness
+
+---
+
+### 3. Distance Sensor
+
+**What it does:**
+- Measures distance to nearest object
+- Ultrasonic rangefinder technology
+- Range: 20mm to 2000mm (0.8" to 79")
+
+**Key Features:**
+- 1mm resolution
+- Fast update rate (50Hz)
+- Narrow beam pattern
+- Works on most surfaces
+
+**Common Uses:**
+- Wall following (maintain distance)
+- Object detection (is something in front?)
+- Alignment to field elements
+- Collision avoidance
+
+**Programming Tips:**
+```
+- Get distance: distance.object_distance(MM)
+- Check for object: distance.object_detected()
+- Units: MM, CM, or INCHES
+- Returns 9999 if no object detected
+```
+
+**Limitations:**
+- Doesn't work well on:
+  - Soft/absorbent materials
+  - Angled surfaces
+  - Very small objects
+- Affected by acoustic noise
+- Minimum distance: 20mm
+
+---
+
+### 4. Optical Sensor
+
+**What it does:**
+- Detects color and brightness
+- Senses object proximity (< 5mm)
+- Combines light sensor + proximity sensor
+
+**Key Features:**
+- Color detection (hue, saturation, brightness)
+- Proximity detection (0-100%)
+- Built-in LED for illumination
+- Very fast response time
+
+**Common Uses:**
+- Line following (detect colored tape)
+- Object detection at close range
+- Color sorting
+- Detect when object is in intake
+
+**Programming Tips:**
+```
+- Get color: optical.color()
+- Get hue: optical.hue() (0-360)
+- Get brightness: optical.brightness() (0-100)
+- Object nearby: optical.is_near_object()
+- Set LED: optical.set_light_power(100)
+```
+
+**Color Detection:**
+- Hue ranges:
+  - Red: 0-20, 350-360
+  - Orange: 20-40
+  - Yellow: 40-70
+  - Green: 70-150
+  - Blue: 150-250
+  - Purple: 250-300
+
+---
+
+### 5. Rotation Sensor
+
+**What it does:**
+- Measures precise rotation/position
+- High resolution encoder
+- Tracks shaft rotation
+
+**Key Features:**
+- 3600 ticks per revolution (0.1 degree resolution)
+- Can be reversed for different mounting
+- Tracks position and velocity
+- Never needs calibration
+
+**Common Uses:**
+- Drivetrain odometry (track distance traveled)
+- Elevator/lift positioning
+- Flywheel speed control
+- Precise mechanism control
+
+**Programming Tips:**
+```
+- Get position: rotation.position(DEGREES)
+- Get velocity: rotation.velocity(RPM)
+- Reset position: rotation.set_position(0)
+- Reverse if needed: rotation.set_reversed(true)
+```
+
+**Installation:**
+- Mount securely to shaft
+- Use proper shaft adapter
+- Ensure no slipping
+- Protected from debris
+
+---
+
+### 6. Limit Switch (Bumper Switch)
+
+**What it does:**
+- Simple digital on/off switch
+- Detects physical contact
+- Mechanical button
+
+**Key Features:**
+- Extremely reliable
+- No calibration needed
+- Instant response
+- Durable construction
+
+**Common Uses:**
+- End stops for lifts/arms
+- Collision detection
+- Reset mechanism positions
+- Safety limits
+
+**Programming Tips:**
+```
+- Check if pressed: limit.pressing()
+- Wait for press: while(!limit.pressing())
+- Released state: !limit.pressing()
+```
+
+**Mounting:**
+- Position where contact is expected
+- Secure mounting (vibration can cause false triggers)
+- Protect wire connections
+- Consider actuation force needed
+
+---
+
+### 7. Line Tracker (3-Wire, Legacy)
+
+**What it does:**
+- Detects light/dark surfaces
+- Analog value output
+- Simple line detection
+
+**Note:** Largely replaced by Optical Sensor in V5
+- Still compatible with 3-Wire ports
+- Less sophisticated than Optical Sensor
+- Lower cost option
+
+---
+
+## Sensor Ports and Wiring
+
+**Smart Ports (1-21):**
+- Vision Sensor
+- Inertial Sensor
+- Distance Sensor
+- Optical Sensor
+- Rotation Sensor
+- Motors
+
+**3-Wire Ports (A-H):**
+- Limit Switch
+- Potentiometer
+- Line Tracker
+- Legacy sensors
+
+**Wiring Best Practices:**
+- Use proper length cables (not too tight, not too loose)
+- Secure cables away from moving parts
+- Label sensors for easy identification
+- Test connections before competition
+- Bring spare cables
+
+---
+
+## Multi-Sensor Strategies
+
+### Sensor Fusion
+Combine multiple sensors for better reliability:
+- Inertial + Rotation sensors for odometry
+- Vision + Distance for object approach
+- Optical + Limit switch for precise positioning
+
+### Redundancy
+Use backup sensors for critical functions:
+- Multiple limit switches for safety
+- Vision + Distance for object detection
+- Inertial + encoders for navigation
+
+---
+
+## Troubleshooting
+
+**Sensor Not Detected:**
+- Check cable connection
+- Verify correct port in code
+- Try different port
+- Update firmware
+
+**Inconsistent Readings:**
+- Check mounting (vibration/movement)
+- Recalibrate if applicable
+- Check for interference (optical/distance)
+- Verify power supply
+
+**Inertial Sensor Drift:**
+- Recalibrate more frequently
+- Keep robot still during calibration
+- Mount away from motors/vibration
+- Check for firmware updates
+
+**Vision Sensor Not Finding Objects:**
+- Reconfigure signatures in match lighting
+- Adjust brightness/sensitivity
+- Check LED usage
+- Verify object in sensor field of view
+
+---
+
+## Competition Tips
+
+1. **Test in competition conditions:**
+   - Different lighting
+   - Battery levels
+   - Field variations
+
+2. **Have fallback strategies:**
+   - Don't rely solely on sensors
+   - Code defensive/safe behaviors
+   - Manual overrides for driver control
+
+3. **Document sensor configurations:**
+   - Vision signatures
+   - Threshold values
+   - Port assignments
+   - Calibration procedures
+
+4. **Bring spares:**
+   - Extra sensors
+   - Cables
+   - Tools for quick replacement
+
+Remember: Sensors are tools to enhance your robot's capabilities. Use them wisely, test thoroughly, and always have a backup plan!

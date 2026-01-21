@@ -16,9 +16,11 @@
     "@react-navigation/native": "^7.1.14",
     "@react-navigation/stack": "^7.4.2",
     "expo": "~53.0.23",
+    "expo-asset": "~11.1.7",
     "expo-av": "~15.1.6",
     "expo-calendar": "^14.1.4",
     "expo-device": "^7.1.4",
+    "expo-font": "~13.3.2",
     "expo-linking": "^7.1.7",
     "expo-notifications": "^0.31.3",
     "expo-print": "^14.1.4",
@@ -31,8 +33,7 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-vector-icons": "^10.2.0",
-    "sharing": "^1.0.7",
-    "expo-font": "~13.3.2"
+    "sharing": "^1.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.27.7",

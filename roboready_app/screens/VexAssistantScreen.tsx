@@ -31,12 +31,39 @@ export default function VexAssistantScreen() {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'VEX Assistant',
     });
   }, [navigation]);
+
+  useEffect(() => {
+    // Initialize the AI assistant on screen load
+    const initializeAI = async () => {
+      try {
+        setIsInitializing(true);
+        const success = await VexAssistantService.initialize();
+        
+        if (!success) {
+          const errorMsg: Message = {
+            id: Date.now().toString(),
+            text: "⚠️ Could not initialize the AI assistant. Make sure the Flask server is running:\n\nTerminal:\ncd roboready_app/python_ai\nsource ../../venv/bin/activate\npython flask_server.py",
+            isUser: false,
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, errorMsg]);
+        }
+      } catch (error) {
+        console.error('Error initializing AI:', error);
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+    
+    initializeAI();
+  }, []);
 
   useEffect(() => {
     // Scroll to bottom when new messages arrive
@@ -75,7 +102,7 @@ export default function VexAssistantScreen() {
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm sorry, I encountered an error processing your question. Please try again.",
+        text: "I'm sorry, I encountered an error processing your question. Please make sure the Flask server is running and try again.",
         isUser: false,
         timestamp: new Date()
       };
@@ -134,6 +161,12 @@ export default function VexAssistantScreen() {
               <ActivityIndicator color={getIconColor(isDarkMode, 'primary')} />
             </View>
           )}
+          
+          {isInitializing && (
+            <View style={[chatStyles.messageBubble, chatStyles.assistantBubble]}>
+              <Text style={chatStyles.assistantText}>🔄 Initializing AI...</Text>
+            </View>
+          )}
         </ScrollView>
 
         <View style={chatStyles.inputContainer}>
@@ -145,20 +178,20 @@ export default function VexAssistantScreen() {
             onChangeText={setInputText}
             multiline
             maxLength={500}
-            editable={!isLoading}
+            editable={!isLoading && !isInitializing}
           />
           <TouchableOpacity
             style={[
               chatStyles.sendButton,
-              (!inputText.trim() || isLoading) && chatStyles.sendButtonDisabled
+              (!inputText.trim() || isLoading || isInitializing) && chatStyles.sendButtonDisabled
             ]}
             onPress={handleSend}
-            disabled={!inputText.trim() || isLoading}
+            disabled={!inputText.trim() || isLoading || isInitializing}
           >
             <Ionicons
               name="send"
               size={getIconSize('medium')}
-              color={(!inputText.trim() || isLoading) ? 
+              color={(!inputText.trim() || isLoading || isInitializing) ? 
                 (isDarkMode ? '#4B5563' : '#D1D5DB') : 
                 getIconColor(isDarkMode, 'primary')
               }

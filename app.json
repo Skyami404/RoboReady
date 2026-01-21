@@ -45,7 +45,8 @@
         {
           "calendarPermission": "Allow RoboReady to access your calendar to add tournament events."
         }
-      ]
+      ],
+      "expo-asset"
     ]
   }
-} 
+}

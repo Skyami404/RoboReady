@@ -5,7 +5,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import logging
-from vex_assistant import VexAssistant, initialize_assistant, get_answer, get_status
+import threading
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,7 +18,27 @@ CORS(app)  # Enable CORS for React Native
 
 # Global assistant instance
 assistant = None
-is_initializing = False
+is_initializing = True
+initialization_lock = threading.Lock()
+initialization_error = None
+
+# Import VexAssistant in background
+def initialize_assistant():
+    global assistant, is_initializing, initialization_error
+    try:
+        logger.info("Loading VEX Assistant AI models...")
+        from vex_assistant import VexAssistant
+        assistant = VexAssistant()
+        logger.info("✅ VEX Assistant initialized successfully")
+        is_initializing = False
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize assistant: {e}")
+        initialization_error = str(e)
+        is_initializing = False
+
+# Start initialization in background thread
+init_thread = threading.Thread(target=initialize_assistant, daemon=True)
+init_thread.start()
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -55,31 +76,51 @@ def initialize():
     """Initialize the AI assistant"""
     global assistant, is_initializing
     
-    if assistant is not None:
-        return jsonify({
-            'success': True,
-            'message': 'Already initialized'
-        })
-    
-    if is_initializing:
-        return jsonify({
-            'success': False,
-            'message': 'Initialization in progress'
-        })
+    with initialization_lock:
+        if assistant is not None:
+            return jsonify({
+                'success': True,
+                'message': 'Already initialized'
+            })
+        
+        if is_initializing:
+            return jsonify({
+                'success': False,
+                'message': 'Initialization in progress'
+            })
+        
+        is_initializing = True
     
     try:
-        is_initializing = True
         logger.info("Starting assistant initialization...")
         
-        assistant = VexAssistant()
+        # Initialize in background thread to avoid blocking
+        def init_worker():
+            global assistant, is_initializing
+            try:
+                assistant = VexAssistant()
+                logger.info("✓ Assistant initialized successfully!")
+            except Exception as e:
+                logger.error(f"✗ Initialization failed: {e}")
+                is_initializing = False
+                raise
         
-        is_initializing = False
-        logger.info("Assistant initialized successfully!")
+        init_thread = threading.Thread(target=init_worker, daemon=False)
+        init_thread.start()
+        init_thread.join(timeout=120)  # Wait up to 2 minutes
         
-        return jsonify({
-            'success': True,
-            'message': 'Assistant initialized successfully'
-        })
+        if assistant is not None:
+            is_initializing = False
+            return jsonify({
+                'success': True,
+                'message': 'Assistant initialized successfully'
+            })
+        else:
+            is_initializing = False
+            return jsonify({
+                'success': False,
+                'error': 'Initialization timed out or failed'
+            }), 500
         
     except Exception as e:
         is_initializing = False
@@ -102,6 +143,11 @@ def ask_question():
     
     try:
         data = request.get_json()
+        if not data:
+            return jsonify({
+                'error': 'No JSON data provided'
+            }), 400
+            
         question = data.get('question', '').strip()
         
         if not question:
@@ -121,12 +167,12 @@ def ask_question():
         
         # Get answer using RAG
         result = assistant.ask(question)
-        logger.info(f"Answer generated (confidence: {result['confidence']:.2f})")
+        logger.info(f"Answer generated (confidence: {result.get('confidence', 0):.2f})")
         
         return jsonify(result)
         
     except Exception as e:
-        logger.error(f"Error processing question: {e}")
+        logger.error(f"Error processing question: {e}", exc_info=True)
         return jsonify({
             'error': str(e),
             'answer': 'I encountered an error processing your question. Please try again.'
@@ -180,22 +226,30 @@ if __name__ == '__main__':
     print("  POST /initialize  - Initialize AI")
     print("  POST /ask         - Ask a question")
     print("  GET  /suggestions - Get suggested questions")
+    print("  POST /reset       - Reset assistant")
     print("\nNote: First initialization takes 30-60 seconds")
     print("=" * 60)
     
-    # Auto-initialize on startup
-    print("\nAuto-initializing assistant...")
-    try:
-        assistant = VexAssistant()
-        print("✓ Assistant ready!")
-    except Exception as e:
-        print(f"✗ Auto-initialization failed: {e}")
-        print("  Call /initialize endpoint to try again")
+    # Auto-initialize on startup in background thread
+    print("\nAuto-initializing assistant in background...")
+    def init_on_startup():
+        global assistant
+        time.sleep(1)  # Give server time to start
+        try:
+            assistant = VexAssistant()
+            print("✓ Assistant ready!")
+        except Exception as e:
+            print(f"✗ Auto-initialization failed: {e}")
+            print("  Call POST /initialize endpoint to try again")
+    
+    init_thread = threading.Thread(target=init_on_startup, daemon=True)
+    init_thread.start()
     
     # Run server
     app.run(
         host='127.0.0.1',  # Localhost only (secure)
         port=5000,
-        debug=False,  # Set to True for development
-        threaded=True  # Handle multiple requests
+        debug=False,  # Production mode
+        threaded=True,  # Handle multiple requests
+        use_reloader=False  # Don't reload on file changes
     )

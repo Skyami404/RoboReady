@@ -4,11 +4,28 @@
 
 import os
 import json
+import sys
 import numpy as np
 from typing import List, Dict, Tuple
-from sentence_transformers import SentenceTransformer
-import faiss
-from llama_cpp import Llama
+from pathlib import Path
+
+try:
+    from sentence_transformers import SentenceTransformer
+except ImportError:
+    print("Error: sentence-transformers not installed. Run: pip install -r requirements.txt")
+    sys.exit(1)
+
+try:
+    import faiss
+except ImportError:
+    print("Error: faiss-cpu not installed. Run: pip install -r requirements.txt")
+    sys.exit(1)
+
+try:
+    from llama_cpp import Llama
+except ImportError:
+    print("Error: llama-cpp-python not installed. Run: pip install -r requirements.txt")
+    sys.exit(1)
 
 class VexKnowledgeBase:
     """
@@ -24,25 +41,43 @@ class VexKnowledgeBase:
         2. Load pre-built vector index (FAISS)
         3. Load text passages corresponding to vectors
         """
+        # Get absolute path relative to this script
+        script_dir = Path(__file__).parent.absolute()
+        self.models_dir = script_dir / "models"
+        self.embeddings_dir = self.models_dir / "embeddings"
+        
+        print(f"Initializing knowledge base from: {self.embeddings_dir}")
+        
         print("Loading embedding model...")
-        # MiniLM: Small, fast embedding model (120MB)
-        # Converts text to 384-dimensional vectors
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        try:
+            # MiniLM: Small, fast embedding model (120MB)
+            # Converts text to 384-dimensional vectors
+            self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        except Exception as e:
+            print(f"Error loading embedding model: {e}")
+            raise
         
         # FAISS: Facebook AI Similarity Search
         # Ultra-fast vector search library
-        self.index_path = os.path.join(model_path, "vex_knowledge.index")
-        self.passages_path = os.path.join(model_path, "vex_passages.json")
+        self.index_path = self.embeddings_dir / "vex_knowledge.index"
+        self.passages_path = self.embeddings_dir / "vex_passages.json"
         
-        if os.path.exists(self.index_path):
-            print("Loading existing knowledge base...")
-            self.index = faiss.read_index(self.index_path)
-            with open(self.passages_path, 'r') as f:
-                self.passages = json.load(f)
+        self.passages = []
+        self.index = None
+        
+        if self.index_path.exists() and self.passages_path.exists():
+            try:
+                print("Loading existing knowledge base...")
+                self.index = faiss.read_index(str(self.index_path))
+                with open(self.passages_path, 'r') as f:
+                    self.passages = json.load(f)
+                print(f"✓ Loaded {len(self.passages)} passages from knowledge base")
+            except Exception as e:
+                print(f"Error loading knowledge base: {e}")
+                print("Will rebuild from scratch...")
+                self.build_knowledge_base()
         else:
-            print("Knowledge base not found. Building from scratch...")
-            self.index = None
-            self.passages = []
+            print("Knowledge base files not found. Building from scratch...")
             self.build_knowledge_base()
     
     def build_knowledge_base(self):
@@ -58,7 +93,7 @@ class VexKnowledgeBase:
         """
         print("Building VEX knowledge base...")
         
-        # Sample VEX knowledge (in production, load from scraped files)
+        # VEX Robotics knowledge base
         vex_knowledge = [
             {
                 "title": "Tournament Structure",
@@ -99,6 +134,26 @@ class VexKnowledgeBase:
             {
                 "title": "Programming Platforms",
                 "content": "VEX robots can be programmed using several platforms: VEXcode V5/IQ offers blocks or Python/C++ and is beginner-friendly with intuitive interface. PROS provides advanced C/C++ programming for experienced programmers with full control. RobotC is a legacy C-based platform for older systems. Python is also available through VEXcode for text-based programming with modern syntax."
+            },
+            {
+                "title": "VEX IQ Competition",
+                "content": "VEX IQ is designed for elementary and middle school students. Teams build robots with VEX IQ components and compete in game-based competitions. The VEX IQ Robotics Competition features 8-robot alliances and uses a modular scoring system. Key differences from V5: larger, simpler parts, intuitive building system, block-based programming, and age-appropriate complexity."
+            },
+            {
+                "title": "Driver Skills Practice",
+                "content": "Driver Skills are the manual control portion of competition. Best practices: practice field awareness by knowing where alliance members are, develop smooth controller inputs for precise movements, practice picking up and scoring game pieces under pressure, learn optimal routes across the field, communicate with your team, and practice consistently to build muscle memory."
+            },
+            {
+                "title": "Gear Ratios and Speed",
+                "content": "VEX motor gear ratios affect robot speed and torque. Common ratios: 1:1 (600 RPM, high speed), 3:5 (360 RPM), 1:2 (300 RPM), 1:3 (200 RPM), or lower for high torque. Speed ratio = output RPM / motor RPM. Torque increases as RPM decreases. Choose based on game requirements: fast drivetrains use 1:1 to 3:5, shooters need high torque with lower ratios."
+            },
+            {
+                "title": "Common Robot Failures",
+                "content": "Avoid these common failures: weak drivetrain that stalls under load, poor wheel traction causing slipping, inefficient intake design, overengineering subsystems making them slow or heavy, poor cable management causing disconnections, insufficient bracing causing deformation, not testing under game conditions, and forgetting to check weight and size limits."
+            },
+            {
+                "title": "VEX Robotics Rules Compliance",
+                "content": "All VEX robots must comply with official rules including size constraints (not exceeding maximum dimensions), weight limits (typically 12-16 lbs depending on competition), legal parts (only official VEX components), controlled autonomous mode (no human control), and match conduct rules. Violations result in disqualification. Always check the current game manual for specific rules."
             }
         ]
         
@@ -111,30 +166,33 @@ class VexKnowledgeBase:
                 "source": "VEX Official Documentation"
             })
         
-        # Generate embeddings for all passages
         print(f"Generating embeddings for {len(self.passages)} passages...")
-        passage_texts = [p["content"] for p in self.passages]
-        
-        # Convert text to vectors (embeddings)
-        # Each passage becomes a 384-dimensional vector
-        embeddings = self.embedding_model.encode(
-            passage_texts,
-            show_progress_bar=True,
-            convert_to_numpy=True
-        )
-        
-        # Build FAISS index for fast similarity search
-        dimension = embeddings.shape[1]  # 384 dimensions
-        self.index = faiss.IndexFlatL2(dimension)  # L2 = Euclidean distance
-        self.index.add(embeddings.astype('float32'))
-        
-        # Save to disk
-        os.makedirs(os.path.dirname(self.index_path), exist_ok=True)
-        faiss.write_index(self.index, self.index_path)
-        with open(self.passages_path, 'w') as f:
-            json.dump(self.passages, f, indent=2)
-        
-        print(f"Knowledge base built with {len(self.passages)} passages!")
+        try:
+            passage_texts = [p["content"] for p in self.passages]
+            
+            # Convert text to vectors (embeddings)
+            # Each passage becomes a 384-dimensional vector
+            embeddings = self.embedding_model.encode(
+                passage_texts,
+                show_progress_bar=True,
+                convert_to_numpy=True
+            )
+            
+            # Build FAISS index for fast similarity search
+            dimension = embeddings.shape[1]  # 384 dimensions
+            self.index = faiss.IndexFlatL2(dimension)  # L2 = Euclidean distance
+            self.index.add(embeddings.astype('float32'))
+            
+            # Save to disk
+            self.embeddings_dir.mkdir(parents=True, exist_ok=True)
+            faiss.write_index(self.index, str(self.index_path))
+            with open(self.passages_path, 'w') as f:
+                json.dump(self.passages, f, indent=2)
+            
+            print(f"✓ Knowledge base built with {len(self.passages)} passages!")
+        except Exception as e:
+            print(f"Error building knowledge base: {e}")
+            raise
     
     def search(self, query: str, top_k: int = 3) -> List[Dict]:
         """
@@ -183,7 +241,7 @@ class VexLanguageModel:
     Runs entirely on-device using llama.cpp
     """
     
-    def __init__(self, model_path: str = "models/phi-3-mini-4k-instruct-q4.gguf"):
+    def __init__(self, model_path: str = None):
         """
         Initialize language model
         
@@ -193,27 +251,37 @@ class VexLanguageModel:
         - Optimized for instruction following
         - Fast inference on mobile
         """
+        if model_path is None:
+            script_dir = Path(__file__).parent.absolute()
+            model_path = script_dir / "models" / "phi-3-mini-4k-instruct-q4.gguf"
+        
+        model_path = Path(model_path)
+        
         print(f"Loading language model from {model_path}...")
         
-        if not os.path.exists(model_path):
+        if not model_path.exists():
             raise FileNotFoundError(
                 f"Model not found at {model_path}\n"
                 "Download from: https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf"
             )
         
-        # Initialize Llama.cpp model
-        # n_ctx: context window size (4096 tokens)
-        # n_threads: CPU threads to use
-        # n_gpu_layers: offload to GPU if available
-        self.model = Llama(
-            model_path=model_path,
-            n_ctx=4096,  # Context window
-            n_threads=4,  # CPU threads
-            n_gpu_layers=0,  # Set to 35 if GPU available
-            verbose=False
-        )
-        
-        print("Model loaded successfully!")
+        try:
+            # Initialize Llama.cpp model
+            # n_ctx: context window size (4096 tokens)
+            # n_threads: CPU threads to use
+            # n_gpu_layers: offload to GPU if available
+            self.model = Llama(
+                model_path=str(model_path),
+                n_ctx=4096,  # Context window
+                n_threads=4,  # CPU threads
+                n_gpu_layers=0,  # Set to 35 if GPU available
+                verbose=False
+            )
+            
+            print("✓ Model loaded successfully!")
+        except Exception as e:
+            print(f"Error loading model: {e}")
+            raise
     
     def generate(
         self,
@@ -267,18 +335,22 @@ class VexAssistant:
         """
         print("Initializing VEX Assistant...")
         
-        # Load components
-        self.knowledge_base = VexKnowledgeBase()
-        self.language_model = VexLanguageModel()
-        
-        # System prompt for the model
-        self.system_prompt = """You are a helpful VEX Robotics assistant. You provide accurate, concise information about VEX competitions, robot building, programming, and rules.
+        try:
+            # Load components
+            self.knowledge_base = VexKnowledgeBase()
+            self.language_model = VexLanguageModel()
+            
+            # System prompt for the model
+            self.system_prompt = """You are a helpful VEX Robotics assistant. You provide accurate, concise information about VEX competitions, robot building, programming, and rules.
 
 Based on the provided context, answer the user's question clearly and helpfully. If the context doesn't contain enough information, say so honestly.
 
 Keep responses under 200 words unless more detail is requested. Be conversational and encouraging."""
-        
-        print("VEX Assistant ready!")
+            
+            print("✓ VEX Assistant ready!")
+        except Exception as e:
+            print(f"Error initializing assistant: {e}")
+            raise
     
     def ask(self, question: str) -> Dict:
         """
@@ -296,34 +368,35 @@ Keep responses under 200 words unless more detail is requested. Be conversationa
         3. Generate answer using language model
         4. Return answer with sources
         """
-        print(f"\nQuestion: {question}")
-        
-        # Step 1: Retrieve relevant context
-        print("Searching knowledge base...")
-        search_results = self.knowledge_base.search(question, top_k=3)
-        
-        if not search_results:
-            return {
-                "answer": "I don't have enough information to answer that question. Please ask about VEX Robotics topics like competitions, building, or programming.",
-                "sources": [],
-                "confidence": 0.0
-            }
-        
-        # Step 2: Build context from search results
-        context_parts = []
-        sources = []
-        
-        for i, result in enumerate(search_results, 1):
-            context_parts.append(f"[Source {i}] {result['title']}:\n{result['content']}")
-            sources.append({
-                "title": result['title'],
-                "similarity": result['similarity_score']
-            })
-        
-        context = "\n\n".join(context_parts)
-        
-        # Step 3: Construct prompt
-        prompt = f"""{self.system_prompt}
+        try:
+            print(f"\nQuestion: {question}")
+            
+            # Step 1: Retrieve relevant context
+            print("Searching knowledge base...")
+            search_results = self.knowledge_base.search(question, top_k=3)
+            
+            if not search_results:
+                return {
+                    "answer": "I don't have enough information to answer that question. Please ask about VEX Robotics topics like competitions, building, or programming.",
+                    "sources": [],
+                    "confidence": 0.0
+                }
+            
+            # Step 2: Build context from search results
+            context_parts = []
+            sources = []
+            
+            for i, result in enumerate(search_results, 1):
+                context_parts.append(f"[Source {i}] {result['title']}:\n{result['content']}")
+                sources.append({
+                    "title": result['title'],
+                    "similarity": result['similarity_score']
+                })
+            
+            context = "\n\n".join(context_parts)
+            
+            # Step 3: Construct prompt
+            prompt = f"""{self.system_prompt}
 
 Context:
 {context}
@@ -331,24 +404,32 @@ Context:
 User Question: {question}
 
 Assistant Answer:"""
-        
-        # Step 4: Generate answer
-        print("Generating response...")
-        answer = self.language_model.generate(
-            prompt,
-            max_tokens=400,
-            temperature=0.7
-        )
-        
-        # Calculate confidence based on search result similarities
-        avg_similarity = np.mean([s['similarity'] for s in sources])
-        
-        return {
-            "answer": answer,
-            "sources": sources,
-            "confidence": avg_similarity,
-            "retrieved_passages": len(search_results)
-        }
+            
+            # Step 4: Generate answer
+            print("Generating response...")
+            answer = self.language_model.generate(
+                prompt,
+                max_tokens=400,
+                temperature=0.7
+            )
+            
+            # Calculate confidence based on search result similarities
+            avg_similarity = np.mean([s['similarity'] for s in sources])
+            
+            return {
+                "answer": answer,
+                "sources": sources,
+                "confidence": float(avg_similarity),
+                "retrieved_passages": len(search_results)
+            }
+        except Exception as e:
+            print(f"Error in ask(): {e}")
+            return {
+                "answer": "I encountered an error processing your question. Please try again.",
+                "sources": [],
+                "confidence": 0.0,
+                "error": str(e)
+            }
     
     def is_robotics_question(self, question: str) -> bool:
         """

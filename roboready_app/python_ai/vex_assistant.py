@@ -5,6 +5,7 @@
 import os
 import json
 import sys
+import re
 import numpy as np
 from typing import List, Dict, Tuple
 from pathlib import Path
@@ -101,7 +102,7 @@ class VexKnowledgeBase:
             },
             {
                 "title": "High Stakes Scoring",
-                "content": "High Stakes (2024-2025 VEX V5RC) scoring: Rings on mobile goals are worth 3 points (lower), 4 points (middle), or 5 points (upper). Rings on wall stakes follow the same point values. Alliance stake rings are worth 6 points each. Autonomous bonus awards extra points for preloaded rings scored during autonomous period. Robot elevation at match end provides bonus points."
+                "content": "High Stakes scoring: Rings on mobile goals are worth different point values depending on goal height (lower, middle, upper). Rings on wall stakes follow the same relative point values. Alliance stake rings can have higher values. Autonomous bonuses award extra points for scoring during the autonomous period. Robot elevation at match end can provide bonus points. Check the current game manual for exact, up-to-date scoring values."
             },
             {
                 "title": "Autonomous Programming",
@@ -315,11 +316,36 @@ class VexLanguageModel:
             temperature=temperature,
             top_p=top_p,
             echo=False,  # Don't repeat prompt in output
-            stop=["</s>", "User:", "\n\n\n"]  # Stop sequences
+            stop=["</s>"]  # Simplified stop sequences
         )
-        
-        # Extract text from output
-        response = output['choices'][0]['text'].strip()
+
+        # Log raw output for debugging
+        try:
+            print(f"LLM raw output: {output}")
+        except Exception:
+            pass
+
+        # Extract text from output robustly
+        try:
+            response = output['choices'][0].get('text', '')
+            if response is None:
+                response = ''
+            response = response.strip()
+        except Exception:
+            # Fallback: try other keys
+            try:
+                response = output.get('text', '')
+                if response is None:
+                    response = ''
+                response = str(response).strip()
+            except Exception:
+                response = ''
+
+        # If the model returned an empty string, return a helpful fallback message
+        if not response:
+            print("Warning: LLM returned empty response")
+            response = "I don't have a complete answer right now — please try rephrasing your question or ask for a specific topic."
+
         return response
 
 
@@ -341,11 +367,23 @@ class VexAssistant:
             self.language_model = VexLanguageModel()
             
             # System prompt for the model
-            self.system_prompt = """You are a helpful VEX Robotics assistant. You provide accurate, concise information about VEX competitions, robot building, programming, and rules.
+            self.system_prompt = """You are a knowledgeable and friendly VEX Robotics expert assistant, similar to ChatGPT but specialized in VEX. 
 
-Based on the provided context, answer the user's question clearly and helpfully. If the context doesn't contain enough information, say so honestly.
+Your style:
+- Be conversational, warm, and helpful
+- Explain concepts clearly without being overly technical
+- Connect ideas together naturally
+- Give practical, actionable advice
+- Use natural language, not formal/robotic responses
 
-Keep responses under 200 words unless more detail is requested. Be conversational and encouraging."""
+Guidelines:
+- Answer the question directly and thoroughly using only the provided context (the VEX knowledge base and official VEX documentation). Do not invent facts.
+- Synthesize information from the retrieved passages to produce a single, coherent answer (like ChatGPT), without requiring the user to use special keywords.
+- If the context doesn't provide a direct answer, say so and offer next steps or suggest where to look in the knowledge base.
+- Keep responses concise but complete (under 200 words). If the answer requires step-by-step instructions or lists, use short bullets.
+- Prefer clarity and actionable advice over exhaustive detail.
+- NEVER include labels like "User Question:", "Assistant Answer:", or metadata in your response.
+- Do not ask the user to restate the question unless critical clarifying information is missing."""
             
             print("✓ VEX Assistant ready!")
         except Exception as e:
@@ -378,8 +416,7 @@ Keep responses under 200 words unless more detail is requested. Be conversationa
             if not search_results:
                 return {
                     "answer": "I don't have enough information to answer that question. Please ask about VEX Robotics topics like competitions, building, or programming.",
-                    "sources": [],
-                    "confidence": 0.0
+                    "sources": []
                 }
             
             # Step 2: Build context from search results
@@ -401,25 +438,39 @@ Keep responses under 200 words unless more detail is requested. Be conversationa
 Context:
 {context}
 
-User Question: {question}
-
-Assistant Answer:"""
+Answer this question: {question}"""
             
             # Step 4: Generate answer
             print("Generating response...")
             answer = self.language_model.generate(
                 prompt,
                 max_tokens=400,
-                temperature=0.7
+                temperature=0.2
             )
             
-            # Calculate confidence based on search result similarities
-            avg_similarity = np.mean([s['similarity'] for s in sources])
+            # Clean up answer - remove any included question or labels
+            answer = answer.strip()
+
+            # Remove any assistant role tokens like "<|assistant|>" at start
+            answer = re.sub(r'^<\|[^>]+\|>\s*', '', answer)
+
+            # Remove leading single-word labels like "support:" or "assistant:"
+            answer = re.sub(r'^[A-Za-z]{1,20}:\s*', '', answer)
             
+            # Remove only strong label patterns that shouldn't be in the answer
+            if answer.startswith("User Question:"):
+                answer = answer.replace("User Question:", "", 1).strip()
+            if answer.startswith("Assistant Answer:"):
+                answer = answer.replace("Assistant Answer:", "", 1).strip()
+            if "\nUser Question:" in answer:
+                answer = answer.split("\nUser Question:")[0].strip()
+            if "\nAssistant Answer:" in answer:
+                answer = answer.split("\nAssistant Answer:")[0].strip()
+            
+            # Return answer and sources
             return {
                 "answer": answer,
                 "sources": sources,
-                "confidence": float(avg_similarity),
                 "retrieved_passages": len(search_results)
             }
         except Exception as e:
@@ -427,7 +478,6 @@ Assistant Answer:"""
             return {
                 "answer": "I encountered an error processing your question. Please try again.",
                 "sources": [],
-                "confidence": 0.0,
                 "error": str(e)
             }
     
@@ -489,8 +539,7 @@ def get_answer(question: str) -> str:
         if not _assistant_instance.is_robotics_question(question):
             return json.dumps({
                 "answer": "I'm designed to help with VEX Robotics questions! Ask me about competitions, building, programming, rules, or strategies.",
-                "sources": [],
-                "confidence": 0.0
+                "sources": []
             })
         
         # Get answer using RAG
@@ -557,8 +606,7 @@ def main():
         
         # Display answer
         print(f"\nAssistant: {result['answer']}")
-        print(f"\nConfidence: {result['confidence']:.2f}")
-        print(f"Sources used: {result['retrieved_passages']}")
+        print(f"Sources used: {result.get('retrieved_passages', 0)}")
         
         if result['sources']:
             print("\nBased on:")

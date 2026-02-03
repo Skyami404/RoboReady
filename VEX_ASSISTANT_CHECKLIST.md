@@ -13,7 +13,7 @@
 ```bash
 # Run from project root
 cd roboready_app/python_ai
-source ../../venv/bin/activate
+source venv312/bin/activate
 
 # Check Python
 python3 --version
@@ -31,17 +31,17 @@ ls models/embeddings/
 ### Step 1: Start Flask Server (Terminal 1)
 ```bash
 cd /Users/skyami/Documents/GitHub/VEX_Checklist/roboready_app/python_ai
-source ../../venv/bin/activate
-python flask_server.py
+source venv312/bin/activate
+python flask_server_lite.py
 ```
 
 **Expected Output**:
 ```
 ==========================================================
-VEX Assistant API Server
+VEX Assistant API Server (LITE MODE)
 ==========================================================
 
-Starting server on http://127.0.0.1:5000
+Starting server on http://127.0.0.1:8000
 
 Auto-initializing assistant in background...
 ✓ Assistant ready!
@@ -75,11 +75,10 @@ npm start  # or use Expo Go
 - [ ] Send button is enabled
 - [ ] Gets response from assistant
 
-✅ **Full Flow**:
-- [ ] User asks question
-- [ ] UI shows loading state
-- [ ] Response includes answer + sources
-- [ ] Confidence score displayed
+ ✅ **Full Flow**:
+ - [ ] User asks question
+ - [ ] UI shows loading state
+ - [ ] Response includes answer + sources
 
 ## Common Issues & Fixes
 

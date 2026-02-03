@@ -3,7 +3,7 @@
 
 export class VexAssistantService {
   // PYTHON FLASK API - On-Device AI
-  private static readonly API_URL = 'http://127.0.0.1:5000';
+  private static readonly API_URL = 'http://127.0.0.1:8000';
   private static initializationPromise: Promise<boolean> | null = null;
   private static isInitialized = false;
   
@@ -36,10 +36,9 @@ export class VexAssistantService {
       
       console.log('Initializing VEX Assistant...');
       
-      const response = await fetch(`${this.API_URL}/initialize`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 120000 // 2 minute timeout
+      const response = await fetch(`${this.API_URL}/status`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       });
 
       const data = await response.json();
@@ -63,8 +62,7 @@ export class VexAssistantService {
     try {
       const response = await fetch(`${this.API_URL}/status`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 5000
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (!response.ok) {
@@ -117,8 +115,7 @@ export class VexAssistantService {
       const response = await fetch(`${this.API_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.trim() }),
-        timeout: 30000 // 30 second timeout for response
+        body: JSON.stringify({ question: question.trim() })
       });
 
       if (!response.ok) {
@@ -149,10 +146,6 @@ export class VexAssistantService {
         });
       }
 
-      if (data.confidence !== undefined) {
-        const confidencePercent = Math.round(data.confidence * 100);
-        responseText += `\n✨ Confidence: ${confidencePercent}%`;
-      }
 
       return responseText;
       

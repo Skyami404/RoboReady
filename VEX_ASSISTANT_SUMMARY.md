@@ -37,7 +37,7 @@ The VEX Robotics AI Assistant has been fully implemented as an on-device, offlin
 - ✅ Model initialization with try-catch blocks
 - ✅ Knowledge base rebuilding if files corrupted
 - ✅ Added 5 additional VEX topics to knowledge base
-- ✅ Confidence score calculation with type safety
+- ✅ (Confidence reporting removed; responses include sources only)
 
 **New Features**:
 - Better file path resolution relative to script location
@@ -210,7 +210,7 @@ The VEX Robotics AI Assistant has been fully implemented as an on-device, offlin
 - ✅ Non-VEX questions redirected
 - ✅ Polite responses explaining purpose
 - ✅ Keyword matching (25+ VEX terms)
-- ✅ Confidence scores for relevance
+- ✅ Source attribution for relevance (no separate confidence score)
 
 ## Setup Instructions
 

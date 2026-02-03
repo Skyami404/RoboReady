@@ -57,15 +57,13 @@ def test_questions():
         
         # Get answer
         result = assistant.ask(test['question'])
-        answer = result['answer']
-        confidence = result['confidence']
+        answer = result.get('answer', '')
         
         print(f"\n💬 Answer ({len(answer)} chars):")
         print("-" * 60)
         print(answer[:300] + ("..." if len(answer) > 300 else ""))
         print("-" * 60)
-        print(f"\n📊 Confidence: {confidence:.2f}")
-        print(f"📚 Sources: {result['retrieved_passages']}")
+        print(f"📚 Sources retrieved: {result.get('retrieved_passages', 0)}")
         
         # Check for expected keywords
         answer_lower = answer.lower()

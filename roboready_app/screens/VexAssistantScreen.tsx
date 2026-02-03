@@ -49,7 +49,7 @@ export default function VexAssistantScreen() {
         if (!success) {
           const errorMsg: Message = {
             id: Date.now().toString(),
-            text: "⚠️ Could not initialize the AI assistant. Make sure the Flask server is running:\n\nTerminal:\ncd roboready_app/python_ai\nsource ../../venv/bin/activate\npython flask_server.py",
+            text: "⚠️ Could not initialize the AI assistant. Make sure the Flask server is running:\n\nTerminal:\ncd roboready_app/python_ai\nsource venv312/bin/activate\npython flask_server_lite.py",
             isUser: false,
             timestamp: new Date()
           };

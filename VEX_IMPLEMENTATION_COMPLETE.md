@@ -46,7 +46,7 @@ The VEX Robotics AI Assistant has been **fully implemented and fixed**. It's an 
 - ✅ Knowledge base rebuild on corrupted files
 - ✅ Try-catch blocks in all methods
 - ✅ Model initialization error handling
-- ✅ Type-safe confidence score calculation
+    - ✅ (Confidence reporting removed; responses include sources only)
 - ✅ Extended knowledge base (15 topics now)
 
 ### 3. Service Layer (`roboready_app/utils/vexAssistantService.ts`) ✅

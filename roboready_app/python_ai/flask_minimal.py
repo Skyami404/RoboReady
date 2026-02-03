@@ -33,8 +33,7 @@ def ask():
     # Temporary response while AI loads
     return jsonify({
         'answer': 'VEX Robotics is a global robotics platform. The AI model is still loading - please try again in a moment.',
-        'sources': ['VEX Official Website'],
-        'confidence': 0.8
+        'sources': ['VEX Official Website']
     }), 200
 
 if __name__ == '__main__':

@@ -127,12 +127,13 @@ def ask_question():
             return jsonify({'error': 'No question provided'}), 400
         
         response = assistant.ask(question)
+        # Return answer and sources
         return jsonify({
             'success': True,
             'question': question,
             'answer': response.get('answer', ''),
             'sources': response.get('sources', []),
-            'confidence': response.get('confidence', 0)
+            'retrieved_passages': response.get('retrieved_passages', 0)
         }), 200
     except Exception as e:
         logger.error(f"Error processing question: {e}")

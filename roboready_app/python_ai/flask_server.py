@@ -161,13 +161,12 @@ def ask_question():
         if not assistant.is_robotics_question(question):
             return jsonify({
                 'answer': "I'm designed to help with VEX Robotics questions! Ask me about competitions, building, programming, rules, or strategies.",
-                'sources': [],
-                'confidence': 0.0
+                'sources': []
             })
         
         # Get answer using RAG
         result = assistant.ask(question)
-        logger.info(f"Answer generated (confidence: {result.get('confidence', 0):.2f})")
+        logger.info(f"Answer generated; returning result to client")
         
         return jsonify(result)
         
@@ -219,7 +218,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print("VEX Assistant API Server")
     print("=" * 60)
-    print("\nStarting server on http://127.0.0.1:5000")
+    print("\nStarting server on http://127.0.0.1:8000")
     print("\nEndpoints:")
     print("  GET  /health      - Health check")
     print("  GET  /status      - Check if ready")
@@ -248,7 +247,7 @@ if __name__ == '__main__':
     # Run server
     app.run(
         host='127.0.0.1',  # Localhost only (secure)
-        port=5000,
+        port=8000,
         debug=False,  # Production mode
         threaded=True,  # Handle multiple requests
         use_reloader=False  # Don't reload on file changes

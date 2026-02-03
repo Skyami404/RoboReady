@@ -19,7 +19,7 @@ From the project root:
 
 ```bash
 cd roboready_app/python_ai
-source ../../venv/bin/activate  # Activate virtual environment
+source venv312/bin/activate  # Activate virtual environment (venv312)
 pip install -r requirements.txt
 ```
 
@@ -48,7 +48,7 @@ chmod +x start_server.sh
 ./start_server.sh
 ```
 
-The server will start on `http://127.0.0.1:5000`
+The server will start on `http://127.0.0.1:8000`
 
 ## How It Works
 
@@ -76,7 +76,7 @@ Flask Server (Python)
 4. **Knowledge base searches** for relevant passages using embeddings
 5. **Context construction**: Top 3 most relevant passages selected
 6. **Language model generates** response based on context
-7. **Response sent back** to app with sources and confidence score
+7. **Response sent back** to app with sources (no separate confidence score)
 
 ## API Endpoints
 
@@ -111,7 +111,6 @@ Response:
     {"title": "Autonomous Programming", "similarity": 0.95},
     ...
   ],
-  "confidence": 0.92,
   "retrieved_passages": 3
 }
 ```
@@ -136,7 +135,7 @@ Reset the assistant (clear memory)
 ## Features
 
 ✅ **VEX-Only Responses**: Filters non-VEX questions  
-✅ **Confidence Scores**: Shows how confident the response is  
+✅ **Source Attribution**: Shows which documents the answer was drawn from
 ✅ **Source Attribution**: Shows which docs the answer came from  
 ✅ **Fast Responses**: FAISS provides millisecond-level search  
 ✅ **No Internet Required**: Runs completely offline  
@@ -148,7 +147,7 @@ Reset the assistant (clear memory)
 The assistant has knowledge about:
 
 - Tournament structure and scoring
-- High Stakes (2024-2025) rules and scoring
+ - High Stakes rules and scoring (check current game manual for exact values)
 - Autonomous programming techniques
 - Engineering notebook requirements
 - Robot building fundamentals

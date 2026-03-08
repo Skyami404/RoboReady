@@ -235,6 +235,7 @@ if __name__ == '__main__':
         global assistant
         time.sleep(1)  # Give server time to start
         try:
+            from vex_assistant import VexAssistant
             assistant = VexAssistant()
             print("✓ Assistant ready!")
         except Exception as e:

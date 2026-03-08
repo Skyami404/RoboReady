@@ -49,7 +49,7 @@ export default function VexAssistantScreen() {
         if (!success) {
           const errorMsg: Message = {
             id: Date.now().toString(),
-            text: "⚠️ Could not initialize the AI assistant. Make sure the Flask server is running:\n\nTerminal:\ncd roboready_app/python_ai\nsource venv312/bin/activate\npython flask_server_lite.py",
+            text: "⚠️ Could not initialize the AI assistant. The on‑device engine failed to start.",
             isUser: false,
             timestamp: new Date()
           };
@@ -102,7 +102,7 @@ export default function VexAssistantScreen() {
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm sorry, I encountered an error processing your question. Please make sure the Flask server is running and try again.",
+        text: "I'm sorry, I encountered an error processing your question. Please try again.",
         isUser: false,
         timestamp: new Date()
       };

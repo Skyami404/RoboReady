@@ -1,0 +1,160 @@
+# VEX Push Back Manual (2025-2026 Season)
+
+Push Back is the official VEX V5 Robotics Competition game for the 2025-2026 season, played on a 12ft x 12ft foam mat.
+
+## Game Overview
+
+Push Back is a head-to-head competition where two alliances (red and blue), each with two teams and one robot per team, compete to score points by placing blocks (also called game objects) in goals and parking robots. The game emphasizes dynamic, offensive gameplay where teams actively manipulate blocks to control goals around the field.
+
+The field consists of:
+- 88 total blocks (44 blue, 44 red) - 18-sided hollow plastic polygonal objects
+- 4 goals (2 long goals and 2 center goals)
+- 4 loaders (2 per alliance)
+- 2 park zones
+- Autonomous line dividing the field
+
+## Field Layout
+
+The 12ft x 12ft field is divided by an autonomous line into red and blue sides. Key field elements include:
+
+Long Goals:
+- 48.8 inches in length
+- Enclosed center section with open sections at ends
+- Control zone between white tape lines in the middle
+
+Center Goals:
+- Upper and Lower center goals
+- 22.6 inches in length
+- Entire goal is the control zone
+
+Loaders:
+- Four total (2 per alliance)
+- 21.34 inches tall
+- Begin with 6 blocks each
+- Can only load blocks when fewer than 5 blocks in orange section
+
+Park Zones:
+- One blue, one red
+- 18.87" x 16.86" enclosed areas
+- 1 parked robot: 8 points, 2 parked robots: 30 points
+
+## Match Structure
+
+Matches consist of:
+- 15-second Autonomous Period (no human input)
+- 1:45 Driver Controlled Period (human-controlled)
+
+## Autonomous Period Scoring (15 seconds)
+
+During autonomous, teams score by placing blocks in goals:
+- Each block placed in a goal: 3 points
+- Long goal control zone controlled: 10 points
+- Center goal upper controlled: 8 points
+- Center goal lower controlled: 6 points
+- Autonomous bonus: 10 points (awarded to highest-scoring alliance)
+
+Autonomous Win Point (1 Win Point bonus):
+Requirements to earn AWP:
+1. At least 7 blocks of team's color scored
+2. At least 3 different goals contain team's blocks
+3. At least 3 blocks removed from loaders adjacent to alliance station
+4. Neither robot in or contacting park zone
+
+## Driver Control Scoring (1:45)
+
+During driver control, teams continue scoring:
+- Each block scored in a goal: 3 points
+- Long goal control: 10 points
+- Center goal upper control: 8 points
+- Center goal lower control: 6 points
+- 1 robot parked in park zone: 8 points
+- 2 robots parked in park zones: 30 points
+
+## Block Control and Scoring
+
+A block is scored when:
+- In contact with inside surfaces of the goal plastic
+- Not in contact with a robot of the same color
+- Not touching the floor
+
+A control zone is controlled when:
+- Majority of scored blocks in that zone are the same color
+- For long goals, blocks must be fully within the control zone tape lines
+- For center goals, entire goal is the control zone
+
+## Movement and Expansion Rules
+
+Robots must:
+- Start at 18" x 18" x 18" maximum
+- Expand to max 22" wide and 22" long horizontally
+- Expand to max 22" tall vertically
+- Can carry/push unlimited blocks but must stay within expansion limits
+
+## Game Strategy
+
+Offensive play is emphasized:
+- Teams should actively score blocks
+- Dynamic back-and-forth gameplay encouraged
+- Open lanes must exist for robots to score
+- Sufficient blocks available for both alliances
+
+Defensive play allowed but:
+- Cannot be purely destructive
+- Holding limit: 3-count maximum
+- Trapping, pinning, lifting rules apply
+- Goalkeeping (reaching into goal without moving blocks) not permitted during driver control
+
+## Key Rules
+
+Autonomous Line:
+- Robots cannot cross to opposing side during autonomous period
+- Blocks starting on autonomous line available to both alliances
+- Violation results in opponent getting autonomous bonus
+
+Match Loads:
+- 24 total match load blocks (12 per alliance)
+- Added through loaders during driver control period
+- One block per introduction
+- Can only add if fewer than 5 blocks in loader's orange section
+
+Park Zones Protected:
+- Last 20 seconds: opponents cannot contact opponent's park zone or parked robots
+- Parked robot must be within vertical projection of own-color park zone
+- Cannot be in or contacting opponent's park zone barrier
+
+Preload Blocks:
+- Each robot gets one preload block at match start
+- Preload must contact robot of same alliance color
+
+## Scoring Summary
+
+Scoring Table:
+- Each block scored: 3 points
+- Long goal control: 10 points
+- Center goal upper control: 8 points
+- Center goal lower control: 6 points
+- 1 parked robot: 8 points
+- 2 parked robots: 30 points
+- Autonomous bonus: 10 points (to highest-scoring alliance during autonomous)
+- Autonomous win point: 1 additional win point (if criteria met)
+
+## Robot Skills Challenge
+
+Teams can also compete in:
+- Autonomous Coding Skills: 60 second autonomous-only match
+- Driving Skills: 60 second driver-controlled-only match
+- Scoring based on blocks scored, filled control zones, cleared zones, and parked robots
+- Skills stop time used as tiebreaker for rankings
+
+## Tournament Format
+
+Qualification Matches:
+- Each team plays at least 6 matches
+- Teams ranked by Win Points, Autonomous Points, and Strength of Schedule
+- Top teams become Alliance Captains
+
+Elimination Matches:
+- 8 to 16 alliance brackets
+- Best-of-1 until finals
+- Finals are best-of-3
+- Single-elimination format

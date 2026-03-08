@@ -98,15 +98,18 @@ class VexKnowledgeBase:
         vex_knowledge = [
             {
                 "title": "Tournament Structure",
-                "content": "VEX tournaments follow this structure: Qualification matches where teams compete in 4-6 matches with randomly assigned alliance partners. Teams are ranked by Win Points (2 per win, 1 per tie), Autonomous Win Points (AWP), and Strength of Schedule (SOS). Top teams then select alliance partners for elimination rounds consisting of quarterfinals, semifinals, and finals played in best-of-3 format."
+                "content": "VEX tournaments follow this structure: Qualification matches where teams compete in 4-6 matches with randomly assigned alliance partners. Teams are ranked by Win Points (2 per win, 1 per tie), Autonomous Win Points (AWP), and Strength of Schedule (SOS). Top teams then select alliance partners for elimination rounds consisting of quarterfinals, semifinals, and finals played in best-of-3 format.",
+                "tags": ["tournament", "structure"]
             },
             {
                 "title": "High Stakes Scoring",
-                "content": "High Stakes scoring: Rings on mobile goals are worth different point values depending on goal height (lower, middle, upper). Rings on wall stakes follow the same relative point values. Alliance stake rings can have higher values. Autonomous bonuses award extra points for scoring during the autonomous period. Robot elevation at match end can provide bonus points. Check the current game manual for exact, up-to-date scoring values."
+                "content": "High Stakes scoring: Rings on mobile goals are worth different point values depending on goal height (lower, middle, upper). Rings on wall stakes follow the same relative point values. Alliance stake rings can have higher values. Autonomous bonuses award extra points for scoring during the autonomous period. Robot elevation at match end can provide bonus points. Check the current game manual for exact, up-to-date scoring values.",
+                "tags": ["high stakes", "2024", "rings", "scoring"]
             },
             {
                 "title": "Autonomous Programming",
-                "content": "VEX autonomous programming uses sensors for accuracy. The Inertial Sensor provides gyroscope functionality for precise turns and positioning. Vision Sensors detect colored objects like goals and game pieces. Distance Sensors measure range to objects. Optical Sensors enable line tracking and color detection. GPS Sensors (V5 only) provide field positioning. Best practices include starting simple, testing from multiple positions, using consistent units, adding timeout failsafes, and keeping code modular."
+                "content": "VEX autonomous programming uses sensors for accuracy. The Inertial Sensor provides gyroscope functionality for precise turns and positioning. Vision Sensors detect colored objects like goals and game pieces. Distance Sensors measure range to objects. Optical Sensors enable line tracking and color detection. GPS Sensors (V5 only) provide field positioning. Best practices include starting simple, testing from multiple positions, using consistent units, adding timeout failsafes, and keeping code modular.",
+                "tags": ["autonomous", "programming", "sensors"]
             },
             {
                 "title": "Engineering Notebook",
@@ -154,17 +157,65 @@ class VexKnowledgeBase:
             },
             {
                 "title": "VEX Robotics Rules Compliance",
-                "content": "All VEX robots must comply with official rules including size constraints (not exceeding maximum dimensions), weight limits (typically 12-16 lbs depending on competition), legal parts (only official VEX components), controlled autonomous mode (no human control), and match conduct rules. Violations result in disqualification. Always check the current game manual for specific rules."
+                "content": "All VEX robots must comply with official rules including size constraints (not exceeding maximum dimensions), weight limits (typically 12-16 lbs depending on competition), legal parts (only official VEX components), controlled autonomous mode (no human control), and match conduct rules. Violations result in disqualification. Always check the current game manual for specific rules.",
+                "tags": ["rules", "compliance"]
+            },
+            {
+                "title": "Push Back Game Overview",
+                "content": "Push Back is the 2025-2026 VEX V5 Robotics Competition game. Two alliances (red and blue), each with two teams and one robot per team, compete on a 12ft x 12ft field. The objective is to score points by placing blocks (18-sided hollow plastic objects) into goals and parking robots. The game emphasizes dynamic, offensive gameplay where teams actively manipulate blocks to control goals around the field. 88 total blocks (44 blue, 44 red) are used.",
+                "tags": ["push back", "2025", "2026", "game"]
+            },
+            {
+                "title": "Push Back Field Layout",
+                "content": "The Push Back field is 12ft x 12ft foam tiles divided by an autonomous line. Key elements: 2 Long Goals (48.8 inches), 2 Center Goals (Upper/Lower, 22.6 inches each), 4 Loaders (2 per alliance, 21.34 inches tall, start with 6 blocks each), 2 Park Zones (18.87\" x 16.86\" each). Loaders are attached to field perimeter adjacent to alliance stations. All goals have defined control zones marked by white tape lines."
+            },
+            {
+                "title": "Push Back Autonomous Scoring",
+                "content": "Push Back autonomous period is 15 seconds. Teams score: Each block in goal = 3 points, Long goal control zone = 10 points, Center goal upper control = 8 points, Center goal lower control = 6 points, Autonomous bonus = 10 points (to highest-scoring alliance). Autonomous Win Point awarded for: at least 7 blocks scored, at least 3 different goals contain blocks, at least 3 blocks removed from loaders, neither robot in park zone."
+            },
+            {
+                "title": "Push Back Driver Control Scoring",
+                "content": "Push Back driver control period is 1:45 (105 seconds). Teams continue scoring: Each block in goal = 3 points, Long goal control = 10 points, Center goal upper = 8 points, Center goal lower = 6 points, 1 parked robot = 8 points, 2 parked robots = 30 points. Blocks are scored when in contact with inside surfaces of goal plastic, not touching same-color robot, and not touching floor. Control zone controlled by majority block color."
+            },
+            {
+                "title": "Push Back Goal Control Strategy",
+                "content": "Push Back emphasizes controlling goals through block placement. A control zone is controlled when majority of scored blocks in that zone are the same alliance color. For long goals, blocks must be fully within tape lines. For center goals, entire goal is control zone. Teams score both for individual blocks (3 pts each) and for controlling entire zones (8-10 pts). Strategic block placement in multiple goals is key to high scores."
+            },
+            {
+                "title": "Push Back Robot Mechanics",
+                "content": "Push Back robots must fit within 18x18x18 inches at start, can expand to max 22x22 inches horizontally and 22 inches tall. Robots can carry/push unlimited blocks but must maintain size limits. Design focuses on block manipulation (pushing or lifting), mobility for field navigation, and parking mechanisms. Robots start with one preload block (must contact robot of same color). No requirements for specific mechanism types - pushing or lifting both viable."
+            },
+            {
+                "title": "Push Back Offensive vs Defensive Play",
+                "content": "Push Back emphasizes offensive play where teams actively score blocks. Defensive strategies are allowed but limited: Holding a robot for more than 3-count = violation. Goalkeeping (reaching into goal without moving blocks) not permitted during driver control. Purely destructive strategies prohibited. Dynamic, back-and-forth gameplay encouraged. Teams must provide open lanes for scoring. Offensive teams receive benefit of doubt in judgment calls."
+            },
+            {
+                "title": "Push Back Match Loads and Loaders",
+                "content": "Push Back has 24 match load blocks (12 per alliance) loaded through loaders during driver control. Drive team members can add one block at a time to loaders. Can only load if fewer than 5 blocks in loader's orange section. Blocks bounce out through bottom of loader during match load = not a violation. Robots remove blocks from loaders through bottom opening. Each alliance has 2 loaders adjacent to their alliance station."
             }
         ]
         
-        # Create passages list with metadata
+        # Create passages list with metadata.  Generate tags automatically based on
+        # title/content keywords so we can boost correct manual/year later.
         self.passages = []
         for item in vex_knowledge:
+            tags = item.get("tags", [])[:]  # copy existing tags if provided
+            text_lower = (item["title"] + " " + item["content"]).lower()
+            if "push back" in text_lower:
+                tags.extend(["push back", "2025", "2026"])
+            if "high stakes" in text_lower:
+                tags.extend(["high stakes", "2024"])
+            if "scoring" in item["title"].lower() or "scoring" in item["content"].lower():
+                tags.append("scoring")
+            if "rules" in item["title"].lower() or "rules" in item["content"].lower():
+                tags.append("rules")
+            # remove duplicates
+            tags = list(dict.fromkeys(tags))
             self.passages.append({
                 "title": item["title"],
                 "content": item["content"],
-                "source": "VEX Official Documentation"
+                "source": "VEX Official Documentation",
+                "tags": tags
             })
         
         print(f"Generating embeddings for {len(self.passages)} passages...")
@@ -222,18 +273,42 @@ class VexKnowledgeBase:
         # indices: which passages matched
         distances, indices = self.index.search(
             query_embedding.astype('float32'),
-            top_k
+            min(top_k * 3, len(self.passages))  # overfetch so we can re‑rank by tags
         )
         
-        # Retrieve passages
-        results = []
+        # Basic year/game detection for boosting
+        qlower = query.lower()
+        # look for explicit years like 2024, 2025, 2026
+        years = re.findall(r"20\d{2}", qlower)
+        game_keywords = []
+        if 'push back' in qlower:
+            game_keywords.append('push back')
+        if 'high stakes' in qlower:
+            game_keywords.append('high stakes')
+
+        # Retrieve passages and adjust scores
+        scored = []
         for idx, distance in zip(indices[0], distances[0]):
             if idx < len(self.passages):
                 result = self.passages[idx].copy()
-                result['similarity_score'] = 1.0 / (1.0 + distance)  # Convert to 0-1 score
-                results.append(result)
-        
-        return results
+                # base similarity from distance
+                score = 1.0 / (1.0 + distance)
+                # boost if tags match
+                tags = result.get('tags', []) or []
+                for tag in tags:
+                    if tag.lower() in qlower:
+                        score += 0.25  # small boost
+                    for y in years:
+                        if y in tag:
+                            score += 0.5
+                for g in game_keywords:
+                    if g in tags:
+                        score += 0.75
+                result['similarity_score'] = score
+                scored.append(result)
+        # sort by boosted score and return top_k
+        scored.sort(key=lambda x: x['similarity_score'], reverse=True)
+        return scored[:top_k]
 
 
 class VexLanguageModel:
@@ -316,7 +391,7 @@ class VexLanguageModel:
             temperature=temperature,
             top_p=top_p,
             echo=False,  # Don't repeat prompt in output
-            stop=["</s>"]  # Simplified stop sequences
+            stop=["</s>", "\nQuestion:", "\n\nQuestion:"]  # Stop at end or new question
         )
 
         # Log raw output for debugging
@@ -367,23 +442,20 @@ class VexAssistant:
             self.language_model = VexLanguageModel()
             
             # System prompt for the model
-            self.system_prompt = """You are a knowledgeable and friendly VEX Robotics expert assistant, similar to ChatGPT but specialized in VEX. 
+            self.system_prompt = """You are a knowledgeable VEX Robotics expert. Answer questions concisely and directly using only the provided context.
 
-Your style:
-- Be conversational, warm, and helpful
-- Explain concepts clearly without being overly technical
-- Connect ideas together naturally
-- Give practical, actionable advice
-- Use natural language, not formal/robotic responses
+Style:
+- Be conversational and natural
+- Answer only what was asked—do not add extra information or elaborate unnecessarily
+- Use short, clear sentences
+- If step-by-step instructions are needed, use brief bullets
+- Never ask follow-up questions or suggest related topics unless requested
 
-Guidelines:
-- Answer the question directly and thoroughly using only the provided context (the VEX knowledge base and official VEX documentation). Do not invent facts.
-- Synthesize information from the retrieved passages to produce a single, coherent answer (like ChatGPT), without requiring the user to use special keywords.
-- If the context doesn't provide a direct answer, say so and offer next steps or suggest where to look in the knowledge base.
-- Keep responses concise but complete (under 200 words). If the answer requires step-by-step instructions or lists, use short bullets.
-- Prefer clarity and actionable advice over exhaustive detail.
-- NEVER include labels like "User Question:", "Assistant Answer:", or metadata in your response.
-- Do not ask the user to restate the question unless critical clarifying information is missing."""
+Rules:
+- Use only the provided context (VEX knowledge base). Do not invent facts.
+- Keep responses under 150 words
+- If you don't have enough information, say so briefly
+- Never include labels, metadata, or formatting tags in responses"""
             
             print("✓ VEX Assistant ready!")
         except Exception as e:
@@ -438,14 +510,15 @@ Guidelines:
 Context:
 {context}
 
-Answer this question: {question}"""
+Question: {question}
+Answer:"""
             
             # Step 4: Generate answer
             print("Generating response...")
             answer = self.language_model.generate(
                 prompt,
-                max_tokens=400,
-                temperature=0.2
+                max_tokens=300,
+                temperature=0.1
             )
             
             # Clean up answer - remove any included question or labels
@@ -489,7 +562,8 @@ Answer this question: {question}"""
         robotics_keywords = [
             'vex', 'robot', 'competition', 'tournament', 'programming',
             'autonomous', 'sensor', 'motor', 'build', 'design', 'scoring',
-            'match', 'alliance', 'team', 'code', 'controller', 'brain'
+            'match', 'alliance', 'team', 'code', 'controller', 'brain',
+            'game', 'push back', 'high stakes', 'rules', '2024', '2025', '2026'
         ]
         
         question_lower = question.lower()

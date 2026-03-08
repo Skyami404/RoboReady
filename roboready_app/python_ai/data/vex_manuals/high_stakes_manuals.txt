@@ -1,7 +1,7 @@
-# VEX High Stakes (2024-2025 Season) - Game Manual Summary
+# VEX High Stakes - Game Manual Summary
 
 ## Game Overview
-High Stakes is the 2024-2025 VEX V5 Robotics Competition game. Teams design, build, and program robots to score rings on mobile goals, wall stakes, and the alliance stake.
+High Stakes is a VEX V5 Robotics Competition game. Teams design, build, and program robots to score rings on mobile goals, wall stakes, and the alliance stake.
 
 ## Field Layout
 - 12' x 12' field with foam tiles

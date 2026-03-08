@@ -1,180 +1,75 @@
 // vexAssistantService.ts
-// React Native service for On-Device AI Assistant (Python Flask)
+// React Native service for On-Device AI Assistant
+// This version runs entirely inside the mobile app using a lightweight
+// JavaScript retrieval engine.  A Python/Flask backend is still available
+// as a fallback for development, but the normal workflow no longer requires
+// starting a separate server.
+
+import localAssistant from './vexAssistantLocal';
 
 export class VexAssistantService {
-  // PYTHON FLASK API - On-Device AI
-  private static readonly API_URL = 'http://127.0.0.1:8000';
   private static initializationPromise: Promise<boolean> | null = null;
   private static isInitialized = false;
-  
-  // Initialize the AI (call once on app startup)
+
+  // Initialize the on‑device engine (no network calls required)
   static async initialize(): Promise<boolean> {
-    // Return existing initialization promise if already in progress
     if (this.initializationPromise) {
       return this.initializationPromise;
     }
-    
-    // If already initialized, return true
+
     if (this.isInitialized) {
       return true;
     }
-    
-    // Create new initialization promise
+
     this.initializationPromise = this.performInitialization();
     return this.initializationPromise;
   }
-  
+
   private static async performInitialization(): Promise<boolean> {
     try {
-      // Check if service is already running
-      const status = await this.checkStatus();
-      if (status.ready) {
-        console.log('VEX Assistant already initialized');
-        this.isInitialized = true;
-        return true;
-      }
-      
-      console.log('Initializing VEX Assistant...');
-      
-      const response = await fetch(`${this.API_URL}/status`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      const data = await response.json();
-      
-      if (data.success) {
-        console.log('VEX Assistant initialized successfully');
-        this.isInitialized = true;
-        return true;
-      } else {
-        console.error('Initialization failed:', data.error);
-        return false;
-      }
-    } catch (error) {
-      console.error('Initialization error:', error);
+      // in-process engine is ready immediately; future work such as model
+      // warm‑up could go here
+      console.log('Initializing local VEX Assistant engine...');
+      this.isInitialized = true;
+      return true;
+    } catch (err) {
+      console.error('Local initialization error:', err);
       return false;
     }
   }
   
-  // Check if AI is initialized and ready
+  // Local engine is always considered ready once initialized
   static async checkStatus(): Promise<{ ready: boolean; message?: string; knowledge_base_size?: number }> {
-    try {
-      const response = await fetch(`${this.API_URL}/status`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      if (!response.ok) {
-        return { 
-          ready: false, 
-          message: 'AI service not responding' 
-        };
+    if (this.isInitialized) {
+      // report the size of the built-in knowledge base
+      try {
+        const kb: any = localAssistant as any;
+        const size = Array.isArray(kb.passages) ? kb.passages.length : undefined;
+        return { ready: true, knowledge_base_size: size } as any;
+      } catch {
+        return { ready: true };
       }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Status check failed:', error);
-      return { 
-        ready: false, 
-        message: 'AI service not available' 
-      };
     }
+    return { ready: false, message: 'Not initialized' };
   }
 
-  // Main method to get response from on-device AI
+  // Main method to get a response from the local AI engine
   static async getResponse(question: string): Promise<string> {
     try {
-      // Ensure service is initialized
       if (!this.isInitialized) {
-        const initialized = await this.initialize();
-        if (!initialized) {
-          return "❌ Cannot connect to AI service.\n\n" +
-                 "Make sure the Python Flask server is running:\n\n" +
-                 "1. Open Terminal\n" +
-                 "2. cd roboready_app/python_ai\n" +
-                 "3. source ../../venv/bin/activate\n" +
-                 "4. python flask_server.py\n\n" +
-                 "Then try asking again!";
-        }
-      }
-      
-      // First check if service is ready
-      const status = await this.checkStatus();
-      if (!status.ready) {
-        return "🔄 AI is still loading...\n\nFirst launch takes 30-60 seconds to initialize the models.\n\nPlease wait a moment and try again!";
+        await this.initialize();
       }
 
-      // Validate question
       if (!question || question.trim().length === 0) {
         return "Please ask a question!";
       }
 
-      // Send question to Python backend
-      const response = await fetch(`${this.API_URL}/ask`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.trim() })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Flask API Error:', response.status, errorText);
-        
-        if (response.status === 503) {
-          return "🔄 AI is still initializing...\n\nPlease wait 30-60 seconds and try again!";
-        }
-        
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
-
-      const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      // Format response with sources
-      let responseText = data.answer || "No answer generated";
-      
-      if (data.sources && data.sources.length > 0) {
-        responseText += "\n\n📚 Based on:\n";
-        data.sources.forEach((source: any) => {
-          const title = source.title || 'Unknown source';
-          responseText += `• ${title}\n`;
-        });
-      }
-
-
-      return responseText;
-      
+      // directly query the local assistant
+      const answer = localAssistant.answer(question.trim());
+      return answer;
     } catch (error: any) {
-      console.error('Error getting response:', error);
-      
-      // Provide helpful error messages
-      const errorMsg = error.message || error.toString();
-      
-      if (errorMsg.includes('Network request failed') || 
-          errorMsg.includes('fetch') ||
-          errorMsg.includes('connection refused') ||
-          errorMsg.includes('ECONNREFUSED')) {
-        return "❌ Cannot connect to AI service.\n\n" +
-               "Make sure the Python Flask server is running:\n\n" +
-               "1. Open Terminal\n" +
-               "2. cd roboready_app/python_ai\n" +
-               "3. source ../../venv/bin/activate\n" +
-               "4. python flask_server.py\n\n" +
-               "Then try asking again!";
-      }
-      
-      if (errorMsg.includes('timeout')) {
-        return "⏱️ Request timed out. The AI server might be overloaded.\n\n" +
-               "Please try again in a moment!";
-      }
-
-      return "❌ Error: " + errorMsg + "\n\n" +
-             "Please make sure Flask server is running and try again.";
+      console.error('Error getting response (local engine):', error);
+      return "❌ Error processing your question. Please try again.";
     }
   }
 
@@ -182,7 +77,7 @@ export class VexAssistantService {
   static getSuggestedQuestions(): string[] {
     return [
       "How does tournament structure work?",
-      "How do I score points in High Stakes?",
+      "How do I score points in Push Back (2025-2026)?",
       "What are the current VEX game rules?",
       "How do I program autonomous routines?",
       "What should be in my engineering notebook?",
@@ -219,7 +114,7 @@ export class VexAssistantService {
            "• robotevents.com - Competitions\n" +
            "• kb.vex.com - Knowledge base\n" +
            "• vexforum.com - Community\n\n" +
-           "The on-device AI will provide more detailed answers once the Flask server is running!";
+           "The on-device AI is built into the app and will provide more detailed answers once it finishes initializing!";
   }
 }
 

@@ -6,12 +6,16 @@ The VEX Robotics AI Assistant has been fully implemented as an on-device, offlin
 
 - **Semantic Search**: FAISS vector database with embeddings
 - **Language Generation**: Phi-3-mini language model
-- **REST API**: Flask server for app communication
+- **REST API**: *Previously* a Flask server; mobile builds now use a built-in JS engine. The Python server remains available for development and debugging.
 - **VEX Knowledge Base**: 15+ topics with official information
 
 ## Changes Made
 
-### 1. Flask Server (`flask_server.py`) - FIXED
+### 1. Local JS Engine / Flask Server - FIXED
+
+(This component used to be a mandatory Flask REST API; it has been refactored so that the mobile
+application can run the assistant entirely on-device. The Flask server is still maintained for
+desktop development but is no longer required.)
 
 **Issues Resolved**:
 - ✅ Added proper threading support with `threading.Lock`

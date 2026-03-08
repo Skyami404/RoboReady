@@ -41,8 +41,12 @@ def test_questions():
             "expected_keywords": ["sensor", "autonomous", "programming"]
         },
         {
+            "question": "What is Push Back and how do I score points?",
+            "expected_keywords": ["Push Back", "blocks", "goals", "scoring"]
+        },
+        {
             "question": "What is a banana?",  # Non-VEX question
-            "expected_keywords": ["robotics", "VEX"]  # Should decline
+            "expected_keywords": ["context", "not", "provided"]  # Should decline gracefully
         }
     ]
     

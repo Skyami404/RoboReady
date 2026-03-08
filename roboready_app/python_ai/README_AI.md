@@ -33,7 +33,14 @@ Check that these files exist:
 If missing, download from:
 https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf
 
-### 3. Start the Flask Server
+### 3. Start the Flask Server (optional)
+
+The Python/Flask server is **only required for desktop development** or debugging the
+full RAG pipeline. Mobile builds include a lightweight JavaScript engine that runs
+entirely on-device, so end users do **not** need to start this server and the app
+will work offline out of the box.
+
+If you are a developer and still want to start the backend manually, run:
 
 ```bash
 # From roboready_app/python_ai directory:
@@ -48,7 +55,8 @@ chmod +x start_server.sh
 ./start_server.sh
 ```
 
-The server will start on `http://127.0.0.1:8000`
+The server will start on `http://127.0.0.1:8000`, but the React Native app will
+prefer the local JS engine when available.
 
 ## How It Works
 
